@@ -8,11 +8,18 @@ import {
   TrendingDown,
   Trophy,
   Bell,
-  Settings,
   Clock,
   Calendar,
   Star,
   Lightbulb,
+  Video,
+  Sparkles as SparklesIcon,
+  User,
+  CalendarDays,
+  Award,
+  Library,
+  Settings,
+  LogOut,
   Flame,
   Target,
   AlarmClock,
@@ -29,6 +36,7 @@ export default function DashboardPage() {
   const [level] = useState(7);
   const [challengeProgress] = useState(2);
   const [challengeTotal] = useState(3);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
@@ -82,9 +90,73 @@ export default function DashboardPage() {
             <Bell className="w-[22px] h-[22px] text-[#6b7280]" />
             <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-[#f97316] rounded-full border-2 border-white" />
           </button>
-          <button className="p-2.5 rounded-xl hover:bg-gray-50 transition-all duration-200 hover:rotate-45 hover:scale-105">
-            <Settings className="w-[22px] h-[22px] text-[#6b7280]" />
-          </button>
+
+          {/* User Avatar + Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setProfileOpen(!profileOpen)}
+              className="w-10 h-10 rounded-full bg-gray-100 border-2 border-[#e5e7eb] flex items-center justify-center hover:border-[#7c3aed]/40 transition-all duration-200 cursor-pointer"
+            >
+              <User className="w-5 h-5 text-[#6b7280]" />
+            </button>
+
+            {profileOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />
+                <div className="absolute right-0 top-14 w-[280px] bg-white rounded-2xl shadow-2xl border-2 border-[#e5e7eb] z-50 overflow-hidden">
+                  {/* Profile header */}
+                  <div className="px-6 pt-6 pb-4 flex flex-col items-center">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#2563eb] to-[#7c3aed] flex items-center justify-center mb-3">
+                      <User className="w-7 h-7 text-white" />
+                    </div>
+                    <p className="text-[16px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Arjun Sharma</p>
+                    <p className="text-[13px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Class 10 - Section A</p>
+                  </div>
+
+                  {/* Level + Badges */}
+                  <div className="px-6 pb-4 flex gap-3">
+                    <div className="flex-1 bg-[#2563eb]/8 rounded-xl px-3 py-2.5">
+                      <p className="text-[16px] text-[#2563eb]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Level 7</p>
+                      <p className="text-[12px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>340 XP</p>
+                    </div>
+                    <div className="flex-1 bg-[#f59e0b]/8 rounded-xl px-3 py-2.5">
+                      <p className="text-[16px] text-[#f59e0b]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>8</p>
+                      <p className="text-[12px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Badges</p>
+                    </div>
+                  </div>
+
+                  {/* Menu items */}
+                  <div className="border-t border-[#e5e7eb]">
+                    {[
+                      { icon: User, label: "My Profile" },
+                      { icon: CalendarDays, label: "My Schedule" },
+                      { icon: Award, label: "Achievements" },
+                      { icon: Library, label: "My Library" },
+                      { icon: Settings, label: "Settings" },
+                    ].map((item) => (
+                      <button key={item.label} className="w-full flex items-center justify-between px-6 py-3.5 hover:bg-gray-50 transition-colors cursor-pointer">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+                            <item.icon className="w-[18px] h-[18px] text-[#6b7280]" />
+                          </div>
+                          <span className="text-[14px] text-[#374151]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{item.label}</span>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-[#d1d5db]" />
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Logout */}
+                  <div className="border-t border-[#e5e7eb] p-4">
+                    <button className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-red-200 text-red-500 hover:bg-red-50 transition-colors cursor-pointer" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                      <LogOut className="w-4 h-4" />
+                      <span className="text-[14px]">Log Out</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -166,47 +238,75 @@ export default function DashboardPage() {
           {/* Choose Your Learning Tool */}
           <div>
             <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-5 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.35s" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              {/* Live Classes */}
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#ef4444]/40 hover:shadow-xl hover:shadow-red-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.35s" }}>
+                <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all duration-200">
+                  <Video className="w-8 h-8 text-[#ef4444]" />
+                </div>
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Live Classes</h3>
+                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Join live sessions &amp; watch recordings</p>
+                <Link href="#" className="text-[#ef4444] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                  Get started <ChevronRight className="w-5 h-5" />
+                </Link>
+              </div>
+
+              {/* Study Buddy */}
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.4s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] flex items-center justify-center group-hover:bg-[#dbeafe] group-hover:scale-110 transition-all duration-200">
                   <BookOpen className="w-8 h-8 text-[#2563eb]" />
                 </div>
                 <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Study Buddy</h3>
-                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Get guided help with homework</p>
-                <Link href="/studyhub" className="text-[#2563eb] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Get guided help with homework</p>
+                <Link href="/studyhub" className="text-[#2563eb] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
 
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-xl hover:shadow-purple-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.4s" }}>
+              {/* Concept Master */}
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-xl hover:shadow-purple-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.45s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#faf5ff] flex items-center justify-center group-hover:bg-[#f3e8ff] group-hover:scale-110 transition-all duration-200">
                   <Brain className="w-8 h-8 text-[#7c3aed]" />
                 </div>
                 <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Concept Master</h3>
-                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Learn new topics with AI tutor</p>
-                <Link href="/concept-master" className="text-[#7c3aed] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Learn new topics with AI tutor</p>
+                <Link href="/concept-master" className="text-[#7c3aed] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
 
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-xl hover:shadow-amber-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.45s" }}>
+              {/* Practice Arena */}
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-xl hover:shadow-amber-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.5s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#fffbeb] flex items-center justify-center group-hover:bg-[#fef3c6] group-hover:scale-110 transition-all duration-200">
                   <Trophy className="w-8 h-8 text-[#f59e0b]" />
                 </div>
                 <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Practice Arena</h3>
-                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Practice with various question types</p>
-                <Link href="/studyhub" className="text-[#f59e0b] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Practice with various question types</p>
+                <Link href="/studyhub" className="text-[#f59e0b] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
 
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#10b981]/40 hover:shadow-xl hover:shadow-emerald-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.5s" }}>
+              {/* Study Hub */}
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#10b981]/40 hover:shadow-xl hover:shadow-emerald-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.55s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#ecfdf5] flex items-center justify-center group-hover:bg-[#d1fae5] group-hover:scale-110 transition-all duration-200">
                   <ClipboardList className="w-8 h-8 text-[#10b981]" />
                 </div>
                 <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Study Hub</h3>
-                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Notes, PDFs &amp; previous year papers</p>
-                <Link href="/studyhub" className="text-[#10b981] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Notes, PDFs &amp; previous year papers</p>
+                <Link href="/studyhub" className="text-[#10b981] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                  Get started <ChevronRight className="w-5 h-5" />
+                </Link>
+              </div>
+
+              {/* Explore Lab */}
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#ec4899]/40 hover:shadow-xl hover:shadow-pink-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.6s" }}>
+                <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center group-hover:bg-pink-100 group-hover:scale-110 transition-all duration-200">
+                  <SparklesIcon className="w-8 h-8 text-[#ec4899]" />
+                </div>
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Explore Lab</h3>
+                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Interactive gamified learning</p>
+                <Link href="#" className="text-[#ec4899] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
