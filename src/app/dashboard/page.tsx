@@ -1,605 +1,329 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
-  LayoutDashboard,
-  FileBarChart,
-  BrainCircuit,
-  Bot,
-  GraduationCap,
-  Trophy,
-  Settings,
-  LogOut,
-  ChevronDown,
-  Clock,
-  Bell,
-  Menu,
-  AlertTriangle,
-  Calendar,
-  MessageCircle,
-  TrendingUp,
+  BookOpen,
+  Brain,
   TrendingDown,
-  Minus,
+  Trophy,
+  Bell,
+  Settings,
+  Clock,
+  Calendar,
+  Star,
+  Lightbulb,
+  Flame,
+  Target,
+  AlarmClock,
+  ChevronRight,
+  Sparkles,
+  ClipboardList,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: FileBarChart, label: "Weekly Report", active: false },
-  { icon: BrainCircuit, label: "HomeworkAI", active: false },
-  { icon: Bot, label: "LearnBot", active: false },
-  { icon: GraduationCap, label: "Exam Mode", active: false },
-  { icon: Trophy, label: "Achievements", active: false },
-  { icon: Settings, label: "Settings", active: false },
-];
-
-const subjects = [
-  { name: "Science", score: 82, change: +6, color: "bg-green-500" },
-  { name: "Mathematics", score: 65, change: +3, color: "bg-orange-500" },
-  { name: "English", score: 90, change: +2, color: "bg-blue-500" },
-  { name: "History", score: 85, change: +8, color: "bg-green-500" },
-  { name: "Biology", score: 68, change: -2, color: "bg-amber-500" },
-];
-
-const activities = [
-  {
-    color: "bg-green-500",
-    text: "Completed Science Ch.1 homework \u2014 92% score, used AI for 2 doubts",
-    time: "Today, 4:30 PM",
-  },
-  {
-    color: "bg-orange-500",
-    text: "12-day study streak achieved \u2014 longest this month",
-    time: "Today, 3:00 PM",
-  },
-  {
-    color: "bg-red-500",
-    text: "Quadratic Equations \u2014 understanding dropped to 52%. Revision recommended",
-    time: "Yesterday",
-  },
-  {
-    color: "bg-blue-500",
-    text: "Used LearnBot to create revision notes for French Revolution",
-    time: "Yesterday",
-  },
-  {
-    color: "bg-blue-500",
-    text: "HomeworkAI session: History worksheet \u2014 Level 3 help used",
-    time: "2 days ago",
-  },
-];
-
-const weeklyScores = [
-  { day: "Mon", score: 72 },
-  { day: "Tue", score: 85 },
-  { day: "Wed", score: 68 },
-  { day: "Thu", score: 91 },
-  { day: "Fri", score: 78 },
-  { day: "Sat", score: 82 },
-  { day: "Sun", score: 76 },
-];
-
-const sessions = [
-  { date: "24 May", subject: "Science", topic: "Light Chapter", time: "22 min", level: 2, mcq: "3/4", highlight: false },
-  { date: "23 May", subject: "Maths", topic: "Quadratic Eq.", time: "34 min", level: 4, mcq: "2/4", highlight: false },
-  { date: "22 May", subject: "English", topic: "Essay Writing", time: "18 min", level: 1, mcq: "4/4", highlight: false },
-  { date: "21 May", subject: "History", topic: "French Revolution", time: "41 min", level: 5, mcq: "1/4", highlight: true },
-  { date: "20 May", subject: "Maths", topic: "Linear Equations", time: "25 min", level: 2, mcq: "4/4", highlight: false },
-];
-
-const attentionTopics = [
-  { subject: "Mathematics", topic: "Quadratic Equations" },
-  { subject: "Science", topic: "Light and Refraction" },
-  { subject: "History", topic: "French Revolution" },
-];
-
-function getLevelBadgeColor(level: number) {
-  if (level <= 2) return "bg-green-100 text-green-700";
-  if (level <= 3) return "bg-yellow-100 text-yellow-700";
-  if (level === 4) return "bg-orange-100 text-orange-700";
-  return "bg-red-100 text-red-700";
-}
 
 export default function DashboardPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [streakDays] = useState(7);
+  const [goalsCompleted] = useState(3);
+  const [goalTotal] = useState(5);
+  const [xpPoints] = useState(340);
+  const [level] = useState(7);
+  const [challengeProgress] = useState(2);
+  const [challengeTotal] = useState(3);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f5f5f0]">
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* SIDEBAR */}
-      <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-[195px] flex-col bg-[#1a1a2e] text-white transition-transform duration-200 lg:static lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* Logo */}
-        <div className="flex items-center gap-2 px-4 pt-5 pb-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pk-blue text-sm font-bold text-white font-mono">
-            {">_"}
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col">
+      {/* TOP NAV BAR */}
+      <nav className="sticky top-0 z-50 bg-white border-b border-[#f3f4f6] h-[78px] flex items-center justify-between px-6">
+        {/* Left: Logo */}
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-[14px] bg-gradient-to-br from-[#2563eb] to-[#7c3aed] flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
-          <span className="text-base font-bold">
-            <span className="text-white">Prompt</span>
-            <span className="text-pk-orange">Kids</span>
-          </span>
-        </div>
-
-        {/* Student selector */}
-        <div className="mx-3 mb-4 rounded-lg bg-white/10 px-3 py-2.5 cursor-pointer hover:bg-white/15 transition-colors">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-semibold">Arjun Sharma</p>
-              <p className="text-xs text-white/50">Class 9</p>
-            </div>
-            <ChevronDown className="h-4 w-4 text-white/50" />
+          <div className="flex flex-col">
+            <span className="font-bold text-black text-base leading-tight">PromptKids</span>
+            <span className="text-[#9ca3af] text-xs leading-tight">AI Learning Platform</span>
           </div>
         </div>
 
-        {/* Nav items */}
-        <nav className="flex-1 space-y-0.5 px-3">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
-                item.active
-                  ? "bg-pk-orange font-medium text-white"
-                  : "text-white/60 hover:bg-white/10 hover:text-white"
-              }`}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.label}
-            </button>
-          ))}
-        </nav>
-
-        {/* Bottom user */}
-        <div className="border-t border-white/10 px-3 py-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pk-blue text-xs font-semibold text-white shrink-0">
-              PS
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Priya Sharma</p>
-              <p className="text-xs text-white/50">Parent Account</p>
-            </div>
-            <LogOut className="h-4 w-4 text-white/40 hover:text-white cursor-pointer shrink-0" />
-          </div>
+        {/* Right: Bell + Settings */}
+        <div className="flex items-center gap-4">
+          <button className="relative p-2 rounded-lg hover:bg-gray-50 transition-colors">
+            <Bell className="w-5 h-5 text-[#6b7280]" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-[#f97316] rounded-full" />
+          </button>
+          <button className="p-2 rounded-lg hover:bg-gray-50 transition-colors">
+            <Settings className="w-5 h-5 text-[#6b7280]" />
+          </button>
         </div>
-      </aside>
+      </nav>
 
-      {/* MAIN AREA */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        {/* TOP BAR */}
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-pk-gray-border bg-white px-4 py-3 lg:px-6">
-          <div className="flex items-center gap-3">
-            <button
-              className="lg:hidden p-1 -ml-1"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="h-5 w-5 text-pk-text" />
-            </button>
-            <div>
-              <h1 className="text-lg font-bold text-pk-text lg:text-xl">Dashboard</h1>
-              <p className="text-xs text-pk-text-secondary">Last updated 2 minutes ago</p>
+      {/* MAIN CONTENT */}
+      <div className="flex flex-1 flex-col lg:flex-row">
+        {/* LEFT MAIN AREA */}
+        <main className="flex-1 p-6 lg:p-8 space-y-6">
+          {/* Welcome Banner */}
+          <div className="relative bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-2xl h-auto min-h-[160px] p-6 lg:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between overflow-hidden">
+            {/* Decorative circles */}
+            <div className="absolute top-[-40px] right-[-40px] w-64 h-64 rounded-full bg-white/10 pointer-events-none" />
+            <div className="absolute bottom-[-40px] left-[-40px] w-48 h-48 rounded-full bg-white/10 pointer-events-none" />
+
+            {/* Left content */}
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-white font-bold text-2xl">Welcome back, Arjun! 👋</h1>
+              <p className="text-white/90 text-sm">Ready to learn something new today?</p>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-sm px-3 py-1.5 rounded-[14px]">
+                  <Flame className="w-4 h-4" /> {streakDays} day streak
+                </span>
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-sm px-3 py-1.5 rounded-[14px]">
+                  <Target className="w-4 h-4" /> {goalsCompleted}/{goalTotal} goals today
+                </span>
+              </div>
+            </div>
+
+            {/* Right: Level + XP */}
+            <div className="relative z-10 flex flex-col items-center mt-4 sm:mt-0">
+              <span className="text-white/80 text-sm font-medium">Level {level}</span>
+              <span className="text-white font-bold text-5xl leading-none mt-1">{xpPoints}</span>
+              <span className="text-white/80 text-sm mt-1">XP Points</span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Badge
-              variant="secondary"
-              className="hidden sm:inline-flex gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-700 border border-orange-200"
-            >
-              <Clock className="h-3 w-3" />
-              Science exam in 6 days
-            </Badge>
-            <button className="relative p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-              <Bell className="h-5 w-5 text-pk-text-secondary" />
-              <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-                3
-              </span>
-            </button>
-            <Avatar size="default">
-              <AvatarFallback className="bg-pk-purple text-white text-xs font-semibold">
-                PS
-              </AvatarFallback>
-            </Avatar>
-          </div>
-        </header>
 
-        {/* SCROLLABLE CONTENT */}
-        <main className="flex-1 overflow-y-auto pb-16">
-          <div className="mx-auto max-w-7xl space-y-5 p-4 lg:p-6">
-            {/* STAT CARDS */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {/* Study Time */}
-              <div className="rounded-xl border border-pk-gray-border bg-[#f0f7f0] p-4 border-t-[3px] border-t-green-500">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-pk-text-secondary">
-                  This Week&apos;s Study Time
-                </p>
-                <p className="mt-1 text-2xl font-bold text-pk-text">3.2 hrs</p>
-                <p className="mt-0.5 flex items-center gap-1 text-xs text-green-600 font-medium">
-                  <TrendingUp className="h-3 w-3" /> +18% vs last week
-                </p>
+          {/* Stat Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            {/* Homework Done */}
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+              <div className="w-11 h-11 rounded-xl bg-[#eff6ff] flex items-center justify-center flex-shrink-0">
+                <BookOpen className="w-5 h-5 text-[#2563eb]" />
               </div>
-              {/* MCQ Score */}
-              <div className="rounded-xl border border-pk-gray-border bg-[#fef9e7] p-4 border-t-[3px] border-t-yellow-500">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-pk-text-secondary">
-                  Average MCQ Score
-                </p>
-                <p className="mt-1 text-2xl font-bold text-pk-text">76%</p>
-                <p className="mt-0.5 flex items-center gap-1 text-xs text-pk-text-secondary font-medium">
-                  <Minus className="h-3 w-3" /> Stable this week
-                </p>
-              </div>
-              {/* AI Dependency */}
-              <div className="rounded-xl border border-pk-gray-border bg-[#f0f7f0] p-4 border-t-[3px] border-t-green-500">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-pk-text-secondary">
-                  AI Dependency Score
-                </p>
-                <p className="mt-1 text-2xl font-bold text-pk-text">32%</p>
-                <p className="mt-0.5 flex items-center gap-1 text-xs text-green-600 font-medium">
-                  <TrendingDown className="h-3 w-3" /> Improving — lower is better
-                </p>
-              </div>
-              {/* Study Streak */}
-              <div className="rounded-xl border border-pk-gray-border bg-[#fdf3e3] p-4 border-t-[3px] border-t-orange-500">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-pk-text-secondary">
-                  Study Streak
-                </p>
-                <p className="mt-1 text-2xl font-bold text-pk-text">
-                  12 days <span className="text-lg">&#x1F525;</span>
-                </p>
-                <p className="mt-0.5 flex items-center gap-1 text-xs text-pk-text-secondary font-medium">
-                  <Minus className="h-3 w-3" /> Best streak: 18 days
-                </p>
+              <div>
+                <p className="text-[#2563eb] font-bold text-2xl leading-none">5</p>
+                <p className="text-[#9ca3af] text-xs mt-1">Homework Done</p>
               </div>
             </div>
 
-            {/* SUBJECT UNDERSTANDING + TODAY'S ACTIVITY */}
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
-              {/* Subject Understanding */}
-              <Card className="lg:col-span-3 border-pk-gray-border bg-white shadow-none">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base font-bold">
-                    Subject Understanding <span>&#x1F9E0;</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3.5">
-                  {subjects.map((s) => (
-                    <div key={s.name} className="flex items-center gap-3">
-                      <span className="w-24 text-sm text-pk-text-secondary shrink-0">
-                        {s.name}
-                      </span>
-                      <div className="flex-1 h-3 rounded-full bg-gray-100 overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${s.color} transition-all`}
-                          style={{ width: `${s.score}%` }}
-                        />
-                      </div>
-                      <span className="w-10 text-sm font-bold text-pk-text text-right tabular-nums">
-                        {s.score}%
-                      </span>
-                      <span
-                        className={`w-10 text-xs font-medium text-right ${
-                          s.change > 0 ? "text-green-600" : "text-red-500"
-                        }`}
-                      >
-                        {s.change > 0 ? `+${s.change}%` : `${s.change}%`}
-                      </span>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Today's Activity */}
-              <Card className="lg:col-span-2 border-pk-gray-border bg-white shadow-none">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base font-bold">
-                    <Clock className="h-4 w-4 text-pk-text-secondary" />
-                    Today&apos;s Activity
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-0">
-                  {activities.map((a, i) => (
-                    <div key={i} className="flex gap-3">
-                      <div className="flex flex-col items-center pt-1.5">
-                        <div className={`h-2.5 w-2.5 rounded-full ${a.color} shrink-0`} />
-                        {i < activities.length - 1 && (
-                          <div className="w-px flex-1 bg-gray-200 mt-1" />
-                        )}
-                      </div>
-                      <div className="pb-4">
-                        <p className="text-sm text-pk-text leading-snug">{a.text}</p>
-                        <p className="text-xs text-pk-text-secondary mt-0.5">{a.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+            {/* Concepts Learned */}
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+              <div className="w-11 h-11 rounded-xl bg-[#faf5ff] flex items-center justify-center flex-shrink-0">
+                <Brain className="w-5 h-5 text-[#7c3aed]" />
+              </div>
+              <div>
+                <p className="text-[#7c3aed] font-bold text-2xl leading-none">12</p>
+                <p className="text-[#9ca3af] text-xs mt-1">Concepts Learned</p>
+              </div>
             </div>
 
-            {/* HOMEWORK PERFORMANCE CHART */}
-            <div className="relative">
-              <Card className="border-pk-gray-border bg-white shadow-none">
-                <CardHeader>
-                  <CardTitle className="text-base font-bold">
-                    Homework Performance — Last 7 Days <span>&#x1F4CA;</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {/* Chart */}
-                  <div className="relative">
-                    {/* Y-axis labels + grid */}
-                    <div className="flex">
-                      <div className="flex flex-col justify-between w-8 text-xs text-pk-text-secondary pr-2 shrink-0" style={{ height: 200 }}>
-                        <span>100</span>
-                        <span>75</span>
-                        <span>50</span>
-                      </div>
-                      <div className="flex-1 relative" style={{ height: 200 }}>
-                        {/* Grid lines */}
-                        <div className="absolute inset-0">
-                          <div className="absolute top-0 left-0 right-0 border-t border-dashed border-gray-200" />
-                          <div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-gray-200" />
-                          <div className="absolute bottom-0 left-0 right-0 border-t border-dashed border-gray-200" />
-                        </div>
-                        {/* Bars */}
-                        <div className="relative flex items-end justify-around h-full px-2">
-                          {weeklyScores.map((d) => (
-                            <div key={d.day} className="flex flex-col items-center gap-1" style={{ width: "12%" }}>
-                              <span className="text-xs font-semibold text-pk-text tabular-nums">{d.score}</span>
-                              <div
-                                className={`w-full rounded-t-md ${
-                                  d.score >= 65 ? "bg-[#8bc34a]" : "bg-pk-blue"
-                                }`}
-                                style={{ height: `${(d.score / 100) * 180}px` }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    {/* X-axis labels */}
-                    <div className="flex mt-2">
-                      <div className="w-8 shrink-0">
-                        <span className="text-xs text-pk-text-secondary">0</span>
-                      </div>
-                      <div className="flex-1 flex justify-around px-2">
-                        {weeklyScores.map((d) => (
-                          <span key={d.day} className="text-xs text-pk-text-secondary text-center" style={{ width: "12%" }}>
-                            {d.day}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Legend */}
-                  <div className="mt-4 flex items-center gap-4 text-xs text-pk-text-secondary">
-                    <span className="flex items-center gap-1.5">
-                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#8bc34a]" />
-                      Solved independently
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="inline-block h-2.5 w-2.5 rounded-full bg-pk-blue" />
-                      AI help used
-                    </span>
-                  </div>
-                  <p className="mt-2 text-sm text-pk-text-secondary">
-                    Arjun solved 71% of this week&apos;s homework without AI help — up from 58% last week
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* WHATSAPP NOTIFICATION - floating over bottom-right */}
-              <div className="absolute -bottom-4 right-4 z-10 w-72 hidden xl:block">
-                <p className="text-[11px] text-pk-text-secondary text-center mb-1.5 font-medium">
-                  Parents receive this every evening on WhatsApp
-                </p>
-                <div className="rounded-xl overflow-hidden shadow-lg border border-gray-200">
-                  {/* WhatsApp header */}
-                  <div className="flex items-center gap-2.5 bg-[#075e54] px-3 py-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 shrink-0">
-                      <MessageCircle className="h-4 w-4 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-semibold text-white">PromptKids Bot</p>
-                    </div>
-                    <span className="text-xs text-white/70">6:00 PM</span>
-                  </div>
-                  {/* WhatsApp body */}
-                  <div className="bg-[#e5ddd5] p-3">
-                    <div className="rounded-lg bg-white p-3 shadow-sm">
-                      <p className="text-sm font-bold text-pk-text">Daily Student Report</p>
-                      <p className="mt-1 text-xs text-pk-text-secondary leading-relaxed">
-                        Arjun completed Science homework today with 92% score. AI dependency is improving at 32%.
-                        Study streak: 12 days.
-                      </p>
-                      <p className="mt-2 text-xs font-medium text-blue-600 cursor-pointer">
-                        View full report &rarr;
-                      </p>
-                    </div>
-                  </div>
+            {/* AI Dependency */}
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+              <div className="w-11 h-11 rounded-xl bg-[#f0fdf4] flex items-center justify-center flex-shrink-0">
+                <TrendingDown className="w-5 h-5 text-[#22c55e]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-[#22c55e] font-bold text-2xl leading-none">28%</p>
+                  <TrendingDown className="w-4 h-4 text-[#22c55e]" />
                 </div>
+                <p className="text-[#9ca3af] text-xs mt-1">AI Dependency</p>
               </div>
             </div>
 
-            {/* Spacer for WhatsApp notification overlap */}
-            <div className="hidden xl:block h-8" />
-
-            {/* NEEDS ATTENTION + UPCOMING EXAM */}
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-              {/* Needs Attention */}
-              <Card className="border-pk-gray-border bg-white shadow-none">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base font-bold">
-                    <AlertTriangle className="h-4 w-4 text-amber-500" />
-                    Needs Attention This Week
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {attentionTopics.map((t, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center justify-between rounded-lg border border-pk-gray-border p-3"
-                    >
-                      <div>
-                        <p className="text-sm font-semibold text-pk-text">{t.subject}</p>
-                        <p className="text-xs text-pk-text-secondary">{t.topic}</p>
-                      </div>
-                      <button className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700 transition-colors shrink-0">
-                        Start LearnBot &rarr;
-                      </button>
-                    </div>
-                  ))}
-                  <p className="text-xs text-pk-text-secondary pt-1">
-                    These topics had below 60% MCQ scores in the last 3 sessions.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Upcoming Exam */}
-              <Card className="border-pk-gray-border bg-white shadow-none">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base font-bold">
-                    <Calendar className="h-4 w-4 text-pk-blue" />
-                    Upcoming Exam
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col items-center text-center">
-                  <p className="text-2xl font-bold text-pk-text">Science</p>
-                  <p className="text-sm text-pk-text-secondary mt-1">6 days remaining</p>
-
-                  {/* Circular progress ring */}
-                  <div className="relative my-5">
-                    <svg width="120" height="120" viewBox="0 0 120 120">
-                      <circle
-                        cx="60"
-                        cy="60"
-                        r="50"
-                        fill="none"
-                        stroke="#e5e7eb"
-                        strokeWidth="10"
-                      />
-                      <circle
-                        cx="60"
-                        cy="60"
-                        r="50"
-                        fill="none"
-                        stroke="#2563eb"
-                        strokeWidth="10"
-                        strokeLinecap="round"
-                        strokeDasharray={`${2 * Math.PI * 50}`}
-                        strokeDashoffset={`${2 * Math.PI * 50 * (1 - 0.64)}`}
-                        transform="rotate(-90 60 60)"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-2xl font-bold text-pk-text">64%</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-pk-text-secondary">Preparation score</p>
-                  <button className="mt-4 w-full rounded-lg bg-pk-blue px-4 py-2.5 text-sm font-semibold text-white hover:bg-pk-blue-dark transition-colors">
-                    Go to Exam Mode &rarr;
-                  </button>
-                </CardContent>
-              </Card>
+            {/* Badges Earned */}
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+              <div className="w-11 h-11 rounded-xl bg-[#fffbeb] flex items-center justify-center flex-shrink-0">
+                <Trophy className="w-5 h-5 text-[#f59e0b]" />
+              </div>
+              <div>
+                <p className="text-[#f59e0b] font-bold text-2xl leading-none">8</p>
+                <p className="text-[#9ca3af] text-xs mt-1">Badges Earned</p>
+              </div>
             </div>
+          </div>
 
-            {/* RECENT HOMEWORKAI SESSIONS TABLE */}
-            <Card className="border-pk-gray-border bg-white shadow-none">
-              <CardHeader>
-                <CardTitle className="text-base font-bold">
-                  Recent HomeworkAI Sessions <span>&#x270F;&#xFE0F;</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto -mx-4 sm:mx-0">
-                  <table className="w-full text-sm min-w-[640px]">
-                    <thead>
-                      <tr className="border-b border-pk-gray-border text-left">
-                        <th className="pb-2.5 px-3 text-xs font-semibold uppercase tracking-wider text-pk-text-secondary">
-                          Date
-                        </th>
-                        <th className="pb-2.5 px-3 text-xs font-semibold uppercase tracking-wider text-pk-text-secondary">
-                          Subject
-                        </th>
-                        <th className="pb-2.5 px-3 text-xs font-semibold uppercase tracking-wider text-pk-text-secondary">
-                          Topic
-                        </th>
-                        <th className="pb-2.5 px-3 text-xs font-semibold uppercase tracking-wider text-pk-text-secondary">
-                          Time Spent
-                        </th>
-                        <th className="pb-2.5 px-3 text-xs font-semibold uppercase tracking-wider text-pk-text-secondary">
-                          Help Level
-                        </th>
-                        <th className="pb-2.5 px-3 text-xs font-semibold uppercase tracking-wider text-pk-text-secondary">
-                          MCQ Score
-                        </th>
-                        <th className="pb-2.5 px-3 text-xs font-semibold uppercase tracking-wider text-pk-text-secondary">
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sessions.map((s, i) => (
-                        <tr
-                          key={i}
-                          className={`border-b border-pk-gray-border last:border-b-0 ${
-                            s.highlight ? "border-l-[3px] border-l-red-500 bg-red-50/50" : ""
-                          }`}
-                        >
-                          <td className="py-2.5 px-3 text-pk-text-secondary whitespace-nowrap">
-                            {s.date}
-                          </td>
-                          <td className="py-2.5 px-3 font-medium text-pk-text">{s.subject}</td>
-                          <td className="py-2.5 px-3 text-pk-text-secondary">{s.topic}</td>
-                          <td className="py-2.5 px-3 text-pk-text-secondary tabular-nums">{s.time}</td>
-                          <td className="py-2.5 px-3">
-                            <span
-                              className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${getLevelBadgeColor(
-                                s.level
-                              )}`}
-                            >
-                              Level {s.level}
-                            </span>
-                          </td>
-                          <td className="py-2.5 px-3 font-medium text-pk-text tabular-nums">{s.mcq}</td>
-                          <td className="py-2.5 px-3">
-                            <button className="text-xs font-medium text-pk-blue hover:underline">
-                              View
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+          {/* Choose Your Learning Tool */}
+          <div>
+            <h2 className="font-bold text-xl text-[#111] mb-4">Choose Your Learning Tool</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Study Buddy */}
+              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
+                <div className="w-12 h-12 rounded-xl bg-[#2563eb]/8 flex items-center justify-center">
+                  <BookOpen className="w-7 h-7 text-[#2563eb]" />
                 </div>
-              </CardContent>
-            </Card>
+                <h3 className="font-bold text-xl text-[#111]">Study Buddy</h3>
+                <p className="text-[#6b7280] text-sm">Get guided help with homework</p>
+                <Link href="#" className="text-[#2563eb] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                  Get started <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              {/* Concept Master */}
+              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
+                <div className="w-12 h-12 rounded-xl bg-[#7c3aed]/8 flex items-center justify-center">
+                  <Brain className="w-7 h-7 text-[#7c3aed]" />
+                </div>
+                <h3 className="font-bold text-xl text-[#111]">Concept Master</h3>
+                <p className="text-[#6b7280] text-sm">Learn new topics with AI tutor</p>
+                <Link href="#" className="text-[#7c3aed] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                  Get started <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              {/* Practice Arena */}
+              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
+                <div className="w-12 h-12 rounded-xl bg-[#f59e0b]/8 flex items-center justify-center">
+                  <Trophy className="w-7 h-7 text-[#f59e0b]" />
+                </div>
+                <h3 className="font-bold text-xl text-[#111]">Practice Arena</h3>
+                <p className="text-[#6b7280] text-sm">Practice with various question types</p>
+                <Link href="#" className="text-[#f59e0b] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                  Get started <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              {/* Study Hub */}
+              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
+                <div className="w-12 h-12 rounded-xl bg-[#10b981]/8 flex items-center justify-center">
+                  <ClipboardList className="w-7 h-7 text-[#10b981]" />
+                </div>
+                <h3 className="font-bold text-xl text-[#111]">Study Hub</h3>
+                <p className="text-[#6b7280] text-sm">Notes, PDFs &amp; previous year papers</p>
+                <Link href="#" className="text-[#10b981] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                  Get started <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
           </div>
         </main>
 
-        {/* BOTTOM ALERT BAR */}
-        <div className="sticky bottom-0 z-30 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-amber-300 bg-amber-50 px-4 py-3 lg:px-6">
-          <div className="flex items-start gap-2.5">
-            <AlertTriangle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
-            <p className="text-sm text-amber-900 leading-snug">
-              Arjun needed maximum AI help with History for 3 sessions in a row — his MCQ score was 1/4. Tap to assign a LearnBot session now.
-            </p>
+        {/* RIGHT SIDEBAR */}
+        <aside className="w-full lg:w-[360px] flex-shrink-0 bg-white border-t-2 lg:border-t-0 lg:border-l-2 border-[#f3f4f6] pt-6 pb-8 pl-6 pr-6 lg:pl-[26px] lg:pr-[39px] space-y-6">
+          {/* Recent Activity */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Clock className="w-5 h-5 text-[#6b7280]" />
+              <h3 className="font-bold text-base text-[#111]">Recent Activity</h3>
+            </div>
+            <div className="flex flex-col gap-3">
+              {/* Activity 1 - Blue */}
+              <div className="bg-[#eff6ff] border border-[#dbeafe] rounded-xl p-3.5 flex items-start gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#2563eb] flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#111]">Science homework</p>
+                  <p className="text-[#9ca3af] text-xs mt-0.5">Completed 2 hours ago</p>
+                </div>
+              </div>
+
+              {/* Activity 2 - Purple */}
+              <div className="bg-[#faf5ff] border border-[#f3e8ff] rounded-xl p-3.5 flex items-start gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#7c3aed] flex items-center justify-center flex-shrink-0">
+                  <Brain className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#111]">Mastered: Quadratic Equations</p>
+                  <p className="text-[#9ca3af] text-xs mt-0.5">Yesterday at 4:30 PM</p>
+                </div>
+              </div>
+
+              {/* Activity 3 - Amber */}
+              <div className="bg-[#fffbeb] border border-[#fef3c6] rounded-xl p-3.5 flex items-start gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#f59e0b] flex items-center justify-center flex-shrink-0">
+                  <Trophy className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#111]">Earned &quot;Quick Learner&quot; badge</p>
+                  <p className="text-[#9ca3af] text-xs mt-0.5">2 days ago</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <button className="shrink-0 rounded-lg bg-[#6366f1] px-4 py-2 text-sm font-semibold text-white hover:bg-[#5558e6] transition-colors whitespace-nowrap">
-            Assign LearnBot Session &rarr;
-          </button>
-        </div>
+
+          {/* Upcoming Exams */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Calendar className="w-5 h-5 text-[#6b7280]" />
+              <h3 className="font-bold text-base text-[#111]">Upcoming Exams</h3>
+            </div>
+
+            {/* Red gradient card */}
+            <div className="bg-gradient-to-r from-[#fef2f2] to-[#fff7ed] border border-[#ffc9c9] rounded-xl p-4 mb-3">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="w-14 h-14 rounded-xl bg-[#ffe2e2] flex items-center justify-center flex-shrink-0">
+                  <AlarmClock className="w-7 h-7 text-[#e7000b]" />
+                </div>
+                <div>
+                  <p className="font-bold text-base text-[#111]">Science Mid-term</p>
+                  <p className="text-[#e7000b] text-sm font-medium mt-0.5">&#x23F0; in 5 days</p>
+                  <p className="text-[#9ca3af] text-xs mt-0.5">Chapters 1-4 &bull; 60 minutes</p>
+                </div>
+              </div>
+              <button className="w-full bg-[#e7000b] text-white font-semibold text-sm py-2.5 rounded-[14px] hover:bg-[#cc0009] transition-colors">
+                Start Practice Now
+              </button>
+            </div>
+
+            {/* Small blue card */}
+            <div className="bg-[#eff6ff] border border-[#dbeafe] rounded-xl p-3.5">
+              <div className="flex items-center justify-between">
+                <p className="font-bold text-sm text-[#111]">Maths Quiz</p>
+                <p className="text-[#2563eb] text-sm font-medium">in 12 days</p>
+              </div>
+              <p className="text-[#9ca3af] text-xs mt-1">Algebra &amp; Geometry</p>
+            </div>
+          </div>
+
+          {/* Daily Challenge */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Star className="w-5 h-5 text-[#6b7280]" />
+              <h3 className="font-bold text-base text-[#111]">Daily Challenge</h3>
+            </div>
+
+            <div className="bg-gradient-to-b from-[#fefce8] to-[#fffbeb] border border-[#ffdf20] rounded-xl p-5 flex flex-col items-center">
+              <p className="text-[#f59e0b] font-bold text-4xl">+100 XP</p>
+              <p className="text-[#6b7280] text-sm mt-1">Complete 3 homework questions</p>
+
+              {/* Progress inner card */}
+              <div className="bg-white rounded-xl p-4 w-full mt-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[#111] text-sm">Your Progress</span>
+                  <span className="text-[#111] font-bold text-sm">{challengeProgress}/{challengeTotal}</span>
+                </div>
+                <div className="w-full h-3 bg-[#f3f4f6] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#f97316] to-[#ef4444] rounded-full transition-all duration-500"
+                    style={{ width: `${(challengeProgress / challengeTotal) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              <p className="text-[#f97316] text-sm mt-3">&#x2728; Just 1 more to go!</p>
+              <Link href="#" className="text-[#f59e0b] text-sm font-medium underline mt-2 hover:text-[#d97706] transition-colors">
+                View all challenges &rarr;
+              </Link>
+            </div>
+          </div>
+
+          {/* Learning Tip */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Lightbulb className="w-5 h-5 text-[#6b7280]" />
+              <h3 className="font-bold text-base text-[#111]">Learning Tip</h3>
+            </div>
+
+            <div className="bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] border border-[#b9f8cf] rounded-xl p-5">
+              <p className="text-[#4b5563] text-sm leading-relaxed">
+                &ldquo;Try solving problems on your own first before using AI help. It builds stronger understanding!&rdquo;
+              </p>
+              <div className="flex items-center gap-2 mt-4">
+                <div className="w-6 h-6 rounded-full bg-[#22c55e] flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
+                <span className="text-[#008236] font-bold text-xs">AI Learning Coach</span>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );
