@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -46,52 +47,12 @@ const navItems = [
   { icon: Settings, label: "Settings", active: false },
 ];
 
-const statCards = [
-  {
-    label: "THIS WEEK'S STUDY TIME",
-    value: "3.2 hrs",
-    change: "+18% vs last week",
-    trend: "up" as const,
-    icon: Clock,
-    color: "text-pk-blue",
-    bgColor: "bg-pk-blue/10",
-  },
-  {
-    label: "AVERAGE MCQ SCORE",
-    value: "76%",
-    change: "Stable this week",
-    trend: "neutral" as const,
-    icon: Target,
-    color: "text-pk-purple",
-    bgColor: "bg-pk-purple/10",
-  },
-  {
-    label: "AI DEPENDENCY SCORE",
-    value: "32%",
-    change: "Improving — lower is better",
-    trend: "down" as const,
-    icon: Brain,
-    color: "text-pk-green",
-    bgColor: "bg-pk-green/10",
-  },
-  {
-    label: "STUDY STREAK",
-    value: "12 days",
-    emoji: true,
-    change: "Best streak: 18 days",
-    trend: "neutral" as const,
-    icon: Flame,
-    color: "text-pk-orange",
-    bgColor: "bg-pk-orange/10",
-  },
-];
-
 const subjects = [
   { name: "Science", score: 82, change: "+6%", color: "bg-pk-green" },
   { name: "Mathematics", score: 65, change: "+3%", color: "bg-pk-orange" },
   { name: "English", score: 90, change: "+2%", color: "bg-pk-blue" },
-  { name: "History", score: 85, change: "+8%", color: "bg-pk-purple" },
-  { name: "Biology", score: 68, change: "-2%", color: "bg-pk-yellow" },
+  { name: "History", score: 85, change: "+8%", color: "bg-pk-green" },
+  { name: "Biology", score: 68, change: "-2%", color: "bg-yellow-500" },
 ];
 
 const activities = [
@@ -101,24 +62,24 @@ const activities = [
     time: "Today, 4:30 PM",
   },
   {
-    color: "bg-pk-blue",
-    text: "LearnBot session: Revised Photosynthesis for 18 min",
-    time: "Today, 3:15 PM",
-  },
-  {
-    color: "bg-pk-purple",
-    text: "Exam Mode: Scored 78% in Math mock test",
-    time: "Today, 1:00 PM",
-  },
-  {
     color: "bg-pk-orange",
-    text: "HomeworkAI flagged: English essay needs revision",
-    time: "Yesterday, 8:45 PM",
+    text: "12-day study streak achieved — longest this month",
+    time: "Today, 3:00 PM",
   },
   {
-    color: "bg-pk-green",
-    text: "Completed History Ch.3 — 88% score, zero AI dependency",
-    time: "Yesterday, 5:20 PM",
+    color: "bg-red-500",
+    text: "Quadratic Equations — understanding dropped to 52%. Revision recommended",
+    time: "Yesterday",
+  },
+  {
+    color: "bg-pk-blue",
+    text: "Used LearnBot to create revision notes for French Revolution",
+    time: "Yesterday",
+  },
+  {
+    color: "bg-pk-blue",
+    text: "HomeworkAI session: History worksheet — Level 3 help used",
+    time: "2 days ago",
   },
 ];
 
@@ -138,7 +99,7 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-pk-gray-light overflow-hidden">
+    <div className="flex h-screen bg-[#f5f5f0] overflow-hidden">
       {/* ── Mobile overlay ── */}
       {sidebarOpen && (
         <div
@@ -150,18 +111,18 @@ export default function DashboardPage() {
       {/* ── Sidebar ── */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 w-64 flex flex-col bg-pk-navy text-white
+          fixed inset-y-0 left-0 z-50 w-[200px] flex flex-col bg-[#1a1a2e] text-white
           transform transition-transform duration-200 ease-in-out
           lg:relative lg:translate-x-0
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 px-5 pt-6 pb-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pk-orange font-bold text-sm text-white">
-            PK
-          </div>
-          <span className="text-lg font-bold tracking-tight">PromptKids</span>
+        <div className="flex items-center gap-2.5 px-5 pt-5 pb-5">
+          <span className="font-mono text-sm font-bold text-pk-blue bg-pk-blue/15 px-1.5 py-0.5 rounded">{`>_`}</span>
+          <span className="text-[15px] font-bold tracking-tight">
+            Prompt <span className="text-pk-orange">Kids</span>
+          </span>
           <button
             className="ml-auto lg:hidden text-white/60 hover:text-white"
             onClick={() => setSidebarOpen(false)}
@@ -171,17 +132,12 @@ export default function DashboardPage() {
         </div>
 
         {/* Student selector */}
-        <button className="mx-4 mb-4 flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2.5 text-left hover:bg-white/10 transition-colors">
-          <Avatar className="h-9 w-9 bg-pk-blue text-white">
-            <AvatarFallback className="bg-pk-blue text-white text-sm font-semibold">
-              AS
-            </AvatarFallback>
-          </Avatar>
+        <button className="mx-3 mb-3 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-left hover:bg-white/5 transition-colors">
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold truncate">Arjun Sharma</p>
-            <p className="text-xs text-white/50">Class 9</p>
+            <p className="text-[13px] font-semibold truncate">Arjun Sharma</p>
+            <p className="text-[11px] text-white/40">Class 9</p>
           </div>
-          <ChevronDown className="h-4 w-4 text-white/40 shrink-0" />
+          <ChevronDown className="h-4 w-4 text-white/30 shrink-0" />
         </button>
 
         {/* Nav */}
@@ -191,33 +147,33 @@ export default function DashboardPage() {
               key={item.label}
               href="#"
               className={`
-                flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
+                flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-medium transition-colors
                 ${
                   item.active
                     ? "bg-pk-orange text-white"
-                    : "text-white/60 hover:bg-white/5 hover:text-white"
+                    : "text-white/50 hover:bg-white/5 hover:text-white/80"
                 }
               `}
             >
-              <item.icon className="h-[18px] w-[18px] shrink-0" />
+              <item.icon className="h-[17px] w-[17px] shrink-0" />
               {item.label}
             </a>
           ))}
         </nav>
 
         {/* Bottom user */}
-        <div className="border-t border-white/10 p-4">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-9 w-9 bg-pk-purple text-white">
-              <AvatarFallback className="bg-pk-purple text-white text-sm font-semibold">
+        <div className="border-t border-white/[0.06] px-3 py-4">
+          <div className="flex items-center gap-2.5">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback className="bg-pk-blue text-white text-[11px] font-semibold">
                 PS
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold truncate">Priya Sharma</p>
-              <p className="text-xs text-white/50">Parent Account</p>
+              <p className="text-[13px] font-semibold truncate">Priya Sharma</p>
+              <p className="text-[11px] text-white/40">Parent Account</p>
             </div>
-            <button className="text-white/40 hover:text-white transition-colors">
+            <button className="text-white/30 hover:text-white transition-colors">
               <LogOut className="h-4 w-4" />
             </button>
           </div>
@@ -227,7 +183,7 @@ export default function DashboardPage() {
       {/* ── Main area ── */}
       <div className="flex flex-1 flex-col min-w-0">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-pk-gray-border bg-white px-4 py-3 sm:px-6">
+        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-pk-gray-border bg-white px-5 py-3 sm:px-6">
           <button
             className="lg:hidden text-pk-text hover:text-pk-navy"
             onClick={() => setSidebarOpen(true)}
@@ -236,30 +192,27 @@ export default function DashboardPage() {
           </button>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg font-bold text-pk-text sm:text-xl">Dashboard</h1>
-            <p className="text-xs text-pk-text-secondary hidden sm:block">
+            <h1 className="text-xl font-bold text-pk-text">Dashboard</h1>
+            <p className="text-[11px] text-pk-text-secondary/60 hidden sm:block">
               Last updated 2 minutes ago
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Exam reminder */}
-            <Badge className="hidden sm:inline-flex bg-pk-orange/10 text-pk-orange border-pk-orange/20 text-xs font-medium">
-              <GraduationCap className="h-3 w-3 mr-1" />
+            <Badge className="hidden sm:inline-flex bg-transparent text-pk-text-secondary border border-pk-gray-border text-[11px] font-medium gap-1.5 px-3 py-1 rounded-full">
+              <Clock className="h-3 w-3" />
               Science exam in 6 days
             </Badge>
 
-            {/* Notification bell */}
-            <button className="relative p-2 rounded-lg hover:bg-pk-gray-light transition-colors">
+            <button className="relative p-2 rounded-full hover:bg-pk-gray-light transition-colors">
               <Bell className="h-5 w-5 text-pk-text-secondary" />
-              <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pk-orange text-[10px] font-bold text-white">
+              <span className="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-pk-orange text-[9px] font-bold text-white">
                 3
               </span>
             </button>
 
-            {/* User avatar */}
             <Avatar className="h-8 w-8 hidden sm:flex">
-              <AvatarFallback className="bg-pk-purple text-white text-xs font-semibold">
+              <AvatarFallback className="bg-pk-purple text-white text-[11px] font-semibold">
                 PS
               </AvatarFallback>
             </Avatar>
@@ -267,125 +220,139 @@ export default function DashboardPage() {
         </header>
 
         {/* Scrollable content */}
-        <main className="flex-1 overflow-y-auto pb-28">
-          <div className="mx-auto max-w-7xl p-4 sm:p-6 space-y-6">
+        <main className="flex-1 overflow-y-auto pb-20">
+          <div className="mx-auto max-w-[1200px] p-5 sm:p-6 space-y-5">
+
             {/* ── Stat cards ── */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {statCards.map((stat) => (
-                <Card key={stat.label} className="border-0 shadow-sm">
-                  <CardContent className="pt-0">
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-semibold tracking-wider text-pk-text-secondary uppercase">
-                          {stat.label}
-                        </p>
-                        <p className="text-2xl font-bold text-pk-text tabular-nums">
-                          {stat.value}
-                          {stat.emoji && (
-                            <span className="ml-1 text-xl" role="img" aria-label="fire">
-                              🔥
-                            </span>
-                          )}
-                        </p>
-                        <div className="flex items-center gap-1">
-                          {stat.trend === "up" && (
-                            <TrendingUp className="h-3 w-3 text-pk-green" />
-                          )}
-                          {stat.trend === "down" && (
-                            <TrendingDown className="h-3 w-3 text-pk-green" />
-                          )}
-                          {stat.trend === "neutral" && (
-                            <Minus className="h-3 w-3 text-pk-text-secondary" />
-                          )}
-                          <span
-                            className={`text-xs ${
-                              stat.trend === "up" || stat.trend === "down"
-                                ? "text-pk-green"
-                                : "text-pk-text-secondary"
-                            }`}
-                          >
-                            {stat.change}
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        className={`flex h-10 w-10 items-center justify-center rounded-xl ${stat.bgColor}`}
-                      >
-                        <stat.icon className={`h-5 w-5 ${stat.color}`} />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+              {/* Study Time */}
+              <Card className="border border-pk-gray-border shadow-none bg-white">
+                <CardContent className="pt-5 pb-5 px-5">
+                  <p className="text-[10px] font-semibold tracking-widest text-pk-text-secondary/60 uppercase mb-2">
+                    THIS WEEK&apos;S STUDY TIME
+                  </p>
+                  <p className="text-[28px] font-bold text-pk-text leading-none mb-2">
+                    3.2 <span className="text-base font-semibold text-pk-text-secondary">hrs</span>
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <TrendingUp className="h-3 w-3 text-pk-green" />
+                    <span className="text-[11px] text-pk-green font-medium">+18% vs last week</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* MCQ Score */}
+              <Card className="border border-pk-gray-border shadow-none bg-white">
+                <CardContent className="pt-5 pb-5 px-5">
+                  <p className="text-[10px] font-semibold tracking-widest text-pk-text-secondary/60 uppercase mb-2">
+                    AVERAGE MCQ SCORE
+                  </p>
+                  <p className="text-[28px] font-bold text-pk-text leading-none mb-2">
+                    76<span className="text-base font-semibold text-pk-text-secondary">%</span>
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <Minus className="h-3 w-3 text-pk-text-secondary/50" />
+                    <span className="text-[11px] text-pk-text-secondary/60">Stable this week</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* AI Dependency */}
+              <Card className="border border-pk-gray-border shadow-none bg-white">
+                <CardContent className="pt-5 pb-5 px-5">
+                  <p className="text-[10px] font-semibold tracking-widest text-pk-text-secondary/60 uppercase mb-2">
+                    AI DEPENDENCY SCORE
+                  </p>
+                  <p className="text-[28px] font-bold text-pk-text leading-none mb-2">
+                    32<span className="text-base font-semibold text-pk-text-secondary">%</span>
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <TrendingDown className="h-3 w-3 text-pk-green" />
+                    <span className="text-[11px] text-pk-green font-medium">Improving — lower is better</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Study Streak */}
+              <Card className="border border-pk-orange/20 shadow-none bg-gradient-to-br from-pk-orange/[0.04] to-yellow-50">
+                <CardContent className="pt-5 pb-5 px-5">
+                  <p className="text-[10px] font-semibold tracking-widest text-pk-text-secondary/60 uppercase mb-2">
+                    STUDY STREAK
+                  </p>
+                  <p className="text-[28px] font-bold text-pk-text leading-none mb-2">
+                    12 <span className="text-base font-semibold text-pk-text-secondary">days</span>
+                    <span className="ml-1.5 text-xl">🔥</span>
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <Minus className="h-3 w-3 text-pk-text-secondary/50" />
+                    <span className="text-[11px] text-pk-text-secondary/60">Best streak: 18 days</span>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* ── Subject Understanding + Today's Activity ── */}
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
               {/* Subject Understanding */}
-              <Card className="border-0 shadow-sm lg:col-span-3">
-                <CardHeader>
-                  <CardTitle className="text-base font-bold text-pk-text">
-                    Subject Understanding
+              <Card className="border border-pk-gray-border shadow-none bg-white lg:col-span-3">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-[15px] font-bold text-pk-text flex items-center gap-2">
+                    Subject Understanding <span className="text-base">🧠</span>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-5">
+                <CardContent className="space-y-4 pt-2">
                   {subjects.map((subject) => (
-                    <div key={subject.name} className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium text-pk-text">
-                          {subject.name}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-pk-text tabular-nums">
-                            {subject.score}%
-                          </span>
-                          <span
-                            className={`text-xs font-medium tabular-nums ${
-                              subject.change.startsWith("+")
-                                ? "text-pk-green"
-                                : "text-red-500"
-                            }`}
-                          >
-                            ({subject.change})
-                          </span>
-                        </div>
-                      </div>
-                      <div className="h-2.5 w-full rounded-full bg-gray-100 overflow-hidden">
+                    <div key={subject.name} className="flex items-center gap-4">
+                      <span className="text-[13px] font-medium text-pk-text w-24 shrink-0">
+                        {subject.name}
+                      </span>
+                      <div className="flex-1 h-3 rounded-full bg-gray-100 overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-500 ${subject.color}`}
+                          className={`h-full rounded-full ${subject.color}`}
                           style={{ width: `${subject.score}%` }}
                         />
                       </div>
+                      <span className="text-[13px] font-bold text-pk-text tabular-nums w-9 text-right">
+                        {subject.score}%
+                      </span>
+                      <span
+                        className={`text-[11px] font-semibold tabular-nums w-8 ${
+                          subject.change.startsWith("+")
+                            ? "text-pk-green"
+                            : "text-red-500"
+                        }`}
+                      >
+                        {subject.change}
+                      </span>
                     </div>
                   ))}
                 </CardContent>
               </Card>
 
               {/* Today's Activity */}
-              <Card className="border-0 shadow-sm lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="text-base font-bold text-pk-text">
-                    Today&apos;s Activity
+              <Card className="border border-pk-gray-border shadow-none bg-white lg:col-span-2">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-[15px] font-bold text-pk-text flex items-center gap-2">
+                    Today&apos;s Activity <Clock className="h-4 w-4 text-pk-text-secondary/40" />
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
+                <CardContent className="pt-2">
+                  <div className="space-y-0">
                     {activities.map((activity, i) => (
-                      <div key={i} className="flex gap-3">
-                        {/* Timeline dot + line */}
-                        <div className="flex flex-col items-center">
+                      <div key={i} className="flex gap-3 py-2.5">
+                        <div className="flex flex-col items-center pt-1.5">
                           <div
-                            className={`mt-1.5 h-2.5 w-2.5 rounded-full ${activity.color} shrink-0`}
+                            className={`h-2 w-2 rounded-full ${activity.color} shrink-0`}
                           />
                           {i < activities.length - 1 && (
-                            <div className="w-px flex-1 bg-pk-gray-border mt-1" />
+                            <div className="w-px flex-1 bg-pk-gray-border/60 mt-1.5" />
                           )}
                         </div>
-                        <div className="pb-4 min-w-0">
-                          <p className="text-sm text-pk-text leading-snug">
+                        <div className="min-w-0 pb-1">
+                          <p className="text-[13px] text-pk-text leading-snug">
                             {activity.text}
                           </p>
-                          <p className="mt-1 text-xs text-pk-text-secondary">
+                          <p className="mt-0.5 text-[11px] text-pk-text-secondary/50">
                             {activity.time}
                           </p>
                         </div>
@@ -396,118 +363,98 @@ export default function DashboardPage() {
               </Card>
             </div>
 
-            {/* ── Homework Performance chart ── */}
-            <Card className="border-0 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-base font-bold text-pk-text">
-                  Homework Performance — Last 7 Days
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-end gap-2 sm:gap-4">
-                  {/* Y-axis labels */}
-                  <div className="flex flex-col justify-between text-xs text-pk-text-secondary tabular-nums h-48 pb-7 pr-1">
-                    <span>100</span>
-                    <span>75</span>
-                    <span>50</span>
-                  </div>
+            {/* ── Homework Performance + WhatsApp ── */}
+            <div className="relative">
+              <Card className="border border-pk-gray-border shadow-none bg-white">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-[15px] font-bold text-pk-text flex items-center gap-2">
+                    Homework Performance — Last 7 Days <span className="text-base">📊</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-end gap-2 sm:gap-3">
+                    {/* Y-axis labels */}
+                    <div className="flex flex-col justify-between text-[11px] text-pk-text-secondary/50 tabular-nums h-44 pb-7 pr-1 w-8 text-right">
+                      <span>100</span>
+                      <span>75</span>
+                      <span>50</span>
+                    </div>
 
-                  {/* Bars */}
-                  <div className="flex flex-1 items-end justify-between gap-1 sm:gap-3">
-                    {weeklyScores.map((d) => {
-                      const height = ((d.score - 40) / 60) * 100;
-                      const barColor =
-                        d.score >= 85
-                          ? "bg-pk-green"
-                          : d.score >= 70
-                          ? "bg-pk-blue"
-                          : "bg-pk-orange";
-                      return (
-                        <div
-                          key={d.day}
-                          className="flex flex-1 max-w-20 flex-col items-center gap-1.5"
-                        >
-                          <span className="text-xs font-semibold text-pk-text tabular-nums">
-                            {d.score}%
-                          </span>
-                          <div className="w-full rounded-t-md bg-gray-100 relative" style={{ height: "180px" }}>
-                            <div
-                              className={`absolute bottom-0 w-full rounded-t-md ${barColor} transition-all duration-500`}
-                              style={{ height: `${height}%` }}
-                            />
+                    {/* Bars */}
+                    <div className="flex flex-1 items-end justify-between gap-1 sm:gap-2 relative">
+                      {/* Grid lines */}
+                      <div className="absolute inset-0 bottom-7 flex flex-col justify-between pointer-events-none">
+                        <div className="border-b border-dashed border-pk-gray-border/40" />
+                        <div className="border-b border-dashed border-pk-gray-border/40" />
+                        <div className="border-b border-dashed border-pk-gray-border/40" />
+                      </div>
+
+                      {weeklyScores.map((d) => {
+                        const height = ((d.score - 40) / 60) * 100;
+                        return (
+                          <div
+                            key={d.day}
+                            className="flex flex-1 max-w-24 flex-col items-center gap-1.5 relative z-10"
+                          >
+                            <span className="text-[11px] font-semibold text-pk-text-secondary tabular-nums">
+                              {d.score}%
+                            </span>
+                            <div className="w-full relative" style={{ height: "150px" }}>
+                              <div
+                                className="absolute bottom-0 w-full rounded-t-md bg-pk-blue transition-all duration-500"
+                                style={{ height: `${height}%` }}
+                              />
+                            </div>
+                            <span className="text-[11px] font-medium text-pk-text-secondary/50">
+                              {d.day}
+                            </span>
                           </div>
-                          <span className="text-xs font-medium text-pk-text-secondary">
-                            {d.day}
-                          </span>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* ── WhatsApp notification mockup ── */}
-            <div className="flex justify-end">
-              <div className="w-full max-w-sm">
-                <p className="mb-2 text-center text-xs font-medium text-pk-text-secondary">
+              {/* WhatsApp notification — floating */}
+              <div className="absolute -bottom-4 right-0 w-[300px] hidden xl:block z-20">
+                <p className="mb-2 text-right text-[11px] font-medium text-pk-text-secondary/50 pr-1">
                   Parents receive this every evening on WhatsApp
                 </p>
-                <Card className="border-0 shadow-lg bg-white">
-                  <CardContent className="pt-0">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#25D366]">
-                        <MessageCircle className="h-4 w-4 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-pk-text">
-                          PromptKids Bot
-                        </p>
-                        <p className="text-[10px] text-pk-text-secondary">
-                          Today, 7:00 PM
-                        </p>
-                      </div>
+                <div className="rounded-2xl overflow-hidden shadow-xl border border-pk-gray-border">
+                  {/* Header */}
+                  <div className="bg-[#075e54] px-4 py-3 flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-pk-green">
+                      <MessageCircle className="h-4 w-4 text-white" />
                     </div>
-                    <div className="rounded-xl bg-[#dcf8c6] p-3 text-sm leading-relaxed text-pk-text">
-                      <p className="font-semibold mb-1">
-                        Daily Report — Arjun Sharma
-                      </p>
-                      <p className="text-xs leading-relaxed text-pk-text/80">
-                        Study time: 3.2 hrs (+18%)
-                        <br />
-                        Homework: Science Ch.1 done (92%)
-                        <br />
-                        AI dependency: 32% (improving!)
-                        <br />
-                        Streak: 12 days 🔥
-                        <br />
-                        <br />
-                        <span className="font-medium text-pk-text/90">
-                          Needs help: Mathematics — Ch.4 Quadratic Equations
-                        </span>
+                    <div>
+                      <p className="text-[13px] font-semibold text-white">PromptKids Bot</p>
+                      <p className="text-[10px] text-white/60">6:00 PM</p>
+                    </div>
+                  </div>
+                  {/* Message */}
+                  <div className="bg-[#e5ddd5] p-3">
+                    <div className="bg-white rounded-xl p-3 shadow-sm">
+                      <p className="text-[13px] font-bold text-pk-text mb-1.5">Daily Student Report</p>
+                      <p className="text-[11px] leading-relaxed text-pk-text-secondary">
+                        Arjun completed 2 homework assignments today (avg score: 85%). AI used 4 times — mostly for doubt solving. Needs attention: Quadratic Equations — <Link href="#" className="text-pk-blue font-semibold">View full report →</Link>
                       </p>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </main>
 
         {/* ── Bottom alert bar ── */}
-        <div className="sticky bottom-0 z-30 border-t border-pk-orange/20 bg-pk-orange/5 backdrop-blur-sm">
-          <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pk-orange/10 shrink-0">
-              <AlertTriangle className="h-4 w-4 text-pk-orange" />
-            </div>
-            <p className="flex-1 text-sm text-pk-text min-w-0">
-              <span className="font-semibold">Arjun needs help</span>{" "}
-              <span className="hidden sm:inline text-pk-text-secondary">
-                — struggling with Mathematics Ch.4: Quadratic Equations. AI
-                dependency is rising for this topic.
-              </span>
+        <div className="sticky bottom-0 z-30 border-t border-amber-200 bg-amber-50">
+          <div className="mx-auto flex max-w-[1200px] items-center gap-3 px-5 py-2.5 sm:px-6">
+            <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
+            <p className="flex-1 text-[13px] text-pk-text min-w-0">
+              Arjun needed maximum AI help with History for 3 sessions in a row — his MCQ score was 1/4. Tap to assign a LearnBot session now.
             </p>
-            <button className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-pk-orange px-4 py-2 text-sm font-semibold text-white hover:bg-pk-orange-dark transition-colors">
+            <button className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-pk-blue px-5 py-2.5 text-[13px] font-semibold text-white hover:bg-pk-blue/90 transition-colors">
               Assign LearnBot Session
               <ArrowRight className="h-4 w-4" />
             </button>
