@@ -99,8 +99,9 @@ export default function Hero() {
             <span className="block">Give&nbsp;Your&nbsp;Child a&nbsp;Head&nbsp;Start.</span>
             <span className="block">
               Teach&nbsp;Them to{" "}
-              <span className="text-pk-orange inline-block min-w-[3ch]">
-                <span ref={typingRef} />
+              <span className="text-pk-orange inline-block relative">
+                <span className="invisible" aria-hidden="true">Build the Future.</span>
+                <span ref={typingRef} className="absolute left-0 top-0" />
                 <span className="inline-block w-[3px] h-[0.85em] bg-pk-orange ml-0.5 align-middle animate-[blink_0.8s_step-end_infinite]" />
               </span>
             </span>
