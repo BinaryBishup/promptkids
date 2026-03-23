@@ -304,40 +304,37 @@ export default function StudyHubPage() {
             </span>
           </div>
 
-          {/* Assignment Question — Image + Question unified */}
-          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl overflow-hidden mb-8 sh-fade sh-d3">
-            {/* Image */}
-            <div className="h-[280px] bg-gradient-to-br from-[#1e3a5f] via-[#2d5f8a] to-[#1e3a5f] relative overflow-hidden">
+          {/* Assignment Question */}
+          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 mb-8 sh-fade sh-d3">
+            <h2 className="flex items-center gap-2.5 text-[20px] text-[#0f172a] mb-6" style={dFont}>
+              <FileText size={22} className={selectedSubject.textColor} />
+              Assignment Question
+            </h2>
+
+            <div className="border-l-4 border-amber-400 bg-amber-50/60 rounded-xl p-6 mb-6">
+              <span className="flex items-center gap-2 text-[15px] text-amber-600 mb-3" style={dFont}>
+                <Zap size={18} /> Question
+              </span>
+              <p className="text-[16px] text-[#374151] leading-relaxed mb-4">
+                A ray of light passes from air into glass at an angle of incidence of 30&deg;. If the refractive index of glass is 1.5, calculate the angle of refraction using Snell&apos;s Law.
+              </p>
+              <p className="text-[15px] text-[#374151]" style={dFont}>
+                Requirements: Show your working, include the formula, and explain each step.
+              </p>
+            </div>
+
+            {/* Reference diagram */}
+            <div className="h-[240px] bg-gradient-to-br from-[#1e3a5f] via-[#2d5f8a] to-[#1e3a5f] rounded-xl relative overflow-hidden">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-1 h-full bg-gradient-to-b from-transparent via-white/60 to-transparent absolute left-1/2 -translate-x-1/2" />
                 <div className="absolute w-[300px] h-[300px] bg-blue-400/10 rounded-full blur-3xl" />
                 <div className="absolute top-1/2 left-1/3 w-48 h-0.5 bg-yellow-300/40 rotate-[25deg]" />
                 <div className="absolute top-1/2 right-1/3 w-48 h-0.5 bg-cyan-300/40 -rotate-[15deg]" />
               </div>
-              <div className="absolute bottom-4 left-0 right-0 text-center">
-                <span className="text-[13px] text-white/60 bg-black/30 px-4 py-1.5 rounded-full">
-                  Figure: Light ray passing through different mediums
+              <div className="absolute bottom-3 left-0 right-0 text-center">
+                <span className="text-[12px] text-white/60 bg-black/30 px-3 py-1 rounded-full">
+                  Diagram: Light passing through different mediums
                 </span>
-              </div>
-            </div>
-
-            {/* Question content */}
-            <div className="p-8">
-              <h2 className="flex items-center gap-2.5 text-[20px] text-[#0f172a] mb-6" style={dFont}>
-                <FileText size={22} className={selectedSubject.textColor} />
-                Assignment Question
-              </h2>
-
-              <div className="border-l-4 border-amber-400 bg-amber-50/60 rounded-xl p-6">
-                <span className="flex items-center gap-2 text-[15px] text-amber-600 mb-3" style={dFont}>
-                  <Zap size={18} /> Question
-                </span>
-                <p className="text-[16px] text-[#374151] leading-relaxed mb-4">
-                  A ray of light passes from air into glass at an angle of incidence of 30&deg;. If the refractive index of glass is 1.5, calculate the angle of refraction using Snell&apos;s Law.
-                </p>
-                <p className="text-[15px] text-[#374151]" style={dFont}>
-                  Requirements: Show your working, include the formula, and explain each step.
-                </p>
               </div>
             </div>
           </div>
