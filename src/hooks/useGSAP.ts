@@ -6,16 +6,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Prevent ScrollTrigger from auto-refreshing on resize/content changes
-// which causes scroll position jumps when elements animate in
-ScrollTrigger.config({
-  autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
-});
-
-// Refresh once after all initial content has loaded
 if (typeof window !== "undefined") {
+  // Prevent ScrollTrigger from auto-refreshing on resize/content changes
+  // which causes scroll position jumps when elements animate in
+  ScrollTrigger.config({
+    autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+  });
+
+  // Refresh once after all initial content has loaded
   window.addEventListener("load", () => {
-    // Delay to let all GSAP animations initialize
     setTimeout(() => ScrollTrigger.refresh(), 500);
   }, { once: true });
 }
