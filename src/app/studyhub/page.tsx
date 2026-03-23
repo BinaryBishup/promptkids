@@ -199,14 +199,14 @@ export default function StudyHubPage() {
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <Link href="/dashboard" className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade" style={dFont}>
             <ArrowLeft size={20} /> Back to home
           </Link>
 
           <h1 className="text-[36px] text-[#0f172a] mb-3 sh-fade sh-d1" style={dFont}>
             Study Buddy — Select Subject
           </h1>
-          <p className="text-[18px] text-[#64748b] mb-10 sh-fade sh-d2">
+          <p className="text-[18px] text-[#64748b] mb-10 sh-fade sh-d2" style={bFont}>
             Choose the subject you need help with
           </p>
 
@@ -221,7 +221,7 @@ export default function StudyHubPage() {
                   <span className={subject.textColor}>{subject.icon}</span>
                 </div>
                 <span className="text-[20px] text-[#0f172a]" style={dFont}>{subject.name}</span>
-                <span className="text-[15px] text-[#94a3b8] mt-1">{subject.assignments} assignments</span>
+                <span className="text-[15px] text-[#94a3b8] mt-1" style={bFont}>{subject.assignments} assignments</span>
               </button>
             ))}
           </div>
@@ -237,7 +237,7 @@ export default function StudyHubPage() {
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
         <div className="max-w-4xl mx-auto px-6 py-12">
-          <button onClick={() => setStep("subjects")} className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer">
+          <button onClick={() => setStep("subjects")} className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer" style={dFont}>
             <ArrowLeft size={20} /> Back to subjects
           </button>
 
@@ -249,7 +249,7 @@ export default function StudyHubPage() {
               {selectedSubject.name} Homework
             </h1>
           </div>
-          <p className="text-[18px] text-[#64748b] mb-10 sh-fade sh-d2">
+          <p className="text-[18px] text-[#64748b] mb-10 sh-fade sh-d2" style={bFont}>
             Select an assignment to start working
           </p>
 
@@ -264,7 +264,7 @@ export default function StudyHubPage() {
                   <span className="block text-[18px] text-[#0f172a] mb-2" style={dFont}>{a.title}</span>
                   <div className="flex items-center gap-3">
                     <span className={`inline-block text-[13px] px-3 py-1 rounded-full ${statusBadge(a.status)}`} style={dFont}>{a.status}</span>
-                    <span className="inline-flex items-center gap-1.5 text-[14px] text-[#94a3b8]">
+                    <span className="inline-flex items-center gap-1.5 text-[14px] text-[#94a3b8]" style={bFont}>
                       <Clock size={14} /> {a.time}
                     </span>
                   </div>
@@ -283,7 +283,7 @@ export default function StudyHubPage() {
     return (
       <div className="min-h-screen bg-[#f8fafc] relative" style={bFont}>
         <div className="max-w-5xl mx-auto px-6 py-10">
-          <button onClick={() => setStep("topics")} className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-8 sh-fade cursor-pointer">
+          <button onClick={() => setStep("topics")} className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-8 sh-fade cursor-pointer" style={dFont}>
             <ArrowLeft size={20} /> Back to assignments
           </button>
 
@@ -315,7 +315,7 @@ export default function StudyHubPage() {
               <span className="flex items-center gap-2 text-[15px] text-amber-600 mb-3" style={dFont}>
                 <Zap size={18} /> Question
               </span>
-              <p className="text-[16px] text-[#374151] leading-relaxed mb-4">
+              <p className="text-[16px] text-[#374151] leading-relaxed mb-4" style={bFont}>
                 A ray of light passes from air into glass at an angle of incidence of 30&deg;. If the refractive index of glass is 1.5, calculate the angle of refraction using Snell&apos;s Law.
               </p>
               <p className="text-[15px] text-[#374151]" style={dFont}>
@@ -332,7 +332,7 @@ export default function StudyHubPage() {
                 <div className="absolute top-1/2 right-1/3 w-48 h-0.5 bg-cyan-300/40 -rotate-[15deg]" />
               </div>
               <div className="absolute bottom-3 left-0 right-0 text-center">
-                <span className="text-[12px] text-white/60 bg-black/30 px-3 py-1 rounded-full">
+                <span className="text-[12px] text-white/60 bg-black/30 px-3 py-1 rounded-full" style={bFont}>
                   Diagram: Light passing through different mediums
                 </span>
               </div>
@@ -345,7 +345,7 @@ export default function StudyHubPage() {
               <PenTool size={22} className="text-green-500" />
               Your Answer
             </h2>
-            <p className="text-[15px] text-[#64748b] mb-5">Type your detailed answer below:</p>
+            <p className="text-[15px] text-[#64748b] mb-5" style={bFont}>Type your detailed answer below:</p>
 
             <textarea
               value={answer}
@@ -355,8 +355,8 @@ export default function StudyHubPage() {
             />
 
             <div className="flex items-center justify-between mt-4 mb-5">
-              <span className="text-[14px] text-[#94a3b8]">{wordCount} words typed</span>
-              <span className="text-[14px] text-[#94a3b8]">Attempts: {attempts}</span>
+              <span className="text-[14px] text-[#94a3b8]" style={bFont}>{wordCount} words typed</span>
+              <span className="text-[14px] text-[#94a3b8]" style={bFont}>Attempts: {attempts}</span>
             </div>
 
             <button
@@ -376,7 +376,7 @@ export default function StudyHubPage() {
                 <Bot size={22} className="text-purple-500" />
                 AI Help Levels
               </h2>
-              <span className="text-[14px] text-[#94a3b8]">Unlock by submitting attempts</span>
+              <span className="text-[14px] text-[#94a3b8]" style={bFont}>Unlock by submitting attempts</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -401,9 +401,9 @@ export default function StudyHubPage() {
                     <span className="text-[14px] text-[#0f172a] mb-1" style={dFont}>
                       L{hl.level}: {hl.name}
                     </span>
-                    <span className="text-[12px] text-[#94a3b8]">{hl.desc}</span>
+                    <span className="text-[12px] text-[#94a3b8]" style={bFont}>{hl.desc}</span>
                     {!isUnlocked && (
-                      <span className="text-[11px] text-[#94a3b8] mt-2">
+                      <span className="text-[11px] text-[#94a3b8] mt-2" style={bFont}>
                         {hl.attemptsNeeded - attempts} more attempts
                       </span>
                     )}
@@ -421,7 +421,7 @@ export default function StudyHubPage() {
               </div>
               <div>
                 <p className="text-white text-[18px]" style={dFont}>Completion Reward</p>
-                <p className="text-white/70 text-[14px] mt-0.5">Complete with minimal AI help for bonus!</p>
+                <p className="text-white/70 text-[14px] mt-0.5" style={bFont}>Complete with minimal AI help for bonus!</p>
               </div>
             </div>
             <div className="text-right">
@@ -444,7 +444,7 @@ export default function StudyHubPage() {
                   </div>
                   <div>
                     <p className="text-white text-[15px]" style={dFont}>AI Study Buddy</p>
-                    <p className="text-white/70 text-[12px]">Level {chatLevel} Help</p>
+                    <p className="text-white/70 text-[12px]" style={bFont}>Level {chatLevel} Help</p>
                   </div>
                 </div>
                 <button onClick={() => setChatOpen(false)} className="text-white/60 hover:text-white transition-colors cursor-pointer">
@@ -460,7 +460,7 @@ export default function StudyHubPage() {
                       msg.role === "user"
                         ? "bg-[#2563eb] text-white rounded-br-md"
                         : "bg-[#f1f5f9] text-[#374151] rounded-bl-md"
-                    }`}>
+                    }`} style={bFont}>
                       {msg.text}
                     </div>
                   </div>

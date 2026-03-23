@@ -124,6 +124,7 @@ export default function ConceptMasterPage() {
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 cm-fade"
+            style={dFont}
           >
             <ArrowLeft size={20} /> Back to home
           </Link>
@@ -134,7 +135,7 @@ export default function ConceptMasterPage() {
           >
             Concept Master — Select Subject
           </h1>
-          <p className="text-[18px] text-[#64748b] mb-10 cm-fade cm-d2">
+          <p className="text-[18px] text-[#64748b] mb-10 cm-fade cm-d2" style={bFont}>
             Choose the subject you want to learn
           </p>
 
@@ -153,7 +154,7 @@ export default function ConceptMasterPage() {
                 <span className="text-[20px] text-[#0f172a]" style={dFont}>
                   {subject.name}
                 </span>
-                <span className="text-[15px] text-[#94a3b8] mt-1">
+                <span className="text-[15px] text-[#94a3b8] mt-1" style={bFont}>
                   {subject.topics} topics
                 </span>
               </button>
@@ -175,6 +176,7 @@ export default function ConceptMasterPage() {
             <button
               onClick={() => setStep("subjects")}
               className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-5 cursor-pointer"
+              style={dFont}
             >
               <ArrowLeft size={20} /> Back to subjects
             </button>
@@ -225,7 +227,7 @@ export default function ConceptMasterPage() {
             {/* Message 1: User */}
             <div className="flex justify-end gap-3 cm-msg" style={{ animationDelay: "0.1s" }}>
               <div className="bg-[#7c3aed] text-white rounded-2xl rounded-tr-lg px-5 py-4 max-w-[500px]">
-                <p className="text-[15px] leading-relaxed">
+                <p className="text-[15px] leading-relaxed" style={bFont}>
                   Why does ice float on water? My teacher explained but I didn&apos;t understand.
                 </p>
               </div>
@@ -246,7 +248,7 @@ export default function ConceptMasterPage() {
                     Let me check what you know first
                   </span>
                 </div>
-                <p className="text-[15px] text-[#374151] leading-relaxed mb-4">
+                <p className="text-[15px] text-[#374151] leading-relaxed mb-4" style={bFont}>
                   Before I explain — do you know that ice is frozen water? And have you heard the word &quot;density&quot; before?
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -271,7 +273,7 @@ export default function ConceptMasterPage() {
             {/* Message 3: User */}
             <div className="flex justify-end gap-3 cm-msg" style={{ animationDelay: "0.4s" }}>
               <div className="bg-[#7c3aed] text-white rounded-2xl rounded-tr-lg px-5 py-4 max-w-[500px]">
-                <p className="text-[15px] leading-relaxed">
+                <p className="text-[15px] leading-relaxed" style={bFont}>
                   I know both but I don&apos;t fully understand how density works
                 </p>
               </div>
@@ -292,7 +294,7 @@ export default function ConceptMasterPage() {
                 <h3 className="text-[20px] text-[#0f172a] mt-2 mb-3" style={dFont}>
                   Ice floats because it is less dense than liquid water.
                 </h3>
-                <p className="text-[15px] text-[#374151] leading-relaxed">
+                <p className="text-[15px] text-[#374151] leading-relaxed" style={bFont}>
                   Most things get heavier and denser when they freeze. Water is special — it does the exact opposite! When water freezes, its molecules arrange themselves into a crystal structure that takes up more space, making ice less dense than liquid water.
                 </p>
               </div>
@@ -310,7 +312,7 @@ export default function ConceptMasterPage() {
                     Think of it like this
                   </span>
                 </div>
-                <p className="text-[15px] text-[#374151] leading-relaxed">
+                <p className="text-[15px] text-[#374151] leading-relaxed" style={bFont}>
                   Imagine you have a schoolbag. Normally, when you pack more things in, it gets heavier and smaller (denser). But what if you had a magic bag that, when you packed it, actually puffed up and became lighter? That&apos;s what water does when it freezes — it expands and becomes lighter, so it floats on top of the liquid water!
                 </p>
               </div>
@@ -322,7 +324,7 @@ export default function ConceptMasterPage() {
                 <Brain size={20} className="text-white" />
               </div>
               <div className="bg-[#f3e8ff] border-2 border-purple-300/30 rounded-2xl px-5 py-4 max-w-[700px]">
-                <p className="text-[15px] text-[#374151] leading-relaxed mb-4">
+                <p className="text-[15px] text-[#374151] leading-relaxed mb-4" style={bFont}>
                   Does this make sense so far? Type &quot;yes&quot; to continue or ask me anything!
                 </p>
                 <div className="flex gap-2">
@@ -352,7 +354,7 @@ export default function ConceptMasterPage() {
                 style={{ animationDelay: "0s" }}
               >
                 <div className="bg-[#7c3aed] text-white rounded-2xl rounded-tr-lg px-5 py-4 max-w-[500px]">
-                  <p className="text-[15px] leading-relaxed">{msg}</p>
+                  <p className="text-[15px] leading-relaxed" style={bFont}>{msg}</p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-[#ff6b2b] flex items-center justify-center flex-shrink-0">
                   <User size={20} className="text-white" />
@@ -411,7 +413,7 @@ export default function ConceptMasterPage() {
                     Key concept
                   </span>
                 </div>
-                <p className="text-[13px] text-[#374151] leading-relaxed">
+                <p className="text-[13px] text-[#374151] leading-relaxed" style={bFont}>
                   Ice is less dense than water due to molecular structure
                 </p>
               </div>
@@ -424,7 +426,7 @@ export default function ConceptMasterPage() {
                     The analogy
                   </span>
                 </div>
-                <p className="text-[13px] text-[#374151] leading-relaxed">
+                <p className="text-[13px] text-[#374151] leading-relaxed" style={bFont}>
                   Magic bag that gets lighter when packed
                 </p>
               </div>
@@ -461,7 +463,7 @@ export default function ConceptMasterPage() {
                 <p className="text-[24px] text-[#22c55e]" style={dFont}>
                   5 MCQs
                 </p>
-                <p className="text-[14px] text-[#64748b] mt-1">
+                <p className="text-[14px] text-[#64748b] mt-1" style={bFont}>
                   Auto-generated quiz ready
                 </p>
               </div>
