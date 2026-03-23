@@ -282,7 +282,7 @@ export default function DashboardPage() {
                 </div>
                 <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Practice Arena</h3>
                 <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Practice with various question types</p>
-                <Link href="/studyhub" className="text-[#f59e0b] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                <Link href="/practice-arena" className="text-[#f59e0b] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -435,6 +435,24 @@ export default function DashboardPage() {
                 </div>
                 <span className="text-[#008236] font-bold text-[13px]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>AI Learning Coach</span>
               </div>
+            </div>
+          </div>
+
+          {/* Quick Access */}
+          <div className="anim-fade-right" style={{ animationDelay: "0.7s" }}>
+            <h3 className="font-extrabold text-[17px] text-[#0f172a] mb-4" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Quick Access</h3>
+            <div className="flex flex-col gap-1">
+              {[
+                { icon: CalendarDays, label: "My Schedule", color: "text-[#2563eb]" },
+                { icon: Award, label: "Achievements", color: "text-[#7c3aed]" },
+                { icon: Library, label: "My Library", color: "text-[#10b981]" },
+                { icon: Settings, label: "Settings", color: "text-[#6b7280]" },
+              ].map((item) => (
+                <button key={item.label} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer w-full text-left" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
+                  <item.icon className={`w-5 h-5 ${item.color}`} />
+                  <span className="text-[15px] text-[#374151]">{item.label}</span>
+                </button>
+              ))}
             </div>
           </div>
         </aside>
