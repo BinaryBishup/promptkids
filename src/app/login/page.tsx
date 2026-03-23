@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ArrowLeft, Phone, ArrowRight, Sparkles, AlertCircle } from "lucide-react";
 import { useBookTrial } from "@/components/BookTrialContext";
 import { getSupabase } from "@/lib/supabase";
 
 export default function LoginPage() {
+  const router = useRouter();
   const { open: openBookTrial } = useBookTrial();
   const [step, setStep] = useState<"phone" | "otp" | "welcome">("phone");
   const [phone, setPhone] = useState("");
@@ -55,6 +57,7 @@ export default function LoginPage() {
       });
       if (error) throw error;
       setStep("welcome");
+      setTimeout(() => router.push("/dashboard"), 1500);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Invalid OTP";
       setError(message);
@@ -181,9 +184,9 @@ export default function LoginPage() {
               <div className="mt-5 pt-5 border-t border-pk-gray-border text-center">
                 <p className="text-xs text-pk-text-secondary">
                   New here?{" "}
-                  <button onClick={openBookTrial} className="text-pk-orange font-semibold hover:text-pk-orange-dark">
-                    Book a free trial class
-                  </button>
+                  <Link href="/signup" className="text-pk-orange font-semibold hover:text-pk-orange-dark">
+                    Sign up for a free trial
+                  </Link>
                 </p>
               </div>
             </div>
@@ -256,14 +259,13 @@ export default function LoginPage() {
               </div>
               <h1 className="text-xl font-extrabold text-pk-text mb-1">Welcome back!</h1>
               <p className="text-sm text-pk-text-secondary mb-6">
-                You&apos;re logged in successfully.
+                Redirecting to your dashboard...
               </p>
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pk-navy text-white text-sm font-semibold rounded-xl hover:bg-pk-navy-light transition-colors"
-              >
-                Go to Home <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-pk-orange animate-bounce [animation-delay:0ms]" />
+                <div className="w-2 h-2 rounded-full bg-pk-orange animate-bounce [animation-delay:150ms]" />
+                <div className="w-2 h-2 rounded-full bg-pk-orange animate-bounce [animation-delay:300ms]" />
+              </div>
             </div>
           )}
         </div>
