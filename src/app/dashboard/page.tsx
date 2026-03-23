@@ -171,9 +171,9 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] flex items-center justify-center group-hover:bg-[#dbeafe] group-hover:scale-110 transition-all duration-200">
                   <BookOpen className="w-8 h-8 text-[#2563eb]" />
                 </div>
-                <h3 className="font-extrabold text-[20px] text-[#0f172a]">Study Buddy</h3>
-                <p className="text-[#6b7280] text-[15px] font-medium">Get guided help with homework</p>
-                <Link href="#" className="text-[#2563eb] text-[15px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Study Buddy</h3>
+                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Get guided help with homework</p>
+                <Link href="/studyhub" className="text-[#2563eb] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -182,9 +182,9 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-2xl bg-[#faf5ff] flex items-center justify-center group-hover:bg-[#f3e8ff] group-hover:scale-110 transition-all duration-200">
                   <Brain className="w-8 h-8 text-[#7c3aed]" />
                 </div>
-                <h3 className="font-extrabold text-[20px] text-[#0f172a]">Concept Master</h3>
-                <p className="text-[#6b7280] text-[15px] font-medium">Learn new topics with AI tutor</p>
-                <Link href="#" className="text-[#7c3aed] text-[15px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Concept Master</h3>
+                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Learn new topics with AI tutor</p>
+                <Link href="/studyhub" className="text-[#7c3aed] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -193,9 +193,9 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-2xl bg-[#fffbeb] flex items-center justify-center group-hover:bg-[#fef3c6] group-hover:scale-110 transition-all duration-200">
                   <Trophy className="w-8 h-8 text-[#f59e0b]" />
                 </div>
-                <h3 className="font-extrabold text-[20px] text-[#0f172a]">Practice Arena</h3>
-                <p className="text-[#6b7280] text-[15px] font-medium">Practice with various question types</p>
-                <Link href="#" className="text-[#f59e0b] text-[15px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Practice Arena</h3>
+                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Practice with various question types</p>
+                <Link href="/studyhub" className="text-[#f59e0b] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -204,9 +204,9 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-2xl bg-[#ecfdf5] flex items-center justify-center group-hover:bg-[#d1fae5] group-hover:scale-110 transition-all duration-200">
                   <ClipboardList className="w-8 h-8 text-[#10b981]" />
                 </div>
-                <h3 className="font-extrabold text-[20px] text-[#0f172a]">Study Hub</h3>
-                <p className="text-[#6b7280] text-[15px] font-medium">Notes, PDFs &amp; previous year papers</p>
-                <Link href="#" className="text-[#10b981] text-[15px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Study Hub</h3>
+                <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Notes, PDFs &amp; previous year papers</p>
+                <Link href="/studyhub" className="text-[#10b981] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
