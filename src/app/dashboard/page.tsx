@@ -163,9 +163,9 @@ export default function DashboardPage() {
       {/* MAIN CONTENT */}
       <div className="flex flex-1 flex-col lg:flex-row">
         {/* LEFT MAIN AREA */}
-        <main className="flex-1 p-6 lg:p-8 space-y-7">
+        <main className="flex-1 p-6 lg:p-10 space-y-8 lg:space-y-10">
           {/* Welcome Banner */}
-          <div className="anim-fade-up relative bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-2xl h-auto min-h-[168px] p-6 lg:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between overflow-hidden">
+          <div className="anim-fade-up relative bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-2xl h-auto min-h-[180px] p-7 lg:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between overflow-hidden">
             <div className="absolute top-[-40px] right-[-40px] w-64 h-64 rounded-full bg-white/10 pointer-events-none" />
             <div className="absolute bottom-[-40px] left-[-40px] w-48 h-48 rounded-full bg-white/10 pointer-events-none" />
 
@@ -190,8 +190,8 @@ export default function DashboardPage() {
           </div>
 
           {/* Stat Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[108px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.1s" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.1s" }}>
               <div className="w-12 h-12 rounded-xl bg-[#eff6ff] flex items-center justify-center flex-shrink-0">
                 <BookOpen className="w-6 h-6 text-[#2563eb]" />
               </div>
@@ -201,7 +201,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[108px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-lg hover:shadow-purple-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.15s" }}>
+            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-lg hover:shadow-purple-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.15s" }}>
               <div className="w-12 h-12 rounded-xl bg-[#faf5ff] flex items-center justify-center flex-shrink-0">
                 <Brain className="w-6 h-6 text-[#7c3aed]" />
               </div>
@@ -211,7 +211,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[108px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#22c55e]/40 hover:shadow-lg hover:shadow-green-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.2s" }}>
+            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#22c55e]/40 hover:shadow-lg hover:shadow-green-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.2s" }}>
               <div className="w-12 h-12 rounded-xl bg-[#f0fdf4] flex items-center justify-center flex-shrink-0">
                 <TrendingDown className="w-6 h-6 text-[#22c55e]" />
               </div>
@@ -224,7 +224,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[108px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-lg hover:shadow-amber-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.25s" }}>
+            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-lg hover:shadow-amber-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.25s" }}>
               <div className="w-12 h-12 rounded-xl bg-[#fffbeb] flex items-center justify-center flex-shrink-0">
                 <Trophy className="w-6 h-6 text-[#f59e0b]" />
               </div>
@@ -237,10 +237,10 @@ export default function DashboardPage() {
 
           {/* Choose Your Learning Tool */}
           <div>
-            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-5 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {/* Live Classes */}
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#ef4444]/40 hover:shadow-xl hover:shadow-red-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.35s" }}>
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#ef4444]/40 hover:shadow-xl hover:shadow-red-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.35s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all duration-200">
                   <Video className="w-8 h-8 text-[#ef4444]" />
                 </div>
@@ -252,7 +252,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Study Buddy */}
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.4s" }}>
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.4s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] flex items-center justify-center group-hover:bg-[#dbeafe] group-hover:scale-110 transition-all duration-200">
                   <BookOpen className="w-8 h-8 text-[#2563eb]" />
                 </div>
@@ -264,7 +264,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Concept Master */}
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-xl hover:shadow-purple-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.45s" }}>
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-xl hover:shadow-purple-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.45s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#faf5ff] flex items-center justify-center group-hover:bg-[#f3e8ff] group-hover:scale-110 transition-all duration-200">
                   <Brain className="w-8 h-8 text-[#7c3aed]" />
                 </div>
@@ -276,7 +276,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Practice Arena */}
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-xl hover:shadow-amber-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.5s" }}>
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-xl hover:shadow-amber-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.5s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#fffbeb] flex items-center justify-center group-hover:bg-[#fef3c6] group-hover:scale-110 transition-all duration-200">
                   <Trophy className="w-8 h-8 text-[#f59e0b]" />
                 </div>
@@ -288,7 +288,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Study Hub */}
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#10b981]/40 hover:shadow-xl hover:shadow-emerald-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.55s" }}>
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#10b981]/40 hover:shadow-xl hover:shadow-emerald-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.55s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#ecfdf5] flex items-center justify-center group-hover:bg-[#d1fae5] group-hover:scale-110 transition-all duration-200">
                   <ClipboardList className="w-8 h-8 text-[#10b981]" />
                 </div>
@@ -300,7 +300,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Explore Lab */}
-              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#ec4899]/40 hover:shadow-xl hover:shadow-pink-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.6s" }}>
+              <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#ec4899]/40 hover:shadow-xl hover:shadow-pink-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.6s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center group-hover:bg-pink-100 group-hover:scale-110 transition-all duration-200">
                   <SparklesIcon className="w-8 h-8 text-[#ec4899]" />
                 </div>
@@ -315,7 +315,7 @@ export default function DashboardPage() {
         </main>
 
         {/* RIGHT SIDEBAR */}
-        <aside className="w-full lg:w-[370px] flex-shrink-0 bg-white border-t-[2.5px] lg:border-t-0 lg:border-l-[2.5px] border-[#eef0f4] pt-6 pb-8 pl-6 pr-6 lg:pl-[26px] lg:pr-[39px] space-y-7">
+        <aside className="w-full lg:w-[370px] flex-shrink-0 bg-white border-t-[2.5px] lg:border-t-0 lg:border-l-[2.5px] border-[#eef0f4] pt-8 pb-10 pl-6 pr-6 lg:pl-[28px] lg:pr-[32px] space-y-8">
           {/* Recent Activity */}
           <div className="anim-fade-right" style={{ animationDelay: "0.2s" }}>
             <div className="flex items-center gap-2.5 mb-4">
