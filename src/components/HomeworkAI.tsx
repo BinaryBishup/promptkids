@@ -317,16 +317,18 @@ export default function HomeworkAI() {
                 </ul>
               </div>
 
-              {/* Parent notification */}
-              {level.parentNote && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3 animate-[fadeSlideUp_0.3s_ease-out]">
-                  <Bell className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-[11px] font-bold text-red-600 block mb-0.5">Parent Notification</span>
-                    <span className="text-[11px] text-red-500/80 leading-relaxed">{level.parentNote}</span>
-                  </div>
+              {/* Parent notification — always rendered to prevent layout shift */}
+              <div className={`bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3 transition-opacity duration-300 ${
+                level.parentNote ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}>
+                <Bell className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-[11px] font-bold text-red-600 block mb-0.5">Parent Notification</span>
+                  <span className="text-[11px] text-red-500/80 leading-relaxed">
+                    {level.parentNote || "Parent notified: Full answer was given. Re-attempt scheduled in 48 hours."}
+                  </span>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
