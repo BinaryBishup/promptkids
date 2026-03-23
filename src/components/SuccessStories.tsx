@@ -60,6 +60,7 @@ export default function SuccessStories() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set(".story-card", { opacity: 0 });
       gsap.fromTo(".story-card",
         { y: 40, opacity: 0 },
         {
@@ -88,7 +89,7 @@ export default function SuccessStories() {
           {stories.map((s) => (
             <div
               key={s.name}
-              className="story-card opacity-0 bg-white rounded-2xl border border-pk-gray-border p-6 sm:p-7 hover:shadow-md transition-all"
+              className="story-card bg-white rounded-2xl border border-pk-gray-border p-6 sm:p-7 hover:shadow-md transition-all"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">

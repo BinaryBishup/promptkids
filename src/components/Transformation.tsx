@@ -67,6 +67,7 @@ export default function Transformation() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set(".transform-card", { opacity: 0 });
       // Animate progress bar
       gsap.fromTo(".transform-progress",
         { scaleX: 0 },
@@ -111,7 +112,7 @@ export default function Transformation() {
         <div className="transform-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {stages.map((s, i) => (
             <div key={s.stage} className="relative">
-              <div className={`transform-card opacity-0 ${s.bg} rounded-2xl border ${s.border} p-6 h-full`}>
+              <div className={`transform-card ${s.bg} rounded-2xl border ${s.border} p-6 h-full`}>
                 <div className={`inline-flex p-2.5 rounded-xl bg-white mb-4 shadow-sm`}>
                   <s.icon className={`w-5 h-5 ${s.color}`} />
                 </div>

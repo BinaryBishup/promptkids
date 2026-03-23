@@ -13,6 +13,7 @@ export default function FinalCTA() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set([".cta-heading", ".cta-sub", ".cta-button", ".cta-trust"], { opacity: 0 });
       gsap.fromTo(".cta-heading",
         { y: 50, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
@@ -51,20 +52,20 @@ export default function FinalCTA() {
       </div>
 
       <div className="relative z-10 max-w-3xl mx-auto text-center">
-        <h2 className="cta-heading text-[clamp(2rem,5vw,3.5rem)] font-extrabold text-white leading-[1.1] tracking-[-0.03em] mb-6 opacity-0">
+        <h2 className="cta-heading text-[clamp(2rem,5vw,3.5rem)] font-extrabold text-white leading-[1.1] tracking-[-0.03em] mb-6">
           Your child&apos;s AI journey
           <br />
           starts with{" "}
           <span className="text-pk-orange">one free class.</span>
         </h2>
-        <p className="cta-sub text-base text-white/50 max-w-lg mx-auto mb-10 leading-relaxed opacity-0">
+        <p className="cta-sub text-base text-white/50 max-w-lg mx-auto mb-10 leading-relaxed">
           No commitment. No payment. Just 90 minutes that could change how your child
           studies, creates, and thinks — forever.
         </p>
 
         <Link
           href="#"
-          className="cta-button opacity-0 group inline-flex items-center gap-2.5 px-10 py-4 bg-pk-orange text-white font-bold text-[15px] rounded-xl hover:bg-pk-orange-dark transition-all shadow-xl shadow-pk-orange/20 active:scale-[0.98]"
+          className="cta-button group inline-flex items-center gap-2.5 px-10 py-4 bg-pk-orange text-white font-bold text-[15px] rounded-xl hover:bg-pk-orange-dark transition-all shadow-xl shadow-pk-orange/20 active:scale-[0.98]"
         >
           Book Free Trial Class
           <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
@@ -76,7 +77,7 @@ export default function FinalCTA() {
             "Batches starting every month",
             "Gurugram's only AI program for kids",
           ].map((item) => (
-            <div key={item} className="cta-trust flex items-center gap-2 opacity-0">
+            <div key={item} className="cta-trust flex items-center gap-2">
               <Check className="w-3.5 h-3.5 text-pk-green/60" />
               <span className="text-[12px] text-white/40 font-medium">{item}</span>
             </div>

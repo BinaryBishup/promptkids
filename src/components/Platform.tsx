@@ -293,6 +293,7 @@ export default function Platform() {
         },
       });
 
+      gsap.set([".lb-heading", ".lb-app-window", ".lb-badge"], { opacity: 0 });
       gsap.fromTo(
         ".lb-heading",
         { y: 40, opacity: 0 },
@@ -338,7 +339,7 @@ export default function Platform() {
     <section ref={sectionRef} className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 bg-pk-gray-light" id="platform">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="lb-heading opacity-0 text-center mb-12">
+        <div className="lb-heading text-center mb-12">
           <span className="eyebrow mb-4 block">LearnBot — AI Tutor</span>
           <h2 className="text-[clamp(1.8rem,3.5vw,3rem)] font-extrabold text-pk-text tracking-[-0.02em] mb-4">
             Like having a private tutor
@@ -351,7 +352,7 @@ export default function Platform() {
         </div>
 
         {/* App window */}
-        <div className="lb-app-window opacity-0">
+        <div className="lb-app-window">
           <div className="bg-white rounded-2xl border border-pk-gray-border shadow-xl shadow-black/[0.06] overflow-hidden">
             {/* Window chrome */}
             <div className="flex items-center justify-between px-4 py-2.5 bg-pk-gray-light border-b border-pk-gray-border">
@@ -422,8 +423,8 @@ export default function Platform() {
               </div>
             </div>
 
-            {/* Main content area */}
-            <div className="min-h-[440px] sm:min-h-[480px]" ref={contentRef}>
+            {/* Main content area — fixed height prevents layout shift on tab change */}
+            <div className="h-[440px] sm:h-[480px] overflow-hidden" ref={contentRef}>
               {/* Stage: AI Tutoring */}
               {activeStage === 0 && (
                 <div className="flex flex-col h-full">
@@ -860,7 +861,7 @@ export default function Platform() {
             { icon: BookOpen, text: "Class 6–12 CBSE & ICSE", color: "text-pk-blue" },
             { icon: Brain, text: "Adapts to your child's level", color: "text-pk-purple" },
           ].map((b, i) => (
-            <div key={i} className="lb-badge opacity-0 flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-pk-gray-border shadow-sm">
+            <div key={i} className="lb-badge flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-pk-gray-border shadow-sm">
               <b.icon className={`w-4 h-4 ${b.color}`} />
               <span className="text-[12px] font-medium text-pk-text-secondary">{b.text}</span>
             </div>

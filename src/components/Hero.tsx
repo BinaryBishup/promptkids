@@ -75,6 +75,7 @@ export default function Hero() {
   // Entry animations
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set([".hero-headline", ".hero-sub", ".hero-cta", ".hero-proof", ".hero-tools"], { opacity: 0 });
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       tl.fromTo(".hero-headline", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.4 })
         .fromTo(".hero-sub", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.4")
@@ -93,7 +94,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-16 sm:pb-20 w-full">
 
         {/* Headline with typing animation */}
-        <div className="hero-headline text-center mb-5 sm:mb-6 opacity-0">
+        <div className="hero-headline text-center mb-5 sm:mb-6">
           <h1 className="text-[clamp(2.4rem,5.8vw,4.8rem)] font-extrabold text-white leading-[1.12] tracking-[-0.02em]">
             <span className="block">Give&nbsp;Your&nbsp;Child a&nbsp;Head&nbsp;Start.</span>
             <span className="block">
@@ -107,13 +108,13 @@ export default function Hero() {
         </div>
 
         {/* Subtitle */}
-        <p className="hero-sub text-center text-[15px] sm:text-[17px] text-white/55 max-w-lg mx-auto mb-8 sm:mb-10 leading-[1.7] opacity-0">
+        <p className="hero-sub text-center text-[15px] sm:text-[17px] text-white/55 max-w-lg mx-auto mb-8 sm:mb-10 leading-[1.7]">
           India&apos;s smartest extra class for <span className="text-white/80 font-medium">Class 6&ndash;12</span>.{" "}
           Master <span className="text-white/80 font-medium">15+ AI tools</span> to study smarter &amp; think&nbsp;bigger.
         </p>
 
         {/* CTA */}
-        <div className="hero-cta opacity-0 flex justify-center mb-10 sm:mb-12 px-4 sm:px-0">
+        <div className="hero-cta flex justify-center mb-10 sm:mb-12 px-4 sm:px-0">
           <button
             onClick={openBookTrial}
             className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-pk-orange text-white text-[15px] font-semibold rounded-xl hover:bg-pk-orange-dark hover:shadow-xl hover:shadow-pk-orange/20 transition-all active:scale-[0.97]"
@@ -123,7 +124,7 @@ export default function Hero() {
         </div>
 
         {/* Social proof */}
-        <div className="hero-proof flex items-center justify-center gap-3 mb-12 sm:mb-16 opacity-0">
+        <div className="hero-proof flex items-center justify-center gap-3 mb-12 sm:mb-16">
           <div className="flex -space-x-2.5">
             {studentImages.map((img, i) => (
               <div
@@ -141,7 +142,7 @@ export default function Hero() {
         </div>
 
         {/* Tool logos */}
-        <div className="hero-tools opacity-0">
+        <div className="hero-tools">
           <p className="text-center text-[10px] sm:text-[11px] text-white/25 uppercase tracking-[0.15em] font-medium mb-4">
             Tools they&apos;ll master
           </p>

@@ -6,6 +6,20 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Prevent ScrollTrigger from auto-refreshing on resize/content changes
+// which causes scroll position jumps when elements animate in
+ScrollTrigger.config({
+  autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+});
+
+// Refresh once after all initial content has loaded
+if (typeof window !== "undefined") {
+  window.addEventListener("load", () => {
+    // Delay to let all GSAP animations initialize
+    setTimeout(() => ScrollTrigger.refresh(), 500);
+  }, { once: true });
+}
+
 export function useScrollReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null);
 
@@ -13,6 +27,11 @@ export function useScrollReveal<T extends HTMLElement>() {
     if (!ref.current) return;
 
     const children = ref.current.querySelectorAll("[data-animate]");
+
+    // Immediately hide elements before first paint to prevent flash
+    children.forEach((child) => {
+      gsap.set(child, { opacity: 0 });
+    });
 
     const tweens: gsap.core.Tween[] = [];
 

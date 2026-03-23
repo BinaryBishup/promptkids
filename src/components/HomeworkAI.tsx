@@ -159,6 +159,7 @@ export default function HomeworkAI() {
         },
       });
 
+      gsap.set([".hw-heading", ".hw-content"], { opacity: 0 });
       gsap.fromTo(".hw-heading", { y: 40, opacity: 0 }, {
         y: 0, opacity: 1, duration: 0.7, ease: "power3.out",
         scrollTrigger: { trigger: ".hw-heading", start: "top 85%" }
@@ -180,7 +181,7 @@ export default function HomeworkAI() {
     <section ref={sectionRef} className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 bg-white" id="homework-ai">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="hw-heading text-center mb-12 opacity-0">
+        <div className="hw-heading text-center mb-12">
           <span className="eyebrow mb-4 block">HomeworkAI</span>
           <h2 className="text-[clamp(1.8rem,3.5vw,3rem)] font-extrabold text-pk-text tracking-[-0.02em] mb-4">
             Never gives the answer.
@@ -192,7 +193,7 @@ export default function HomeworkAI() {
           </p>
         </div>
 
-        <div className="hw-content opacity-0">
+        <div className="hw-content">
           {/* Progress bar levels */}
           <div className="px-0 sm:px-6 mb-8">
             <div className="flex items-center gap-1 sm:gap-2">

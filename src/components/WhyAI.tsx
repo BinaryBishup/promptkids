@@ -85,6 +85,7 @@ export default function WhyAI() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set([".why-headline", ".why-bridge", ".pillar-card"], { opacity: 0 });
       gsap.fromTo(".why-headline",
         { y: 40, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", scrollTrigger: { trigger: ".why-headline", start: "top 85%" } }
@@ -106,7 +107,7 @@ export default function WhyAI() {
       <div className="max-w-5xl mx-auto">
 
         {/* Headline */}
-        <div className="why-headline text-center mb-16 sm:mb-20 opacity-0">
+        <div className="why-headline text-center mb-16 sm:mb-20">
           <h2 className="text-[clamp(2rem,4vw,3.2rem)] font-extrabold text-pk-navy leading-[1.1] tracking-[-0.02em]">
             AI is no longer optional.
           </h2>
@@ -133,7 +134,7 @@ export default function WhyAI() {
         </div>
 
         {/* Bridge */}
-        <div className="why-bridge text-center mb-14 sm:mb-16 opacity-0">
+        <div className="why-bridge text-center mb-14 sm:mb-16">
           <p className="text-[15px] sm:text-[17px] text-pk-text-secondary max-w-lg mx-auto leading-[1.7] mb-6">
             But giving kids AI without guardrails is risky.
             <br />
@@ -148,7 +149,7 @@ export default function WhyAI() {
             <Link
               key={p.label}
               href={p.anchor}
-              className="pillar-card opacity-0 group block rounded-2xl border border-pk-gray-border bg-pk-gray-light p-6 sm:p-7 hover:border-pk-gray hover:shadow-lg hover:shadow-black/[0.04] transition-all"
+              className="pillar-card group block rounded-2xl border border-pk-gray-border bg-pk-gray-light p-6 sm:p-7 hover:border-pk-gray hover:shadow-lg hover:shadow-black/[0.04] transition-all"
             >
               <div className={`w-10 h-10 rounded-xl ${p.lightBg} flex items-center justify-center mb-4`}>
                 <p.icon className={`w-5 h-5 ${p.textColor}`} />

@@ -47,6 +47,7 @@ export default function HowItWorks() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set(".step-card", { opacity: 0 });
       // Animate the connecting line
       gsap.fromTo(
         ".progress-line-fill",
@@ -103,7 +104,7 @@ export default function HowItWorks() {
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
             {steps.map((step) => (
-              <div key={step.title} className="step-card relative text-center opacity-0">
+              <div key={step.title} className="step-card relative text-center">
                 {/* Number + icon */}
                 <div className="relative inline-flex mb-6">
                   <div className={`w-14 h-14 rounded-2xl ${step.bg} flex items-center justify-center relative z-10`}>

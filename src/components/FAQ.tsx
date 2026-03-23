@@ -78,6 +78,7 @@ export default function FAQ() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set(".faq-col", { opacity: 0 });
       gsap.fromTo(".faq-col",
         { y: 30, opacity: 0 },
         {
@@ -102,12 +103,12 @@ export default function FAQ() {
         </div>
 
         <div className="faq-grid grid grid-cols-1 md:grid-cols-2 gap-x-12">
-          <div className="faq-col opacity-0">
+          <div className="faq-col">
             {faqs.slice(0, mid).map((faq, i) => (
               <FAQItem key={i} faq={faq} index={i} open={open} setOpen={setOpen} />
             ))}
           </div>
-          <div className="faq-col opacity-0">
+          <div className="faq-col">
             {faqs.slice(mid).map((faq, i) => (
               <FAQItem key={i + mid} faq={faq} index={i + mid} open={open} setOpen={setOpen} />
             ))}

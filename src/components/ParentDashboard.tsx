@@ -76,6 +76,7 @@ export default function ParentDashboard() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set([".pd-header", ".pd-feature", ".pd-panel", ".pd-whatsapp"], { opacity: 0 });
       gsap.fromTo(".pd-header", { y: 40, opacity: 0 }, {
         y: 0, opacity: 1, duration: 0.7, ease: "power3.out",
         scrollTrigger: { trigger: ".pd-header", start: "top 85%" }
@@ -100,7 +101,7 @@ export default function ParentDashboard() {
     <section ref={sectionRef} className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 bg-pk-gray-light" id="parent-dashboard">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="pd-header opacity-0 text-center mb-14">
+        <div className="pd-header text-center mb-14">
           <span className="eyebrow mb-4 block">Parent Panel</span>
           <h2 className="text-[clamp(1.8rem,3.5vw,3rem)] font-extrabold text-pk-text tracking-[-0.02em] mb-4">
             Every question. Every topic.
@@ -120,7 +121,7 @@ export default function ParentDashboard() {
             { icon: FileText, title: "Homework tracking", desc: "Completion rates & AI help used", color: "text-pk-orange", bg: "bg-pk-orange/8" },
             { icon: Activity, title: "Learning analytics", desc: "Strengths, weaknesses & trends", color: "text-pk-purple", bg: "bg-pk-purple/8" },
           ].map((card) => (
-            <div key={card.title} className="pd-feature opacity-0 bg-white rounded-xl p-5 border border-pk-gray-border">
+            <div key={card.title} className="pd-feature bg-white rounded-xl p-5 border border-pk-gray-border">
               <div className={`inline-flex p-2 rounded-lg ${card.bg} mb-3`}>
                 <card.icon className={`w-4 h-4 ${card.color}`} />
               </div>
@@ -131,7 +132,7 @@ export default function ParentDashboard() {
         </div>
 
         {/* Main panel */}
-        <div className="pd-panel opacity-0 grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+        <div className="pd-panel grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
           {/* Left panel (8 cols) */}
           <div className="lg:col-span-8">
             <div className="bg-white rounded-2xl border border-pk-gray-border overflow-hidden shadow-sm">
@@ -524,7 +525,7 @@ export default function ParentDashboard() {
           {/* Right sidebar (4 cols) */}
           <div className="lg:col-span-4 space-y-5">
             {/* WhatsApp updates card */}
-            <div className="pd-whatsapp opacity-0 bg-white rounded-2xl border border-pk-gray-border p-5">
+            <div className="pd-whatsapp bg-white rounded-2xl border border-pk-gray-border p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Smartphone className="w-4 h-4 text-pk-green" />
                 <h3 className="text-sm font-bold text-pk-text">WhatsApp Updates</h3>

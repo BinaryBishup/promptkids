@@ -50,6 +50,7 @@ export default function Testimonials() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.set(".testimonial-card", { opacity: 0 });
       gsap.fromTo(
         ".testimonial-card",
         { y: 40, opacity: 0 },
@@ -81,7 +82,7 @@ export default function Testimonials() {
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="testimonial-card opacity-0 bg-pk-gray-light rounded-2xl p-7 border border-pk-gray-border relative group hover:shadow-lg hover:shadow-black/[0.03] transition-all duration-300 hover:-translate-y-0.5"
+              className="testimonial-card bg-pk-gray-light rounded-2xl p-7 border border-pk-gray-border relative group hover:shadow-lg hover:shadow-black/[0.03] transition-all duration-300 hover:-translate-y-0.5"
             >
               {/* Stars */}
               <div className="flex gap-0.5 mb-4">
