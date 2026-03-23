@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Mail, Phone, Clock, MapPin, MessageSquare, CheckCircle2 } from "lucide-react";
 import { useBookTrial } from "@/components/BookTrialContext";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 export default function ContactPage() {
   const { open: openBookTrial } = useBookTrial();
@@ -16,7 +16,7 @@ export default function ContactPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await supabase.from("contact_messages").insert({
+      await getSupabase().from("contact_messages").insert({
         name: contactForm.name,
         email: contactForm.email,
         phone: contactForm.phone || null,

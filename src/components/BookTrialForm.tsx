@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { X, ArrowRight, ArrowLeft, Phone, User, GraduationCap, Calendar, CheckCircle2, Sparkles } from "lucide-react";
 import { useBookTrial } from "./BookTrialContext";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 const steps = [
   { label: "Parent Info", icon: User },
@@ -51,7 +51,7 @@ export default function BookTrialForm() {
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      await supabase.from("trial_bookings").insert({
+      await getSupabase().from("trial_bookings").insert({
         parent_name: form.parentName,
         phone: form.phone,
         child_name: form.childName,
