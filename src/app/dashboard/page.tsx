@@ -31,7 +31,7 @@ export default function DashboardPage() {
   const [challengeTotal] = useState(3);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex flex-col font-[var(--font-nunito)]">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
       {/* Entrance animation keyframes */}
       <style>{`
         @keyframes fadeInUp {
@@ -72,7 +72,7 @@ export default function DashboardPage() {
             <Sparkles className="w-6 h-6 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="font-extrabold text-[#0f172a] text-lg leading-tight">PromptKids</span>
+            <span className="font-extrabold text-[#0f172a] text-lg leading-tight" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>PromptKids</span>
             <span className="text-[#9ca3af] text-xs leading-tight font-medium">AI Learning Platform</span>
           </div>
         </div>
@@ -98,21 +98,21 @@ export default function DashboardPage() {
             <div className="absolute bottom-[-40px] left-[-40px] w-48 h-48 rounded-full bg-white/10 pointer-events-none" />
 
             <div className="relative z-10 flex flex-col gap-3">
-              <h1 className="text-white font-extrabold text-[26px]">Welcome back, Arjun! 👋</h1>
+              <h1 className="text-white font-extrabold text-[26px]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Welcome back, Arjun! 👋</h1>
               <p className="text-white/90 text-[15px] font-medium">Ready to learn something new today?</p>
               <div className="flex flex-wrap gap-2.5 mt-1">
-                <span className="inline-flex items-center gap-2 bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-[14px] cursor-pointer hover:bg-white/30 transition-colors duration-200">
+                <span className="inline-flex items-center gap-2 bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-[14px] cursor-pointer hover:bg-white/30 transition-colors duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   <Flame className="w-[18px] h-[18px]" /> {streakDays} day streak
                 </span>
-                <span className="inline-flex items-center gap-2 bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-[14px] cursor-pointer hover:bg-white/30 transition-colors duration-200">
+                <span className="inline-flex items-center gap-2 bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-[14px] cursor-pointer hover:bg-white/30 transition-colors duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   <Target className="w-[18px] h-[18px]" /> {goalsCompleted}/{goalTotal} goals today
                 </span>
               </div>
             </div>
 
             <div className="relative z-10 flex flex-col items-center mt-4 sm:mt-0">
-              <span className="text-white/80 text-sm font-semibold">Level {level}</span>
-              <span className="text-white font-black text-[52px] leading-none mt-1">{xpPoints}</span>
+              <span className="text-white/80 text-sm font-semibold">Level <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{level}</span></span>
+              <span className="text-white font-black text-[52px] leading-none mt-1" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{xpPoints}</span>
               <span className="text-white/80 text-sm font-medium mt-1">XP Points</span>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
                 <BookOpen className="w-6 h-6 text-[#2563eb]" />
               </div>
               <div>
-                <p className="text-[#2563eb] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.4s" }}>5</p>
+                <p className="text-[#2563eb] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.4s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>5</p>
                 <p className="text-[#6b7280] text-[13px] font-semibold mt-1">Homework Done</p>
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function DashboardPage() {
                 <Brain className="w-6 h-6 text-[#7c3aed]" />
               </div>
               <div>
-                <p className="text-[#7c3aed] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.45s" }}>12</p>
+                <p className="text-[#7c3aed] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.45s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>12</p>
                 <p className="text-[#6b7280] text-[13px] font-semibold mt-1">Concepts Learned</p>
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function DashboardPage() {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <p className="text-[#22c55e] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.5s" }}>28%</p>
+                  <p className="text-[#22c55e] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.5s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>28%</p>
                   <TrendingDown className="w-4 h-4 text-[#22c55e]" />
                 </div>
                 <p className="text-[#6b7280] text-[13px] font-semibold mt-1">AI Dependency</p>
@@ -157,7 +157,7 @@ export default function DashboardPage() {
                 <Trophy className="w-6 h-6 text-[#f59e0b]" />
               </div>
               <div>
-                <p className="text-[#f59e0b] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.55s" }}>8</p>
+                <p className="text-[#f59e0b] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.55s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>8</p>
                 <p className="text-[#6b7280] text-[13px] font-semibold mt-1">Badges Earned</p>
               </div>
             </div>
@@ -165,15 +165,15 @@ export default function DashboardPage() {
 
           {/* Choose Your Learning Tool */}
           <div>
-            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-5 anim-fade-up" style={{ animationDelay: "0.3s" }}>Choose Your Learning Tool</h2>
+            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-5 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-4 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-1.5 transition-all duration-250" style={{ animationDelay: "0.35s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] flex items-center justify-center group-hover:bg-[#dbeafe] group-hover:scale-110 transition-all duration-200">
                   <BookOpen className="w-8 h-8 text-[#2563eb]" />
                 </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Study Buddy</h3>
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Study Buddy</h3>
                 <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Get guided help with homework</p>
-                <Link href="/studyhub" className="text-[#2563eb] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
+                <Link href="/studyhub" className="text-[#2563eb] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -182,9 +182,9 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-2xl bg-[#faf5ff] flex items-center justify-center group-hover:bg-[#f3e8ff] group-hover:scale-110 transition-all duration-200">
                   <Brain className="w-8 h-8 text-[#7c3aed]" />
                 </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Concept Master</h3>
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Concept Master</h3>
                 <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Learn new topics with AI tutor</p>
-                <Link href="/studyhub" className="text-[#7c3aed] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
+                <Link href="/studyhub" className="text-[#7c3aed] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -193,9 +193,9 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-2xl bg-[#fffbeb] flex items-center justify-center group-hover:bg-[#fef3c6] group-hover:scale-110 transition-all duration-200">
                   <Trophy className="w-8 h-8 text-[#f59e0b]" />
                 </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Practice Arena</h3>
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Practice Arena</h3>
                 <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Practice with various question types</p>
-                <Link href="/studyhub" className="text-[#f59e0b] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
+                <Link href="/studyhub" className="text-[#f59e0b] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-2xl bg-[#ecfdf5] flex items-center justify-center group-hover:bg-[#d1fae5] group-hover:scale-110 transition-all duration-200">
                   <ClipboardList className="w-8 h-8 text-[#10b981]" />
                 </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]">Study Hub</h3>
+                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Study Hub</h3>
                 <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Notes, PDFs &amp; previous year papers</p>
                 <Link href="/studyhub" className="text-[#10b981] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200">
                   Get started <ChevronRight className="w-5 h-5" />

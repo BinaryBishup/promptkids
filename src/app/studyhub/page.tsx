@@ -133,6 +133,10 @@ function injectAnimations() {
   document.head.appendChild(style);
 }
 
+/* ─── Font helpers ─── */
+const displayFont = { fontFamily: 'var(--font-display)', fontWeight: 900 } as const;
+const bodyFont = { fontFamily: 'var(--font-body)', fontWeight: 500 } as const;
+
 /* ─── Component ─── */
 export default function StudyHubPage() {
   const [step, setStep] = useState<Step>("subjects");
@@ -191,7 +195,7 @@ export default function StudyHubPage() {
   /* ─── STEP 1: Subjects ─── */
   if (step === "subjects") {
     return (
-      <div className="min-h-screen bg-[#f8fafc] font-[var(--font-nunito)]">
+      <div className="min-h-screen bg-[#f8fafc]" style={bodyFont}>
         <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
           <Link
             href="/dashboard"
@@ -201,7 +205,7 @@ export default function StudyHubPage() {
             Back to home
           </Link>
 
-          <h1 className="text-[30px] font-black text-black mb-2 animate-fadeInUp stagger-1">
+          <h1 className="text-[30px] font-black text-black mb-2 animate-fadeInUp stagger-1" style={displayFont}>
             Study Buddy — Select Subject
           </h1>
           <p className="text-[16px] font-medium text-[#4a5565] mb-8 animate-fadeInUp stagger-2">
@@ -222,7 +226,7 @@ export default function StudyHubPage() {
                   >
                     <span className={c.text}>{subject.icon}</span>
                   </div>
-                  <span className="text-[18px] font-bold text-black">{subject.name}</span>
+                  <span className="text-[18px] font-bold text-black" style={displayFont}>{subject.name}</span>
                   <span className="text-[14px] font-medium text-gray-500 mt-0.5">
                     {subject.assignments} assignments
                   </span>
@@ -241,7 +245,7 @@ export default function StudyHubPage() {
     const assignments = assignmentsBySubject[selectedSubject.name] || [];
 
     return (
-      <div className="min-h-screen bg-[#f8fafc] font-[var(--font-nunito)]">
+      <div className="min-h-screen bg-[#f8fafc]" style={bodyFont}>
         <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
           <button
             onClick={() => setStep("subjects")}
@@ -253,7 +257,7 @@ export default function StudyHubPage() {
 
           <div className="flex items-center gap-3 mb-2 animate-fadeInUp stagger-1">
             <span className={`${c.text}`}>{selectedSubject.icon}</span>
-            <h1 className="text-[28px] font-black text-black">
+            <h1 className="text-[28px] font-black text-black" style={displayFont}>
               {selectedSubject.name} Homework
             </h1>
           </div>
@@ -269,10 +273,11 @@ export default function StudyHubPage() {
                 className={`group flex items-center justify-between bg-white border-2 border-[#e5e7eb] rounded-2xl px-6 py-5 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 hover:${c.border} cursor-pointer text-left animate-fadeInUp stagger-${i + 3}`}
               >
                 <div>
-                  <span className="block text-[16px] font-bold text-black mb-1.5">{a.title}</span>
+                  <span className="block text-[16px] font-bold text-black mb-1.5" style={displayFont}>{a.title}</span>
                   <div className="flex items-center gap-3">
                     <span
                       className={`inline-block text-[12px] font-bold px-2.5 py-0.5 rounded-full ${statusColor(a.status)}`}
+                      style={displayFont}
                     >
                       {a.status}
                     </span>
@@ -296,7 +301,7 @@ export default function StudyHubPage() {
     const c = colorMap[selectedSubject.color];
 
     return (
-      <div className="min-h-screen bg-[#f8fafc] font-[var(--font-nunito)]">
+      <div className="min-h-screen bg-[#f8fafc]" style={bodyFont}>
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <button
             onClick={() => setStep("topics")}
@@ -306,23 +311,23 @@ export default function StudyHubPage() {
             Back to assignments
           </button>
 
-          <h1 className="text-[24px] font-black text-black mb-4 animate-fadeInUp stagger-1">
+          <h1 className="text-[24px] font-black text-black mb-4 animate-fadeInUp stagger-1" style={displayFont}>
             {selectedAssignment.title}
           </h1>
 
           {/* Tags */}
           <div className="flex flex-wrap items-center gap-2 mb-8 animate-fadeInUp stagger-2">
-            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-cyan-700 bg-cyan-100 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-cyan-700 bg-cyan-100 px-3 py-1 rounded-full" style={displayFont}>
               {selectedSubject.name}
             </span>
-            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-gray-100 bg-gray-800 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-gray-100 bg-gray-800 px-3 py-1 rounded-full" style={displayFont}>
               Class 8
             </span>
-            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-orange-700 bg-orange-100 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-orange-700 bg-orange-100 px-3 py-1 rounded-full" style={displayFont}>
               <Clock size={13} />
               Due: Today 5:00 PM
             </span>
-            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-purple-700 bg-purple-100 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[13px] font-bold text-purple-700 bg-purple-100 px-3 py-1 rounded-full" style={displayFont}>
               <FileText size={13} />
               Long Answer
             </span>
@@ -333,7 +338,7 @@ export default function StudyHubPage() {
             <div className="flex-1 flex flex-col gap-6">
               {/* Assignment Question */}
               <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 animate-fadeInUp stagger-3">
-                <h2 className="flex items-center gap-2 text-[18px] font-extrabold text-black mb-5">
+                <h2 className="flex items-center gap-2 text-[18px] font-extrabold text-black mb-5" style={displayFont}>
                   <FileText size={20} className="text-blue-500" />
                   Assignment Question
                 </h2>
@@ -355,7 +360,7 @@ export default function StudyHubPage() {
                     The refractive index of the glass is 1.5. Calculate the angle of refraction and
                     explain the bending of light using Snell&apos;s Law.
                   </p>
-                  <p className="text-[14px] font-bold text-[#4a5565]">
+                  <p className="text-[14px] font-bold text-[#4a5565]" style={displayFont}>
                     Requirements: Show your working, include the formula, and explain each step.
                   </p>
                 </div>
@@ -363,7 +368,7 @@ export default function StudyHubPage() {
 
               {/* Your Answer */}
               <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 animate-fadeInUp stagger-4">
-                <h2 className="flex items-center gap-2 text-[18px] font-extrabold text-black mb-2">
+                <h2 className="flex items-center gap-2 text-[18px] font-extrabold text-black mb-2" style={displayFont}>
                   <PenTool size={20} className="text-green-500" />
                   Your Answer
                 </h2>
@@ -386,6 +391,7 @@ export default function StudyHubPage() {
                 <button
                   onClick={handleSubmit}
                   className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white text-[16px] font-bold rounded-[14px] py-3.5 transition-colors cursor-pointer"
+                  style={displayFont}
                 >
                   <Send size={18} />
                   Submit Answer (Attempt {attempts + 1})
@@ -395,7 +401,7 @@ export default function StudyHubPage() {
               {/* AI Help Levels */}
               <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 animate-fadeInUp stagger-5">
                 <div className="flex items-center justify-between mb-5">
-                  <h2 className="flex items-center gap-2 text-[18px] font-extrabold text-black">
+                  <h2 className="flex items-center gap-2 text-[18px] font-extrabold text-black" style={displayFont}>
                     <Atom size={20} className="text-purple-500" />
                     AI Help Levels
                   </h2>
