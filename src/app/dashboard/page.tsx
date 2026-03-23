@@ -184,7 +184,7 @@ export default function DashboardPage() {
                 </div>
                 <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Concept Master</h3>
                 <p className="text-[#6b7280] text-[14px] font-medium text-[#4a5565]">Learn new topics with AI tutor</p>
-                <Link href="/studyhub" className="text-[#7c3aed] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                <Link href="/concept-master" className="text-[#7c3aed] text-[14px] font-bold inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                   Get started <ChevronRight className="w-5 h-5" />
                 </Link>
               </div>
