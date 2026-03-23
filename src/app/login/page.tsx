@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ArrowLeft, Phone, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowLeft, Phone, ArrowRight, Sparkles, AlertCircle } from "lucide-react";
 import { useBookTrial } from "@/components/BookTrialContext";
+import { getSupabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const { open: openBookTrial } = useBookTrial();
@@ -11,6 +12,8 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [resendTimer, setResendTimer] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Resend timer countdown
@@ -20,12 +23,45 @@ export default function LoginPage() {
     return () => clearTimeout(t);
   }, [resendTimer]);
 
-  const handleSendOtp = useCallback(() => {
-    if (phone.replace(/\D/g, "").length === 10) {
+  const handleSendOtp = useCallback(async () => {
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) return;
+
+    setLoading(true);
+    setError("");
+    try {
+      const { error } = await getSupabase().auth.signInWithOtp({
+        phone: `+91${cleanPhone}`,
+      });
+      if (error) throw error;
       setStep("otp");
       setResendTimer(30);
       setTimeout(() => otpRefs.current[0]?.focus(), 100);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to send OTP";
+      setError(message);
     }
+    setLoading(false);
+  }, [phone]);
+
+  const handleVerifyOtp = useCallback(async (otpCode: string) => {
+    setLoading(true);
+    setError("");
+    try {
+      const { error } = await getSupabase().auth.verifyOtp({
+        phone: `+91${phone.replace(/\D/g, "")}`,
+        token: otpCode,
+        type: "sms",
+      });
+      if (error) throw error;
+      setStep("welcome");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Invalid OTP";
+      setError(message);
+      setOtp(["", "", "", "", "", ""]);
+      otpRefs.current[0]?.focus();
+    }
+    setLoading(false);
   }, [phone]);
 
   const handleOtpChange = (index: number, value: string) => {
@@ -41,7 +77,7 @@ export default function LoginPage() {
 
     // Auto-submit when all 6 digits entered
     if (newOtp.every((d) => d !== "") && index === 5) {
-      setTimeout(() => setStep("welcome"), 500);
+      handleVerifyOtp(newOtp.join(""));
     }
   };
 
@@ -51,10 +87,22 @@ export default function LoginPage() {
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     setOtp(["", "", "", "", "", ""]);
-    setResendTimer(30);
-    otpRefs.current[0]?.focus();
+    setError("");
+    setLoading(true);
+    try {
+      const { error } = await getSupabase().auth.signInWithOtp({
+        phone: `+91${phone.replace(/\D/g, "")}`,
+      });
+      if (error) throw error;
+      setResendTimer(30);
+      otpRefs.current[0]?.focus();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to resend OTP";
+      setError(message);
+    }
+    setLoading(false);
   };
 
   return (
@@ -84,6 +132,14 @@ export default function LoginPage() {
             </span>
           </div>
 
+          {/* Error banner */}
+          {error && (
+            <div className="mb-4 flex items-start gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-600">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+          )}
+
           {/* Step: Phone */}
           {step === "phone" && (
             <div>
@@ -101,7 +157,7 @@ export default function LoginPage() {
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                    onChange={(e) => { setPhone(e.target.value.replace(/\D/g, "").slice(0, 10)); setError(""); }}
                     placeholder="10 digit number"
                     className="flex-1 bg-transparent text-[15px] outline-none text-pk-text placeholder:text-pk-gray font-medium tracking-wide"
                     autoFocus
@@ -112,14 +168,14 @@ export default function LoginPage() {
 
               <button
                 onClick={handleSendOtp}
-                disabled={phone.replace(/\D/g, "").length !== 10}
+                disabled={phone.replace(/\D/g, "").length !== 10 || loading}
                 className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold transition-all active:scale-[0.97] ${
-                  phone.replace(/\D/g, "").length === 10
+                  phone.replace(/\D/g, "").length === 10 && !loading
                     ? "bg-pk-orange text-white hover:bg-pk-orange-dark"
                     : "bg-pk-gray-border text-pk-gray cursor-not-allowed"
                 }`}
               >
-                Send OTP <ArrowRight className="w-4 h-4" />
+                {loading ? "Sending..." : "Send OTP"} {!loading && <ArrowRight className="w-4 h-4" />}
               </button>
 
               <div className="mt-5 pt-5 border-t border-pk-gray-border text-center">
@@ -155,14 +211,19 @@ export default function LoginPage() {
                     value={digit}
                     onChange={(e) => handleOtpChange(i, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                    disabled={loading}
                     className={`w-11 h-13 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl border-2 outline-none transition-all ${
                       digit
                         ? "border-pk-orange bg-pk-orange/5 text-pk-text"
                         : "border-pk-gray-border bg-pk-gray-light text-pk-text focus:border-pk-orange/40"
-                    }`}
+                    } ${loading ? "opacity-50" : ""}`}
                   />
                 ))}
               </div>
+
+              {loading && (
+                <p className="text-center text-xs text-pk-text-secondary mb-4">Verifying...</p>
+              )}
 
               {/* Resend */}
               <div className="text-center mb-5">
@@ -171,7 +232,7 @@ export default function LoginPage() {
                     Resend OTP in <span className="font-semibold text-pk-text tabular-nums">{resendTimer}s</span>
                   </p>
                 ) : (
-                  <button onClick={handleResend} className="text-xs font-semibold text-pk-orange hover:text-pk-orange-dark">
+                  <button onClick={handleResend} disabled={loading} className="text-xs font-semibold text-pk-orange hover:text-pk-orange-dark">
                     Resend OTP
                   </button>
                 )}
@@ -179,7 +240,7 @@ export default function LoginPage() {
 
               {/* Change number */}
               <button
-                onClick={() => { setStep("phone"); setOtp(["", "", "", "", "", ""]); }}
+                onClick={() => { setStep("phone"); setOtp(["", "", "", "", "", ""]); setError(""); }}
                 className="w-full text-center text-xs text-pk-text-secondary hover:text-pk-text"
               >
                 Change mobile number
@@ -195,13 +256,14 @@ export default function LoginPage() {
               </div>
               <h1 className="text-xl font-extrabold text-pk-text mb-1">Welcome back!</h1>
               <p className="text-sm text-pk-text-secondary mb-6">
-                Redirecting to your dashboard...
+                You&apos;re logged in successfully.
               </p>
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-pk-orange animate-bounce [animation-delay:0ms]" />
-                <div className="w-2 h-2 rounded-full bg-pk-orange animate-bounce [animation-delay:150ms]" />
-                <div className="w-2 h-2 rounded-full bg-pk-orange animate-bounce [animation-delay:300ms]" />
-              </div>
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pk-navy text-white text-sm font-semibold rounded-xl hover:bg-pk-navy-light transition-colors"
+              >
+                Go to Home <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           )}
         </div>

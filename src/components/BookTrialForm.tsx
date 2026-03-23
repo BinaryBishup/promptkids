@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { X, ArrowRight, ArrowLeft, Phone, User, GraduationCap, Calendar, CheckCircle2, Sparkles } from "lucide-react";
+import { useState, useRef } from "react";
+import { X, ArrowRight, ArrowLeft, Phone, User, GraduationCap, Calendar, CheckCircle2, Sparkles, AlertCircle } from "lucide-react";
 import { useBookTrial } from "./BookTrialContext";
 import { getSupabase } from "@/lib/supabase";
 
@@ -28,6 +28,12 @@ export default function BookTrialForm() {
     source: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpError, setOtpError] = useState("");
+  const [otpLoading, setOtpLoading] = useState(false);
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   if (!isOpen) return null;
 
@@ -49,28 +55,97 @@ export default function BookTrialForm() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
+    const supabase = getSupabase();
+    const cleanPhone = form.phone.replace(/\D/g, "");
+
     try {
-      await getSupabase().from("trial_bookings").insert({
+      // 1. Save booking
+      await supabase.from("trial_bookings").insert({
         parent_name: form.parentName,
-        phone: form.phone,
+        phone: cleanPhone,
         child_name: form.childName,
         child_class: form.childClass,
         batch: form.batch,
         source: form.source || null,
       });
+
+      // 2. Send OTP to create/sign-in account
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: `+91${cleanPhone}`,
+      });
+      if (!error) {
+        setOtpSent(true);
+      }
     } catch {
-      // silently continue — booking confirmation shown regardless
+      // continue to success screen regardless
     }
+
     setSubmitting(false);
     next();
   };
 
+  const handleVerifyOtp = async (otpCode: string) => {
+    setOtpLoading(true);
+    setOtpError("");
+    try {
+      const supabase = getSupabase();
+      const { error } = await supabase.auth.verifyOtp({
+        phone: `+91${form.phone.replace(/\D/g, "")}`,
+        token: otpCode,
+        type: "sms",
+      });
+      if (error) throw error;
+
+      // Link the booking to this user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from("trial_bookings")
+          .update({ user_id: user.id })
+          .eq("phone", form.phone.replace(/\D/g, ""))
+          .is("user_id", null);
+      }
+
+      setOtpVerified(true);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Invalid OTP";
+      setOtpError(message);
+      setOtp(["", "", "", "", "", ""]);
+      otpRefs.current[0]?.focus();
+    }
+    setOtpLoading(false);
+  };
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (!/^\d*$/.test(value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = value.slice(-1);
+    setOtp(newOtp);
+
+    if (value && index < 5) {
+      otpRefs.current[index + 1]?.focus();
+    }
+
+    if (newOtp.every((d) => d !== "") && index === 5) {
+      handleVerifyOtp(newOtp.join(""));
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
+
   const handleClose = () => {
     close();
-    // Reset after close animation
     setTimeout(() => {
       setStep(0);
       setForm({ parentName: "", phone: "", childName: "", childClass: "", batch: "", source: "" });
+      setOtpSent(false);
+      setOtp(["", "", "", "", "", ""]);
+      setOtpVerified(false);
+      setOtpError("");
     }, 300);
   };
 
@@ -252,9 +327,9 @@ export default function BookTrialForm() {
             </div>
           )}
 
-          {/* Step 3: Success */}
+          {/* Step 3: Success + OTP verification */}
           {step === 3 && (
-            <div className="text-center py-6">
+            <div className="text-center py-4">
               <div className="w-16 h-16 rounded-full bg-pk-green/10 flex items-center justify-center mx-auto mb-5">
                 <CheckCircle2 className="w-8 h-8 text-pk-green" />
               </div>
@@ -280,10 +355,70 @@ export default function BookTrialForm() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-center gap-2 text-[12px] text-pk-text-secondary">
-                <Sparkles className="w-3.5 h-3.5 text-pk-orange" />
-                <span>No payment required. First class is completely free.</span>
-              </div>
+              {/* OTP Verification for account creation */}
+              {otpSent && !otpVerified && (
+                <div className="border-t border-pk-gray-border pt-5 mt-2 max-w-xs mx-auto">
+                  <p className="text-xs font-semibold text-pk-text mb-1">Verify your number to create your account</p>
+                  <p className="text-[11px] text-pk-text-secondary mb-4">Enter the 6-digit OTP sent to +91 {form.phone}</p>
+
+                  {otpError && (
+                    <div className="mb-3 flex items-center justify-center gap-1.5 text-[11px] text-red-500">
+                      <AlertCircle className="w-3.5 h-3.5" />
+                      <span>{otpError}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-center gap-2 mb-4">
+                    {otp.map((digit, i) => (
+                      <input
+                        key={i}
+                        ref={(el) => { otpRefs.current[i] = el; }}
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleOtpChange(i, e.target.value)}
+                        onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                        disabled={otpLoading}
+                        className={`w-10 h-12 text-center text-lg font-bold rounded-xl border-2 outline-none transition-all ${
+                          digit
+                            ? "border-pk-orange bg-pk-orange/5 text-pk-text"
+                            : "border-pk-gray-border bg-pk-gray-light text-pk-text focus:border-pk-orange/40"
+                        } ${otpLoading ? "opacity-50" : ""}`}
+                      />
+                    ))}
+                  </div>
+
+                  {otpLoading && (
+                    <p className="text-[11px] text-pk-text-secondary mb-2">Verifying...</p>
+                  )}
+
+                  <button
+                    onClick={handleClose}
+                    className="text-[11px] text-pk-gray hover:text-pk-text-secondary transition-colors"
+                  >
+                    Skip for now
+                  </button>
+                </div>
+              )}
+
+              {/* Account verified success */}
+              {otpVerified && (
+                <div className="border-t border-pk-gray-border pt-5 mt-2">
+                  <div className="flex items-center justify-center gap-2 text-sm text-pk-green font-semibold">
+                    <CheckCircle2 className="w-4 h-4" />
+                    Account created! You can now login anytime.
+                  </div>
+                </div>
+              )}
+
+              {/* No OTP sent — just show the sparkle note */}
+              {!otpSent && (
+                <div className="flex items-center justify-center gap-2 text-[12px] text-pk-text-secondary">
+                  <Sparkles className="w-3.5 h-3.5 text-pk-orange" />
+                  <span>No payment required. First class is completely free.</span>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -300,13 +435,13 @@ export default function BookTrialForm() {
               onClick={step === 2 ? handleSubmit : next}
               disabled={!canNext() || submitting}
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.97] ${
-                canNext()
+                canNext() && !submitting
                   ? "bg-pk-orange text-white hover:bg-pk-orange-dark"
                   : "bg-pk-gray-border text-pk-gray cursor-not-allowed"
               }`}
             >
-              {step === 2 ? "Book My Free Class" : "Continue"}
-              <ArrowRight className="w-4 h-4" />
+              {submitting ? "Booking..." : step === 2 ? "Book My Free Class" : "Continue"}
+              {!submitting && <ArrowRight className="w-4 h-4" />}
             </button>
           </div>
         )}
