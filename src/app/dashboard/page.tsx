@@ -36,7 +36,7 @@ export default function DashboardPage() {
       <nav className="sticky top-0 z-50 bg-white border-b border-[#f3f4f6] h-[78px] flex items-center justify-between px-6">
         {/* Left: Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-[14px] bg-gradient-to-br from-[#2563eb] to-[#7c3aed] flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-[14px] bg-gradient-to-br from-[#2563eb] to-[#7c3aed] flex items-center justify-center flex-shrink-0 hover:scale-110 hover:shadow-lg hover:shadow-blue-200 transition-all duration-200 cursor-pointer">
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col">
@@ -72,10 +72,10 @@ export default function DashboardPage() {
               <h1 className="text-white font-bold text-2xl">Welcome back, Arjun! 👋</h1>
               <p className="text-white/90 text-sm">Ready to learn something new today?</p>
               <div className="flex flex-wrap gap-2 mt-1">
-                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-sm px-3 py-1.5 rounded-[14px]">
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-sm px-3 py-1.5 rounded-[14px] cursor-pointer hover:bg-white/30 transition-colors duration-200">
                   <Flame className="w-4 h-4" /> {streakDays} day streak
                 </span>
-                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-sm px-3 py-1.5 rounded-[14px]">
+                <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-sm px-3 py-1.5 rounded-[14px] cursor-pointer hover:bg-white/30 transition-colors duration-200">
                   <Target className="w-4 h-4" /> {goalsCompleted}/{goalTotal} goals today
                 </span>
               </div>
@@ -92,7 +92,7 @@ export default function DashboardPage() {
           {/* Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {/* Homework Done */}
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-md hover:shadow-blue-100 hover:-translate-y-0.5 transition-all duration-200">
               <div className="w-11 h-11 rounded-xl bg-[#eff6ff] flex items-center justify-center flex-shrink-0">
                 <BookOpen className="w-5 h-5 text-[#2563eb]" />
               </div>
@@ -103,7 +103,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Concepts Learned */}
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-md hover:shadow-purple-100 hover:-translate-y-0.5 transition-all duration-200">
               <div className="w-11 h-11 rounded-xl bg-[#faf5ff] flex items-center justify-center flex-shrink-0">
                 <Brain className="w-5 h-5 text-[#7c3aed]" />
               </div>
@@ -114,7 +114,7 @@ export default function DashboardPage() {
             </div>
 
             {/* AI Dependency */}
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#22c55e]/40 hover:shadow-md hover:shadow-green-100 hover:-translate-y-0.5 transition-all duration-200">
               <div className="w-11 h-11 rounded-xl bg-[#f0fdf4] flex items-center justify-center flex-shrink-0">
                 <TrendingDown className="w-5 h-5 text-[#22c55e]" />
               </div>
@@ -128,7 +128,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Badges Earned */}
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl h-[100px] flex items-center gap-4 px-5 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-md hover:shadow-amber-100 hover:-translate-y-0.5 transition-all duration-200">
               <div className="w-11 h-11 rounded-xl bg-[#fffbeb] flex items-center justify-center flex-shrink-0">
                 <Trophy className="w-5 h-5 text-[#f59e0b]" />
               </div>
@@ -144,49 +144,49 @@ export default function DashboardPage() {
             <h2 className="font-bold text-xl text-[#111] mb-4">Choose Your Learning Tool</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Study Buddy */}
-              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#2563eb]/8 flex items-center justify-center">
+              <div className="group bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-lg hover:shadow-blue-100/50 hover:-translate-y-1 transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-[#2563eb]/8 flex items-center justify-center group-hover:bg-[#2563eb]/15 group-hover:scale-110 transition-all duration-200">
                   <BookOpen className="w-7 h-7 text-[#2563eb]" />
                 </div>
                 <h3 className="font-bold text-xl text-[#111]">Study Buddy</h3>
                 <p className="text-[#6b7280] text-sm">Get guided help with homework</p>
-                <Link href="#" className="text-[#2563eb] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                <Link href="#" className="text-[#2563eb] text-sm font-medium inline-flex items-center gap-1 mt-auto group-hover:gap-2 transition-all duration-200">
                   Get started <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
 
               {/* Concept Master */}
-              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#7c3aed]/8 flex items-center justify-center">
+              <div className="group bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-lg hover:shadow-purple-100/50 hover:-translate-y-1 transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-[#7c3aed]/8 flex items-center justify-center group-hover:bg-[#7c3aed]/15 group-hover:scale-110 transition-all duration-200">
                   <Brain className="w-7 h-7 text-[#7c3aed]" />
                 </div>
                 <h3 className="font-bold text-xl text-[#111]">Concept Master</h3>
                 <p className="text-[#6b7280] text-sm">Learn new topics with AI tutor</p>
-                <Link href="#" className="text-[#7c3aed] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                <Link href="#" className="text-[#7c3aed] text-sm font-medium inline-flex items-center gap-1 mt-auto group-hover:gap-2 transition-all duration-200">
                   Get started <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
 
               {/* Practice Arena */}
-              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#f59e0b]/8 flex items-center justify-center">
+              <div className="group bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-lg hover:shadow-amber-100/50 hover:-translate-y-1 transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-[#f59e0b]/8 flex items-center justify-center group-hover:bg-[#f59e0b]/15 group-hover:scale-110 transition-all duration-200">
                   <Trophy className="w-7 h-7 text-[#f59e0b]" />
                 </div>
                 <h3 className="font-bold text-xl text-[#111]">Practice Arena</h3>
                 <p className="text-[#6b7280] text-sm">Practice with various question types</p>
-                <Link href="#" className="text-[#f59e0b] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                <Link href="#" className="text-[#f59e0b] text-sm font-medium inline-flex items-center gap-1 mt-auto group-hover:gap-2 transition-all duration-200">
                   Get started <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
 
               {/* Study Hub */}
-              <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-xl bg-[#10b981]/8 flex items-center justify-center">
+              <div className="group bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col gap-3 cursor-pointer hover:border-[#10b981]/40 hover:shadow-lg hover:shadow-emerald-100/50 hover:-translate-y-1 transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-[#10b981]/8 flex items-center justify-center group-hover:bg-[#10b981]/15 group-hover:scale-110 transition-all duration-200">
                   <ClipboardList className="w-7 h-7 text-[#10b981]" />
                 </div>
                 <h3 className="font-bold text-xl text-[#111]">Study Hub</h3>
                 <p className="text-[#6b7280] text-sm">Notes, PDFs &amp; previous year papers</p>
-                <Link href="#" className="text-[#10b981] text-sm font-medium inline-flex items-center gap-1 mt-auto hover:underline">
+                <Link href="#" className="text-[#10b981] text-sm font-medium inline-flex items-center gap-1 mt-auto group-hover:gap-2 transition-all duration-200">
                   Get started <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -204,7 +204,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-3">
               {/* Activity 1 - Blue */}
-              <div className="bg-[#eff6ff] border border-[#dbeafe] rounded-xl p-3.5 flex items-start gap-3">
+              <div className="bg-[#eff6ff] border border-[#dbeafe] rounded-xl p-3.5 flex items-start gap-3 cursor-pointer hover:bg-[#dbeafe] hover:border-[#93c5fd] hover:scale-[1.02] transition-all duration-200">
                 <div className="w-9 h-9 rounded-lg bg-[#2563eb] flex items-center justify-center flex-shrink-0">
                   <BookOpen className="w-4 h-4 text-white" />
                 </div>
@@ -215,7 +215,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Activity 2 - Purple */}
-              <div className="bg-[#faf5ff] border border-[#f3e8ff] rounded-xl p-3.5 flex items-start gap-3">
+              <div className="bg-[#faf5ff] border border-[#f3e8ff] rounded-xl p-3.5 flex items-start gap-3 cursor-pointer hover:bg-[#f3e8ff] hover:border-[#d8b4fe] hover:scale-[1.02] transition-all duration-200">
                 <div className="w-9 h-9 rounded-lg bg-[#7c3aed] flex items-center justify-center flex-shrink-0">
                   <Brain className="w-4 h-4 text-white" />
                 </div>
@@ -226,7 +226,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Activity 3 - Amber */}
-              <div className="bg-[#fffbeb] border border-[#fef3c6] rounded-xl p-3.5 flex items-start gap-3">
+              <div className="bg-[#fffbeb] border border-[#fef3c6] rounded-xl p-3.5 flex items-start gap-3 cursor-pointer hover:bg-[#fef3c6] hover:border-[#fde68a] hover:scale-[1.02] transition-all duration-200">
                 <div className="w-9 h-9 rounded-lg bg-[#f59e0b] flex items-center justify-center flex-shrink-0">
                   <Trophy className="w-4 h-4 text-white" />
                 </div>
@@ -246,7 +246,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Red gradient card */}
-            <div className="bg-gradient-to-r from-[#fef2f2] to-[#fff7ed] border border-[#ffc9c9] rounded-xl p-4 mb-3">
+            <div className="bg-gradient-to-r from-[#fef2f2] to-[#fff7ed] border border-[#ffc9c9] rounded-xl p-4 mb-3 hover:shadow-md hover:shadow-red-100 hover:border-[#f87171] transition-all duration-200">
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-14 h-14 rounded-xl bg-[#ffe2e2] flex items-center justify-center flex-shrink-0">
                   <AlarmClock className="w-7 h-7 text-[#e7000b]" />
@@ -257,13 +257,13 @@ export default function DashboardPage() {
                   <p className="text-[#9ca3af] text-xs mt-0.5">Chapters 1-4 &bull; 60 minutes</p>
                 </div>
               </div>
-              <button className="w-full bg-[#e7000b] text-white font-semibold text-sm py-2.5 rounded-[14px] hover:bg-[#cc0009] transition-colors">
+              <button className="w-full bg-[#e7000b] text-white font-semibold text-sm py-2.5 rounded-[14px] hover:bg-[#cc0009] hover:shadow-lg hover:shadow-red-200 active:scale-[0.97] transition-all duration-200">
                 Start Practice Now
               </button>
             </div>
 
             {/* Small blue card */}
-            <div className="bg-[#eff6ff] border border-[#dbeafe] rounded-xl p-3.5">
+            <div className="bg-[#eff6ff] border border-[#dbeafe] rounded-xl p-3.5 cursor-pointer hover:bg-[#dbeafe] hover:border-[#93c5fd] hover:scale-[1.02] transition-all duration-200">
               <div className="flex items-center justify-between">
                 <p className="font-bold text-sm text-[#111]">Maths Quiz</p>
                 <p className="text-[#2563eb] text-sm font-medium">in 12 days</p>
@@ -279,7 +279,7 @@ export default function DashboardPage() {
               <h3 className="font-bold text-base text-[#111]">Daily Challenge</h3>
             </div>
 
-            <div className="bg-gradient-to-b from-[#fefce8] to-[#fffbeb] border border-[#ffdf20] rounded-xl p-5 flex flex-col items-center">
+            <div className="bg-gradient-to-b from-[#fefce8] to-[#fffbeb] border border-[#ffdf20] rounded-xl p-5 flex flex-col items-center hover:shadow-md hover:shadow-amber-100 hover:border-[#f59e0b] transition-all duration-200">
               <p className="text-[#f59e0b] font-bold text-4xl">+100 XP</p>
               <p className="text-[#6b7280] text-sm mt-1">Complete 3 homework questions</p>
 
@@ -311,7 +311,7 @@ export default function DashboardPage() {
               <h3 className="font-bold text-base text-[#111]">Learning Tip</h3>
             </div>
 
-            <div className="bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] border border-[#b9f8cf] rounded-xl p-5">
+            <div className="bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] border border-[#b9f8cf] rounded-xl p-5 hover:shadow-md hover:shadow-green-100 hover:border-[#86efac] transition-all duration-200">
               <p className="text-[#4b5563] text-sm leading-relaxed">
                 &ldquo;Try solving problems on your own first before using AI help. It builds stronger understanding!&rdquo;
               </p>
