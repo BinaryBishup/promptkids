@@ -27,6 +27,7 @@ export default function BookTrialForm() {
     batch: "",
     source: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
@@ -45,8 +46,6 @@ export default function BookTrialForm() {
   const prev = () => {
     if (step > 0 && step < 3) setStep(step - 1);
   };
-
-  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     setSubmitting(true);
