@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Figtree, JetBrains_Mono } from "next/font/google";
+import { Figtree, JetBrains_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import { BookTrialProvider } from "@/components/BookTrialContext";
 import BookTrialForm from "@/components/BookTrialForm";
@@ -16,6 +16,12 @@ const jetbrains = JetBrains_Mono({
   weight: ["400", "500", "700"],
 });
 
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
 export const metadata: Metadata = {
   title: "PromptKids — India's Smartest AI Class for Kids | Gurugram",
   description:
@@ -29,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${figtree.variable} ${jetbrains.variable} antialiased`}>
+    <html lang="en" className={`${figtree.variable} ${jetbrains.variable} ${nunito.variable} antialiased`}>
       <body className="min-h-full flex flex-col">
         <BookTrialProvider>
           {children}
