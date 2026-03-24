@@ -24,6 +24,7 @@ import {
   Trophy,
   Bot,
 } from "lucide-react";
+import SubjectPicker, { subjectData } from "@/components/SubjectPicker";
 
 /* ─── Types ─── */
 type Step = "subjects" | "topics" | "workspace";
@@ -237,36 +238,29 @@ export default function StudyHubPage() {
   /* ─── STEP 1: Subjects ─── */
   if (step === "subjects") {
     return (
-      <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
-        <div className="max-w-5xl mx-auto px-6 py-12">
-          <Link href="/dashboard" className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade" style={dFont}>
-            <ArrowLeft size={20} /> Back to home
-          </Link>
-
-          <h1 className="text-[36px] text-[#0f172a] mb-3 sh-fade sh-d1" style={dFont}>
-            Study Buddy — Select Subject
-          </h1>
-          <p className="text-[18px] text-[#64748b] mb-10 sh-fade sh-d2" style={bFont}>
-            Choose the subject you need help with
-          </p>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-            {subjects.map((subject, i) => (
-              <button
-                key={subject.name}
-                onClick={() => handleSubjectClick(subject)}
-                className={`group flex flex-col items-center justify-center h-[220px] bg-white border-2 border-[#e5e7eb] rounded-2xl transition-all duration-200 hover:shadow-xl hover:-translate-y-1.5 ${subject.borderHover} cursor-pointer sh-fade sh-d${i + 3}`}
-              >
-                <div className={`w-[72px] h-[72px] rounded-2xl ${subject.bgMedium} flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-110`}>
-                  <span className={subject.textColor}>{subject.icon}</span>
-                </div>
-                <span className="text-[20px] text-[#0f172a]" style={dFont}>{subject.name}</span>
-                <span className="text-[15px] text-[#94a3b8] mt-1" style={bFont}>{subject.assignments} assignments</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+      <SubjectPicker
+        toolName="Study Buddy"
+        toolEmoji="📚"
+        subtitle="Choose the subject you need help with"
+        animClass="sh-fade"
+        onSelect={(s) => {
+          const match = subjects.find((sub) => sub.name === s.name);
+          if (match) {
+            handleSubjectClick(match);
+          } else {
+            handleSubjectClick({
+              name: s.name,
+              icon: <Atom size={36} />,
+              color: s.color.replace("text-", "").replace("-600", ""),
+              bgLight: s.bg,
+              bgMedium: s.bgMedium,
+              textColor: s.color,
+              borderHover: s.borderHover,
+              assignments: 0,
+            });
+          }
+        }}
+      />
     );
   }
 
