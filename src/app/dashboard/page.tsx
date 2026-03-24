@@ -110,75 +110,56 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Quick Access */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 anim-fade-up" style={{ animationDelay: "0.1s" }}>
+          {/* Quick Access — compact icon row */}
+          <div className="flex items-center gap-2 anim-fade-up" style={{ animationDelay: "0.1s" }}>
             {[
-              { icon: CalendarDays, label: "My Schedule", color: "text-[#2563eb]", bg: "bg-[#eff6ff]", borderHover: "hover:border-[#2563eb]/40", shadowHover: "hover:shadow-blue-100", href: "/schedule" },
-              { icon: Award, label: "Achievements", color: "text-[#7c3aed]", bg: "bg-[#faf5ff]", borderHover: "hover:border-[#7c3aed]/40", shadowHover: "hover:shadow-purple-100", href: "/achievements" },
-              { icon: Library, label: "My Library", color: "text-[#10b981]", bg: "bg-[#ecfdf5]", borderHover: "hover:border-[#10b981]/40", shadowHover: "hover:shadow-emerald-100", href: "/study-hub" },
-              { icon: Settings, label: "Settings", color: "text-[#6b7280]", bg: "bg-gray-50", borderHover: "hover:border-gray-300", shadowHover: "hover:shadow-gray-100", href: "/settings" },
+              { icon: CalendarDays, label: "Schedule", color: "text-[#2563eb]", bg: "bg-[#eff6ff] hover:bg-[#dbeafe]", href: "/schedule" },
+              { icon: Award, label: "Achievements", color: "text-[#7c3aed]", bg: "bg-[#faf5ff] hover:bg-[#f3e8ff]", href: "/achievements" },
+              { icon: Library, label: "Library", color: "text-[#10b981]", bg: "bg-[#ecfdf5] hover:bg-[#d1fae5]", href: "/study-hub" },
+              { icon: Settings, label: "Settings", color: "text-[#6b7280]", bg: "bg-gray-100 hover:bg-gray-200", href: "/settings" },
             ].map((item) => (
-              <Link key={item.label} href={item.href} className={`flex items-center gap-3 bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl px-5 py-4 ${item.borderHover} hover:shadow-lg ${item.shadowHover} hover:-translate-y-0.5 transition-all duration-200 no-underline cursor-pointer`}>
-                <div className={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center flex-shrink-0`}>
-                  <item.icon className={`w-5 h-5 ${item.color}`} />
-                </div>
-                <span className="text-[14px] text-[#374151]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
+              <Link key={item.label} href={item.href} className={`inline-flex items-center gap-2 ${item.bg} px-4 py-2.5 rounded-full transition-all duration-200 no-underline cursor-pointer hover:shadow-sm`}>
+                <item.icon className={`w-4 h-4 ${item.color}`} />
+                <span className="text-[13px] text-[#374151]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
               </Link>
             ))}
           </div>
 
-          {/* Today's Events */}
-          <div className="anim-fade-up" style={{ animationDelay: "0.15s" }}>
-            <h3 className="text-[16px] text-[#0f172a] mb-4 flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-              <span className="text-[18px]">📋</span> Today&apos;s Events
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-              {/* Live Class */}
-              <div className="flex items-center gap-3 bg-red-50 border-2 border-red-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-                <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
-                  <Video className="w-5 h-5 text-red-500" />
+          {/* Today's Events — horizontal ticker banner */}
+          <div className="anim-fade-up rounded-2xl overflow-hidden" style={{ animationDelay: "0.15s" }}>
+            <div className="bg-gradient-to-r from-[#0f172a] to-[#1e293b] px-6 py-4 flex items-center gap-6">
+              {/* Live indicator */}
+              <div className="flex items-center gap-3 flex-shrink-0 pr-6 border-r border-white/10">
+                <div className="relative">
+                  <span className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-30" />
+                  <span className="relative w-3 h-3 bg-red-500 rounded-full block" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[13px] text-[#0f172a] truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Physics Class</span>
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                <div>
+                  <span className="text-white text-[14px] block" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Physics Class</span>
+                  <span className="text-white/50 text-[11px]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Live now</span>
+                </div>
+                <Link href="/live-classes" className="ml-2 bg-red-500 text-white text-[11px] px-3 py-1 rounded-full no-underline hover:bg-red-600 transition-colors" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                  Join
+                </Link>
+              </div>
+
+              {/* Scrolling events */}
+              <div className="flex items-center gap-6 overflow-hidden flex-1">
+                {[
+                  { icon: "⏰", text: "Science HW due in 2h", color: "text-amber-400" },
+                  { icon: "📋", text: "New: Maths Assignment", color: "text-blue-400" },
+                  { icon: "📝", text: "Science Mid-term in 5 days", color: "text-purple-400" },
+                ].map((event) => (
+                  <div key={event.text} className="flex items-center gap-2 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity">
+                    <span className="text-[14px]">{event.icon}</span>
+                    <span className={`text-[13px] ${event.color} whitespace-nowrap`} style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{event.text}</span>
                   </div>
-                  <span className="text-[11px] text-red-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Live now • 2:00 PM</span>
-                </div>
+                ))}
               </div>
 
-              {/* Due Homework */}
-              <div className="flex items-center gap-3 bg-amber-50 border-2 border-amber-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-                <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <BookOpen className="w-5 h-5 text-amber-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Science HW Due</span>
-                  <span className="text-[11px] text-amber-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Due in 2 hours</span>
-                </div>
-              </div>
-
-              {/* Today's Homework */}
-              <div className="flex items-center gap-3 bg-blue-50 border-2 border-blue-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
-                  <ClipboardList className="w-5 h-5 text-blue-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Maths Assignment</span>
-                  <span className="text-[11px] text-blue-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>New • Assigned today</span>
-                </div>
-              </div>
-
-              {/* Upcoming Test */}
-              <div className="flex items-center gap-3 bg-purple-50 border-2 border-purple-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
-                  <Trophy className="w-5 h-5 text-purple-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Science Mid-term</span>
-                  <span className="text-[11px] text-purple-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>In 5 days • Mar 28</span>
-                </div>
-              </div>
+              <Link href="/schedule" className="text-white/40 text-[12px] hover:text-white/70 transition-colors no-underline flex-shrink-0" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                View all →
+              </Link>
             </div>
           </div>
 
