@@ -25,6 +25,9 @@ import {
   Loader2,
   CheckCircle2,
   Zap,
+  Globe,
+  Play,
+  ExternalLink,
 } from "lucide-react";
 
 /* ─── Types ─── */
@@ -327,7 +330,62 @@ export default function ConceptMasterPage() {
               </div>
             </div>
 
-            {/* Message 6: AI follow-up with input */}
+            {/* Message 6: AI-generated diagram */}
+            <div className="flex justify-start gap-3 cm-msg" style={{ animationDelay: "0.85s" }}>
+              <div className="w-10 h-10 rounded-full bg-[#2563eb] flex items-center justify-center flex-shrink-0">
+                <ImageIcon size={20} className="text-white" />
+              </div>
+              <div className="bg-white border-2 border-blue-200 rounded-2xl overflow-hidden max-w-[600px]">
+                <div className="h-[180px] bg-gradient-to-br from-[#1e3a5f] via-[#2d5f8a] to-[#1a2d4a] relative flex items-center justify-center">
+                  <div className="absolute w-px h-full bg-white/30 left-1/2" />
+                  <div className="absolute w-32 h-px bg-yellow-300/50 rotate-[30deg] top-1/3 left-1/4" />
+                  <div className="absolute w-32 h-px bg-cyan-300/50 -rotate-[20deg] bottom-1/3 right-1/4" />
+                  <div className="absolute w-20 h-20 border border-white/20 rounded-full top-1/4 right-1/3" />
+                  <span className="text-white/30 text-[11px] absolute bottom-2 right-3" style={bFont}>AI Generated</span>
+                </div>
+                <div className="px-5 py-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <ImageIcon size={14} className="text-blue-500" />
+                    <span className="text-[12px] text-blue-600 uppercase tracking-wide" style={dFont}>Generated Diagram</span>
+                  </div>
+                  <p className="text-[14px] text-[#374151]" style={bFont}>
+                    Water molecules in liquid vs ice — showing how the crystal lattice structure makes ice less dense
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Message 7: YouTube recommendation */}
+            <div className="flex justify-start gap-3 cm-msg" style={{ animationDelay: "0.95s" }}>
+              <div className="w-10 h-10 rounded-full bg-[#ef4444] flex items-center justify-center flex-shrink-0">
+                <Youtube size={20} className="text-white" />
+              </div>
+              <div className="bg-white border-2 border-red-200 rounded-2xl overflow-hidden max-w-[500px]">
+                <div className="h-[140px] bg-gradient-to-br from-red-900 to-red-800 relative flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center">
+                    <Play size={28} className="text-white ml-1" />
+                  </div>
+                  <span className="absolute bottom-2 right-3 bg-black/60 text-white text-[11px] px-2 py-0.5 rounded" style={bFont}>3:42</span>
+                </div>
+                <div className="px-5 py-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Globe size={14} className="text-red-500" />
+                    <span className="text-[12px] text-red-500 uppercase tracking-wide" style={dFont}>Found on the Internet</span>
+                  </div>
+                  <p className="text-[14px] text-[#0f172a] mb-1" style={dFont}>
+                    Why Does Ice Float? — Science Explained
+                  </p>
+                  <p className="text-[12px] text-[#94a3b8] mb-3" style={bFont}>
+                    A short animated video that explains density and molecular structure in a fun way.
+                  </p>
+                  <button className="inline-flex items-center gap-1.5 text-[13px] text-[#ef4444] hover:text-red-700 transition-colors cursor-pointer" style={dFont}>
+                    <ExternalLink size={14} /> Watch Video
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Message 8: AI follow-up with input */}
             <div className="flex justify-start gap-3 cm-msg" style={{ animationDelay: "0.85s" }}>
               <div className="w-10 h-10 rounded-full bg-[#7c3aed] flex items-center justify-center flex-shrink-0">
                 <Brain size={20} className="text-white" />
@@ -397,26 +455,30 @@ export default function ConceptMasterPage() {
 
         {/* ─── Right Sidebar ─── */}
         <div className="w-full lg:w-[340px] bg-white border-t lg:border-t-0 lg:border-l border-[#e5e7eb] p-6 space-y-6 flex-shrink-0 overflow-y-auto">
-          {/* Quick Actions */}
+          {/* Add Information */}
           <div className="cm-fade cm-d1">
-            <h3 className="text-[15px] text-[#0f172a] mb-4" style={dFont}>
-              Quick Actions
+            <h3 className="text-[15px] text-[#0f172a] mb-3" style={dFont}>
+              Add Information
             </h3>
+            <p className="text-[12px] text-[#94a3b8] mb-4" style={bFont}>
+              Give the AI more context to help you better
+            </p>
             <div className="grid grid-cols-2 gap-2.5">
               {[
-                { icon: NotebookPen, label: "Quick Notes", color: "text-[#7c3aed]", bg: "bg-purple-50 hover:bg-purple-100", border: "border-purple-200" },
-                { icon: Upload, label: "Upload PDF", color: "text-[#2563eb]", bg: "bg-blue-50 hover:bg-blue-100", border: "border-blue-200" },
-                { icon: Youtube, label: "YouTube Video", color: "text-[#ef4444]", bg: "bg-red-50 hover:bg-red-100", border: "border-red-200" },
-                { icon: FileText, label: "Document", color: "text-[#10b981]", bg: "bg-green-50 hover:bg-green-100", border: "border-green-200" },
-                { icon: ImageIcon, label: "Picture", color: "text-[#f59e0b]", bg: "bg-amber-50 hover:bg-amber-100", border: "border-amber-200" },
-                { icon: Save, label: "Save Chat", color: "text-[#6366f1]", bg: "bg-indigo-50 hover:bg-indigo-100", border: "border-indigo-200" },
+                { icon: Upload, label: "Upload PDF", desc: "Study material", color: "text-[#2563eb]", bg: "bg-blue-50 hover:bg-blue-100", border: "border-blue-200" },
+                { icon: Youtube, label: "Add YouTube Video", desc: "Paste a link", color: "text-[#ef4444]", bg: "bg-red-50 hover:bg-red-100", border: "border-red-200" },
+                { icon: FileText, label: "Add Document", desc: "Word, text files", color: "text-[#10b981]", bg: "bg-green-50 hover:bg-green-100", border: "border-green-200" },
+                { icon: ImageIcon, label: "Add Picture", desc: "Photo reference", color: "text-[#f59e0b]", bg: "bg-amber-50 hover:bg-amber-100", border: "border-amber-200" },
+                { icon: Globe, label: "Add Web Link", desc: "Any website", color: "text-[#7c3aed]", bg: "bg-purple-50 hover:bg-purple-100", border: "border-purple-200" },
+                { icon: NotebookPen, label: "Add Notes", desc: "Your own notes", color: "text-[#6366f1]", bg: "bg-indigo-50 hover:bg-indigo-100", border: "border-indigo-200" },
               ].map((action) => (
                 <button
                   key={action.label}
-                  className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 ${action.border} ${action.bg} transition-all duration-200 cursor-pointer hover:-translate-y-0.5 hover:shadow-sm`}
+                  className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-xl border-2 ${action.border} ${action.bg} transition-all duration-200 cursor-pointer hover:-translate-y-0.5 hover:shadow-sm`}
                 >
                   <action.icon className={`w-5 h-5 ${action.color}`} />
                   <span className="text-[12px] text-[#374151]" style={dFont}>{action.label}</span>
+                  <span className="text-[10px] text-[#94a3b8]" style={bFont}>{action.desc}</span>
                 </button>
               ))}
             </div>
