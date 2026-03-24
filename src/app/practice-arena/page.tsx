@@ -112,6 +112,7 @@ const typeLabel: Record<QuestionType, string> = {
 export default function PracticeArenaPage() {
   const [step, setStep] = useState<Step>("subjects");
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
+  const [selectedTopicName, setSelectedTopicName] = useState("");
   const [currentQ, setCurrentQ] = useState(0);
   const [completed, setCompleted] = useState<Set<number>>(new Set());
 
@@ -164,7 +165,8 @@ export default function PracticeArenaPage() {
     setStep("topics");
   };
 
-  const handleStartQuiz = () => {
+  const handleStartQuiz = (topicName?: string) => {
+    if (topicName) setSelectedTopicName(topicName);
     setStep("quiz");
     setCurrentQ(0);
     setCompleted(new Set());
@@ -287,7 +289,7 @@ export default function PracticeArenaPage() {
 
                 {/* Start Practice link */}
                 <button
-                  onClick={handleStartQuiz}
+                  onClick={() => handleStartQuiz(topic.name)}
                   className="inline-flex items-center gap-2 text-[#2563eb] text-[14px] hover:gap-3 transition-all duration-200 cursor-pointer"
                   style={dFont}
                 >
@@ -466,9 +468,51 @@ export default function PracticeArenaPage() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={bFont}>
-      <div className="max-w-6xl mx-auto px-6 py-10 w-full flex-1 flex flex-col">
-        {/* Top progress bar */}
-        <div className="mb-10 pa-fade">
+      {/* Sticky header */}
+      <div className="sticky top-0 z-30 bg-white border-b-2 border-[#eef0f4] pa-fade">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-5">
+            <button
+              onClick={() => setStep("topics")}
+              className="inline-flex items-center gap-2 text-[15px] text-[#6b7280] hover:text-[#374151] transition-colors cursor-pointer"
+              style={dFont}
+            >
+              <ArrowLeft size={18} /> Back
+            </button>
+            <div className="w-px h-8 bg-[#e5e7eb]" />
+            <div className="flex items-center gap-3">
+              {selectedSubject && (
+                <div className={`w-10 h-10 rounded-xl ${selectedSubject.bgMedium} flex items-center justify-center flex-shrink-0`}>
+                  <Atom className={`w-5 h-5 ${selectedSubject.textColor}`} />
+                </div>
+              )}
+              <div>
+                <h1 className="text-[18px] text-[#0f172a] leading-tight" style={dFont}>
+                  {selectedTopicName || "Practice Quiz"}
+                </h1>
+                <div className="flex items-center gap-3 mt-0.5">
+                  {selectedSubject && (
+                    <span className="text-[12px] text-[#6b7280]" style={bFont}>{selectedSubject.name}</span>
+                  )}
+                  <span className="text-[12px] text-[#6b7280]" style={bFont}>{quizQuestions.length} Questions</span>
+                  <span className="text-[12px] text-[#6b7280]" style={bFont}>~10 min</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setStep("topics")}
+            className="bg-[#2563eb] text-white text-[14px] px-5 py-2.5 rounded-xl hover:bg-[#1d4ed8] active:scale-[0.97] transition-all cursor-pointer"
+            style={dFont}
+          >
+            Submit Quiz
+          </button>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-8 w-full flex-1 flex flex-col">
+        {/* Progress bar */}
+        <div className="mb-8 pa-fade">
           <div className="flex items-center justify-between mb-3">
             <span className="text-[16px] text-[#374151]" style={dFont}>
               Question {currentQ + 1} of {quizQuestions.length}
