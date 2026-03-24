@@ -25,6 +25,7 @@ import {
   Settings,
 } from "lucide-react";
 import AppHeader from "@/components/AppHeader";
+import SubjectPickerModal from "@/components/SubjectPicker";
 
 export default function DashboardPage() {
   const [streakDays] = useState(7);
@@ -34,6 +35,14 @@ export default function DashboardPage() {
   const [level] = useState(7);
   const [challengeProgress] = useState(2);
   const [challengeTotal] = useState(3);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [pickerTool, setPickerTool] = useState({ name: "", emoji: "", path: "" });
+
+  const openPicker = (name: string, emoji: string, path: string) => {
+    setPickerTool({ name, emoji, path });
+    setPickerOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
       {/* Entrance animation keyframes */}
@@ -151,77 +160,30 @@ export default function DashboardPage() {
           <div>
             <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {/* Live Classes */}
-              <Link href="/live-classes" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#ef4444]/40 hover:shadow-xl hover:shadow-red-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.35s" }}>
-                <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all duration-200">
-                  <Video className="w-8 h-8 text-[#ef4444]" />
+              {[
+                { name: "Live Classes", emoji: "🎥", path: "/live-classes", icon: Video, color: "#ef4444", bg: "bg-red-50", bgHover: "group-hover:bg-red-100", borderHover: "hover:border-[#ef4444]/40", shadowHover: "hover:shadow-red-100/60", delay: "0.35s" },
+                { name: "Study Buddy", emoji: "📚", path: "/study-buddy", icon: BookOpen, color: "#2563eb", bg: "bg-[#eff6ff]", bgHover: "group-hover:bg-[#dbeafe]", borderHover: "hover:border-[#2563eb]/40", shadowHover: "hover:shadow-blue-100/60", delay: "0.4s" },
+                { name: "Concept Master", emoji: "🧠", path: "/concept-master", icon: Brain, color: "#7c3aed", bg: "bg-[#faf5ff]", bgHover: "group-hover:bg-[#f3e8ff]", borderHover: "hover:border-[#7c3aed]/40", shadowHover: "hover:shadow-purple-100/60", delay: "0.45s" },
+                { name: "Practice Arena", emoji: "🏆", path: "/practice-arena", icon: Trophy, color: "#f59e0b", bg: "bg-[#fffbeb]", bgHover: "group-hover:bg-[#fef3c6]", borderHover: "hover:border-[#f59e0b]/40", shadowHover: "hover:shadow-amber-100/60", delay: "0.5s" },
+                { name: "Study Hub", emoji: "📖", path: "/study-hub", icon: ClipboardList, color: "#10b981", bg: "bg-[#ecfdf5]", bgHover: "group-hover:bg-[#d1fae5]", borderHover: "hover:border-[#10b981]/40", shadowHover: "hover:shadow-emerald-100/60", delay: "0.55s" },
+                { name: "Explore Lab", emoji: "✨", path: "#", icon: SparklesIcon, color: "#ec4899", bg: "bg-pink-50", bgHover: "group-hover:bg-pink-100", borderHover: "hover:border-[#ec4899]/40", shadowHover: "hover:shadow-pink-100/60", delay: "0.6s" },
+              ].map((tool) => (
+                <div
+                  key={tool.name}
+                  onClick={() => openPicker(tool.name, tool.emoji, tool.path)}
+                  className={`anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer ${tool.borderHover} hover:shadow-xl ${tool.shadowHover} hover:-translate-y-1.5 transition-all duration-250`}
+                  style={{ animationDelay: tool.delay }}
+                >
+                  <div className={`w-14 h-14 rounded-2xl ${tool.bg} flex items-center justify-center ${tool.bgHover} group-hover:scale-110 transition-all duration-200`}>
+                    <tool.icon className="w-8 h-8" style={{ color: tool.color }} />
+                  </div>
+                  <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{tool.name}</h3>
+                  <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{tool.name === "Live Classes" ? "Join live sessions & watch recordings" : tool.name === "Study Buddy" ? "Get guided help with homework" : tool.name === "Concept Master" ? "Learn new topics with AI tutor" : tool.name === "Practice Arena" ? "Practice with various question types" : tool.name === "Study Hub" ? "Notes, PDFs & previous year papers" : "Interactive gamified learning"}</p>
+                  <span className="text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900, color: tool.color }}>
+                    Get started <ChevronRight className="w-5 h-5" />
+                  </span>
                 </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Live Classes</h3>
-                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Join live sessions &amp; watch recordings</p>
-                <span className="text-[#ef4444] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                  Get started <ChevronRight className="w-5 h-5" />
-                </span>
-              </Link>
-
-              {/* Study Buddy */}
-              <Link href="/study-buddy" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.4s" }}>
-                <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] flex items-center justify-center group-hover:bg-[#dbeafe] group-hover:scale-110 transition-all duration-200">
-                  <BookOpen className="w-8 h-8 text-[#2563eb]" />
-                </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Study Buddy</h3>
-                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Get guided help with homework</p>
-                <span className="text-[#2563eb] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                  Get started <ChevronRight className="w-5 h-5" />
-                </span>
-              </Link>
-
-              {/* Concept Master */}
-              <Link href="/concept-master" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-xl hover:shadow-purple-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.45s" }}>
-                <div className="w-14 h-14 rounded-2xl bg-[#faf5ff] flex items-center justify-center group-hover:bg-[#f3e8ff] group-hover:scale-110 transition-all duration-200">
-                  <Brain className="w-8 h-8 text-[#7c3aed]" />
-                </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Concept Master</h3>
-                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Learn new topics with AI tutor</p>
-                <span className="text-[#7c3aed] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                  Get started <ChevronRight className="w-5 h-5" />
-                </span>
-              </Link>
-
-              {/* Practice Arena */}
-              <Link href="/practice-arena" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-xl hover:shadow-amber-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.5s" }}>
-                <div className="w-14 h-14 rounded-2xl bg-[#fffbeb] flex items-center justify-center group-hover:bg-[#fef3c6] group-hover:scale-110 transition-all duration-200">
-                  <Trophy className="w-8 h-8 text-[#f59e0b]" />
-                </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Practice Arena</h3>
-                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Practice with various question types</p>
-                <span className="text-[#f59e0b] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                  Get started <ChevronRight className="w-5 h-5" />
-                </span>
-              </Link>
-
-              {/* Study Hub */}
-              <Link href="/study-hub" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#10b981]/40 hover:shadow-xl hover:shadow-emerald-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.55s" }}>
-                <div className="w-14 h-14 rounded-2xl bg-[#ecfdf5] flex items-center justify-center group-hover:bg-[#d1fae5] group-hover:scale-110 transition-all duration-200">
-                  <ClipboardList className="w-8 h-8 text-[#10b981]" />
-                </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Study Hub</h3>
-                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Notes, PDFs &amp; previous year papers</p>
-                <span className="text-[#10b981] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                  Get started <ChevronRight className="w-5 h-5" />
-                </span>
-              </Link>
-
-              {/* Explore Lab */}
-              <Link href="#" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#ec4899]/40 hover:shadow-xl hover:shadow-pink-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.6s" }}>
-                <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center group-hover:bg-pink-100 group-hover:scale-110 transition-all duration-200">
-                  <SparklesIcon className="w-8 h-8 text-[#ec4899]" />
-                </div>
-                <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Explore Lab</h3>
-                <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Interactive gamified learning</p>
-                <span className="text-[#ec4899] text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                  Get started <ChevronRight className="w-5 h-5" />
-                </span>
-              </Link>
+              ))}
             </div>
           </div>
         </main>
@@ -369,6 +331,15 @@ export default function DashboardPage() {
           </div>
         </aside>
       </div>
+
+      {/* Subject Picker Modal */}
+      <SubjectPickerModal
+        isOpen={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        toolName={pickerTool.name}
+        toolEmoji={pickerTool.emoji}
+        toolPath={pickerTool.path}
+      />
     </div>
   );
 }

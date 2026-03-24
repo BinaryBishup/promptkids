@@ -1,6 +1,6 @@
 "use client";
-
 import { useState, useEffect } from "react";
+
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -152,6 +152,19 @@ export default function LiveClassesPage() {
   const [subjectFilter, setSubjectFilter] = useState("All");
   const [view, setView] = useState<View>("list");
   const [selectedRecording, setSelectedRecording] = useState<PastClass | null>(null);
+
+
+  useEffect(() => {
+    const subjectParam = new URLSearchParams(window.location.search).get("subject");
+    if (subjectParam && step === "subjects") {
+      const match = subjectCards.find(s => s.name === subjectParam);
+      if (match) {
+        setSelectedSubjectName(match.name);
+        setSubjectFilter(match.name);
+        setStep("classes");
+      }
+    }
+  }, []); // eslint-disable-line
 
   /* ─── Animations ─── */
   useEffect(() => {

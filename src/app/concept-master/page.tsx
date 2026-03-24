@@ -1,6 +1,6 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
+
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -29,7 +29,7 @@ import {
   Play,
   ExternalLink,
 } from "lucide-react";
-import SubjectPicker, { subjectData } from "@/components/SubjectPicker";
+
 import AppHeader from "@/components/AppHeader";
 
 /* ─── Types ─── */
@@ -85,6 +85,17 @@ export default function ConceptMasterPage() {
   const [quizReady, setQuizReady] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+
+  useEffect(() => {
+    const subjectParam = new URLSearchParams(window.location.search).get("subject");
+    if (subjectParam && step === "subjects") {
+      const match = subjects.find(s => s.name === subjectParam);
+      if (match) {
+        handleSubjectClick(match);
+      }
+    }
+  }, []); // eslint-disable-line
+
   /* ─── Animations ─── */
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -133,29 +144,27 @@ export default function ConceptMasterPage() {
   /* ─── STEP 1: Subjects ─── */
   if (step === "subjects") {
     return (
-      <SubjectPicker
-        toolName="Concept Master"
-        toolEmoji="🧠"
-        subtitle="Choose the subject you want to learn"
-        animClass="cm-fade"
-        onSelect={(s) => {
-          const match = subjects.find((sub) => sub.name === s.name);
-          if (match) {
-            handleSubjectClick(match);
-          } else {
-            handleSubjectClick({
-              name: s.name,
-              icon: <Atom size={36} />,
-              color: s.color.replace("text-", "").replace("-600", ""),
-              bgLight: s.bg,
-              bgMedium: s.bgMedium,
-              textColor: s.color,
-              borderHover: s.borderHover,
-              topics: s.topics,
-            });
-          }
-        }}
-      />
+      <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Concept Master" }]} />
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <h1 className="text-[36px] text-[#0f172a] mb-3" style={dFont}>Concept Master</h1>
+          <p className="text-[18px] text-[#64748b] mb-10" style={bFont}>Choose the subject you want to learn</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+            {subjects.map((subject, i) => (
+              <button
+                key={subject.name}
+                onClick={() => handleSubjectClick(subject)}
+                className={`group flex flex-col items-center justify-center h-[180px] bg-white border-2 border-[#e5e7eb] rounded-2xl transition-all duration-200 hover:shadow-xl hover:-translate-y-1.5 ${subject.borderHover} cursor-pointer`}
+              >
+                <div className={`w-16 h-16 rounded-2xl ${subject.bgMedium} flex items-center justify-center mb-3 transition-transform duration-200 group-hover:scale-110`}>
+                  <span className={subject.textColor}>{subject.icon}</span>
+                </div>
+                <span className="text-[18px] text-[#0f172a]" style={dFont}>{subject.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
     );
   }
 
