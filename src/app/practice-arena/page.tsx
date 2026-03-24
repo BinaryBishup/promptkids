@@ -530,91 +530,86 @@ export default function PracticeArenaPage() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 flex-1">
-          {/* Main question area */}
-          <div className="flex-1 pa-fade pa-d1 flex flex-col">
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 flex-1">
-              {/* Tags row */}
-              <div className="flex flex-wrap items-center gap-2 mb-5">
-                <span className={`${dc.bg} ${dc.text} px-3 py-1 rounded-full text-[12px]`} style={dFont}>
-                  {q.difficulty}
-                </span>
-                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[12px]" style={dFont}>
-                  {typeLabel[q.type]}
-                </span>
-                <span className="border border-blue-200 text-blue-600 px-3 py-1 rounded-full text-[12px]" style={bFont}>
-                  {q.topic}
-                </span>
-              </div>
-
-              {/* Question text */}
-              <h2 className="text-[20px] text-[#0f172a] leading-relaxed mb-2" style={dFont}>
-                {q.text}
-              </h2>
-
-              {/* Optional image placeholder */}
-              {q.image && (
-                <div className="mt-6 h-[220px] rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                  <span className="text-gray-400 text-[14px]" style={bFont}>Image placeholder</span>
-                </div>
-              )}
-
-              {/* Answer area */}
-              {renderAnswerArea()}
-
-              {/* Next button */}
-              <button
-                onClick={handleNext}
-                className="w-full mt-8 bg-[#2563eb] text-white rounded-2xl py-4 text-[16px] hover:bg-[#1d4ed8] active:scale-[0.98] transition-all duration-200 cursor-pointer"
-                style={dFont}
-              >
-                {currentQ < quizQuestions.length - 1 ? "Next Question >" : "Finish Quiz"}
-              </button>
+        {/* Question card — full width */}
+        <div className="flex-1 pa-fade pa-d1">
+          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8">
+            {/* Tags row */}
+            <div className="flex flex-wrap items-center gap-2 mb-5">
+              <span className={`${dc.bg} ${dc.text} px-3 py-1 rounded-full text-[12px]`} style={dFont}>
+                {q.difficulty}
+              </span>
+              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[12px]" style={dFont}>
+                {typeLabel[q.type]}
+              </span>
+              <span className="border border-blue-200 text-blue-600 px-3 py-1 rounded-full text-[12px]" style={bFont}>
+                {q.topic}
+              </span>
             </div>
-          </div>
 
-          {/* Right sidebar — Session Overview */}
-          <div className="w-full lg:w-[280px] flex-shrink-0 pa-fade pa-d2">
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 sticky top-8">
-              <h3 className="text-[16px] text-[#0f172a] mb-4" style={dFont}>
-                Session Overview
-              </h3>
+            {/* Question text */}
+            <h2 className="text-[20px] text-[#0f172a] leading-relaxed mb-2" style={dFont}>
+              {q.text}
+            </h2>
 
-              <div className="flex flex-col gap-1">
-                {quizQuestions.map((question, i) => {
-                  const isCurrent = i === currentQ;
-                  const isDone = completed.has(i);
-                  return (
-                    <button
-                      key={i}
-                      onClick={() => { resetAnswers(); setCurrentQ(i); }}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${
-                        isCurrent
-                          ? "bg-blue-50 border-l-[3px] border-[#2563eb]"
-                          : isDone
-                          ? "bg-green-50"
-                          : "hover:bg-gray-50"
-                      }`}
-                    >
-                      {isDone ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      ) : (
-                        <span className={`w-5 h-5 rounded-full border-2 flex-shrink-0 ${
-                          isCurrent ? "border-[#2563eb]" : "border-gray-300"
-                        }`} />
-                      )}
-                      <div className="flex flex-col">
-                        <span className={`text-[13px] ${isCurrent ? "text-[#2563eb]" : "text-[#374151]"}`} style={dFont}>
-                          Q{i + 1}
-                        </span>
-                        <span className="text-[11px] text-[#9ca3af]" style={bFont}>
-                          {question.type}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
+            {/* Optional image placeholder */}
+            {q.image && (
+              <div className="mt-6 h-[220px] rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                <span className="text-gray-400 text-[14px]" style={bFont}>Image placeholder</span>
               </div>
+            )}
+
+            {/* Answer area */}
+            {renderAnswerArea()}
+
+            {/* Next button */}
+            <button
+              onClick={handleNext}
+              className="w-full mt-8 bg-[#2563eb] text-white rounded-2xl py-4 text-[16px] hover:bg-[#1d4ed8] active:scale-[0.98] transition-all duration-200 cursor-pointer"
+              style={dFont}
+            >
+              {currentQ < quizQuestions.length - 1 ? "Next Question >" : "Finish Quiz"}
+            </button>
+          </div>
+        </div>
+
+        {/* Session Overview — horizontal grid at bottom */}
+        <div className="pa-fade pa-d2 mt-6">
+          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6">
+            <h3 className="text-[16px] text-[#0f172a] mb-4" style={dFont}>
+              Session Overview
+            </h3>
+            <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
+              {quizQuestions.map((question, i) => {
+                const isCurrent = i === currentQ;
+                const isDone = completed.has(i);
+                return (
+                  <button
+                    key={i}
+                    onClick={() => { resetAnswers(); setCurrentQ(i); }}
+                    className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl transition-all duration-200 cursor-pointer ${
+                      isCurrent
+                        ? "bg-blue-50 border-2 border-[#2563eb] shadow-sm"
+                        : isDone
+                        ? "bg-green-50 border-2 border-green-200"
+                        : "border-2 border-[#e5e7eb] hover:bg-gray-50 hover:border-gray-300"
+                    }`}
+                  >
+                    {isDone ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <span className={`w-5 h-5 rounded-full border-2 ${
+                        isCurrent ? "border-[#2563eb]" : "border-gray-300"
+                      }`} />
+                    )}
+                    <span className={`text-[14px] ${isCurrent ? "text-[#2563eb]" : isDone ? "text-green-600" : "text-[#374151]"}`} style={dFont}>
+                      Q{i + 1}
+                    </span>
+                    <span className="text-[11px] text-[#9ca3af] uppercase tracking-wide" style={bFont}>
+                      {question.type}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
