@@ -240,7 +240,7 @@ export default function DashboardPage() {
             <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {/* Live Classes */}
-              <Link href="#" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#ef4444]/40 hover:shadow-xl hover:shadow-red-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.35s" }}>
+              <Link href="/live-classes" className="anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer hover:border-[#ef4444]/40 hover:shadow-xl hover:shadow-red-100/60 hover:-translate-y-1.5 transition-all duration-250 no-underline" style={{ animationDelay: "0.35s" }}>
                 <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all duration-200">
                   <Video className="w-8 h-8 text-[#ef4444]" />
                 </div>
