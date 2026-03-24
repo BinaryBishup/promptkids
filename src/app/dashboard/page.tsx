@@ -103,11 +103,17 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="relative z-10 flex flex-col items-center mt-4 sm:mt-0">
+            <Link href="/achievements" className="relative z-10 flex flex-col items-center mt-4 sm:mt-0 no-underline hover:scale-105 transition-transform cursor-pointer">
               <span className="text-white/80 text-sm font-semibold" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Level <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{level}</span></span>
               <span className="text-white font-black text-[52px] leading-none mt-1" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{xpPoints}</span>
               <span className="text-white/80 text-sm font-medium mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>XP Points</span>
-            </div>
+              <div className="mt-3 bg-white/15 rounded-xl px-4 py-2 text-center">
+                <span className="text-white/90 text-[12px] block" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Daily Challenge: {challengeProgress}/{challengeTotal}</span>
+                <div className="w-full h-1.5 bg-white/20 rounded-full mt-1.5 overflow-hidden">
+                  <div className="h-full bg-amber-400 rounded-full" style={{ width: `${(challengeProgress / challengeTotal) * 100}%` }} />
+                </div>
+              </div>
+            </Link>
           </div>
 
           {/* Quick Access — compact icon row */}
@@ -125,8 +131,11 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* Today's Events — segmented strip with equal items */}
+          {/* Due Today — segmented strip */}
           <div className="anim-fade-up" style={{ animationDelay: "0.15s" }}>
+            <h3 className="text-[15px] text-[#0f172a] mb-3 flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+              <Clock className="w-4 h-4 text-[#6b7280]" /> Due Today
+            </h3>
             <div className="flex items-stretch bg-[#1e293b] rounded-2xl overflow-hidden">
               {[
                 { icon: Video, label: "Physics Class", sub: "Live now • Join →", color: "text-red-400", bg: "hover:bg-white/5", iconBg: "bg-red-500/20", href: "/live-classes", live: true },
@@ -198,131 +207,100 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
+
+          {/* Class Leaderboard — after tools */}
+          <div className="anim-fade-up" style={{ animationDelay: "0.6s" }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2.5">
+                <Trophy className="w-[18px] h-[18px] text-amber-500" />
+                <h3 className="text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Class Leaderboard</h3>
+              </div>
+              <Link href="/achievements" className="text-[13px] text-[#2563eb] no-underline hover:underline" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>View all</Link>
+            </div>
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl overflow-hidden">
+              <div className="grid grid-cols-5 gap-0">
+                {[
+                  { rank: 1, name: "Riya Patel", xp: 3120, medal: "🥇" },
+                  { rank: 2, name: "Arjun Sharma", xp: 2340, medal: "🥈", isYou: true },
+                  { rank: 3, name: "Vikram Singh", xp: 2100, medal: "🥉" },
+                  { rank: 4, name: "Priya Desai", xp: 1890 },
+                  { rank: 5, name: "Rahul Kumar", xp: 1650 },
+                ].map((s, i) => (
+                  <div key={s.rank} className={`flex flex-col items-center py-5 px-3 ${i < 4 ? "border-r border-[#e5e7eb]" : ""} ${s.isYou ? "bg-gradient-to-b from-blue-50 to-purple-50" : "hover:bg-gray-50"} transition-colors`}>
+                    <span className="text-[18px] mb-2">{s.medal || `#${s.rank}`}</span>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-[12px] text-white mb-2 ${s.isYou ? "bg-gradient-to-br from-[#2563eb] to-[#7c3aed] ring-2 ring-blue-300" : "bg-gray-300"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                      {s.name.split(" ").map(n => n[0]).join("")}
+                    </div>
+                    <span className={`text-[12px] truncate max-w-full ${s.isYou ? "text-[#2563eb]" : "text-[#374151]"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{s.name.split(" ")[0]}</span>
+                    <span className="text-[11px] text-[#94a3b8] mt-0.5" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{s.xp.toLocaleString()} XP</span>
+                    {s.isYou && <span className="text-[9px] text-[#7c3aed] bg-purple-100 px-1.5 py-0.5 rounded-full mt-1" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>You</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </main>
 
         {/* RIGHT SIDEBAR */}
         <aside className="w-full lg:w-[370px] flex-shrink-0 bg-white border-t-[2.5px] lg:border-t-0 lg:border-l-[2.5px] border-[#eef0f4] pt-8 pb-10 pl-6 pr-6 lg:pl-[28px] lg:pr-[32px] space-y-8">
-          {/* Class XP Leaderboard */}
-          <div className="anim-fade-right" style={{ animationDelay: "0.2s" }}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2.5">
-                <Trophy className="w-[18px] h-[18px] text-amber-500" />
-                <h3 className="font-extrabold text-[16px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Class Rank</h3>
-              </div>
-              <Link href="/achievements" className="text-[12px] text-[#2563eb] no-underline hover:underline" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>See all</Link>
-            </div>
-            {/* Header row */}
-            <div className="flex items-center px-3 py-1.5 text-[11px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
-              <span className="w-6 flex-shrink-0" />
-              <span className="w-7 flex-shrink-0 mr-2.5" />
-              <span className="flex-1">Student</span>
-              <span className="flex-shrink-0">XP</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              {[
-                { rank: 1, name: "Riya Patel", xp: 3120, medal: "🥇" },
-                { rank: 2, name: "Arjun Sharma", xp: 2340, medal: "🥈", isYou: true },
-                { rank: 3, name: "Vikram Singh", xp: 2100, medal: "🥉" },
-                { rank: 4, name: "Priya Desai", xp: 1890 },
-                { rank: 5, name: "Rahul Kumar", xp: 1650 },
-              ].map((s) => (
-                <div key={s.rank} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl ${s.isYou ? "bg-gradient-to-r from-blue-50 to-purple-50 border border-[#2563eb]/20" : "hover:bg-gray-50"} transition-colors`}>
-                  <span className="w-6 text-center text-[13px] flex-shrink-0" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{s.medal || `#${s.rank}`}</span>
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] text-white flex-shrink-0 ${s.isYou ? "bg-gradient-to-br from-[#2563eb] to-[#7c3aed]" : "bg-gray-300"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                    {s.name.split(" ").map(n => n[0]).join("")}
-                  </div>
-                  <span className={`text-[13px] flex-1 truncate ${s.isYou ? "text-[#2563eb]" : "text-[#374151]"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                    {s.name}{s.isYou && <span className="text-[10px] text-purple-600 ml-1">You</span>}
-                  </span>
-                  <span className={`text-[12px] flex-shrink-0 ${s.isYou ? "text-[#2563eb]" : "text-[#0f172a]"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{s.xp.toLocaleString()}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Upcoming Exams */}
-          <div className="anim-fade-right" style={{ animationDelay: "0.35s" }}>
+          <div className="anim-fade-right" style={{ animationDelay: "0.2s" }}>
             <div className="flex items-center gap-2.5 mb-4">
-              <Calendar className="w-[20px] h-[20px] text-[#6b7280]" />
-              <h3 className="font-extrabold text-[17px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Upcoming Exams</h3>
+              <Calendar className="w-[18px] h-[18px] text-[#6b7280]" />
+              <h3 className="font-extrabold text-[16px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Upcoming Exams</h3>
             </div>
 
             <div className="bg-gradient-to-r from-[#fef2f2] to-[#fff7ed] border-[2px] border-[#ffc9c9] rounded-2xl p-5 mb-3 hover:shadow-lg hover:shadow-red-100 hover:border-[#f87171] transition-all duration-200">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-[#ffe2e2] flex items-center justify-center flex-shrink-0">
-                  <AlarmClock className="w-7 h-7 text-[#e7000b]" />
+                <div className="w-12 h-12 rounded-2xl bg-[#ffe2e2] flex items-center justify-center flex-shrink-0">
+                  <AlarmClock className="w-6 h-6 text-[#e7000b]" />
                 </div>
                 <div>
-                  <p className="font-extrabold text-[16px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Science Mid-term</p>
-                  <p className="text-[#e7000b] text-[14px] font-bold mt-0.5" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>&#x23F0; in 5 days</p>
-                  <p className="text-[#9ca3af] text-[12px] font-medium mt-0.5" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Chapters 1-4 &bull; 60 minutes</p>
+                  <p className="text-[15px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Science Mid-term</p>
+                  <p className="text-[#e7000b] text-[13px] mt-0.5" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>in 5 days</p>
+                  <p className="text-[#9ca3af] text-[11px] mt-0.5" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Chapters 1-4 &bull; 60 minutes</p>
                 </div>
               </div>
-              <button className="w-full bg-[#e7000b] text-white font-bold text-[14px] py-3 rounded-[14px] hover:bg-[#cc0009] hover:shadow-lg hover:shadow-red-200 active:scale-[0.97] transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+              <button className="w-full bg-[#e7000b] text-white text-[13px] py-2.5 rounded-[14px] hover:bg-[#cc0009] active:scale-[0.97] transition-all" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                 Start Practice Now
               </button>
             </div>
 
-            <div className="bg-[#eff6ff] border-[2px] border-[#dbeafe] rounded-xl p-4 cursor-pointer hover:bg-[#dbeafe] hover:border-[#93c5fd] hover:scale-[1.02] transition-all duration-200">
+            <div className="bg-[#eff6ff] border-[2px] border-[#dbeafe] rounded-xl p-4 cursor-pointer hover:bg-[#dbeafe] hover:scale-[1.02] transition-all duration-200">
               <div className="flex items-center justify-between">
-                <p className="font-bold text-[14px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Maths Quiz</p>
-                <p className="text-[#2563eb] text-[14px] font-bold" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>in 12 days</p>
+                <p className="text-[13px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Maths Quiz</p>
+                <p className="text-[#2563eb] text-[13px]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>in 12 days</p>
               </div>
-              <p className="text-[#9ca3af] text-[12px] font-medium mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Algebra &amp; Geometry</p>
+              <p className="text-[#9ca3af] text-[11px] mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Algebra &amp; Geometry</p>
             </div>
           </div>
 
-          {/* Daily Challenge */}
-          <div className="anim-fade-right" style={{ animationDelay: "0.5s" }}>
+          {/* AI Suggestions */}
+          <div className="anim-fade-right" style={{ animationDelay: "0.35s" }}>
             <div className="flex items-center gap-2.5 mb-4">
-              <Star className="w-[20px] h-[20px] text-[#6b7280]" />
-              <h3 className="font-extrabold text-[17px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Daily Challenge</h3>
+              <Sparkles className="w-[18px] h-[18px] text-[#7c3aed]" />
+              <h3 className="font-extrabold text-[16px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>AI Suggestions</h3>
             </div>
 
-            <div className="bg-gradient-to-b from-[#fefce8] to-[#fffbeb] border-[2px] border-[#ffdf20] rounded-2xl p-6 flex flex-col items-center hover:shadow-lg hover:shadow-amber-100 hover:border-[#f59e0b] transition-all duration-200">
-              <p className="text-[#f59e0b] font-black text-[40px]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>+100 XP</p>
-              <p className="text-[#6b7280] text-[14px] font-medium mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Complete 3 homework questions</p>
-
-              <div className="bg-white rounded-xl p-4 w-full mt-4 border border-[#f3f4f6]">
-                <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-[#4b5563] text-[14px] font-medium" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Your Progress</span>
-                  <span className="text-[#0f172a] font-extrabold text-[14px]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{challengeProgress}/{challengeTotal}</span>
-                </div>
-                <div className="w-full h-3 bg-[#e5e7eb] rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#f97316] to-[#ef4444] rounded-full transition-all duration-500"
-                    style={{ width: `${(challengeProgress / challengeTotal) * 100}%` }}
-                  />
-                </div>
+            <div className="flex flex-col gap-3">
+              <div onClick={() => openPicker("Concept Master", "🧠", "/concept-master")} className="border-l-[3px] border-red-400 bg-red-50/50 rounded-r-xl px-4 py-3 cursor-pointer hover:bg-red-50 transition-colors">
+                <p className="text-[13px] text-[#0f172a] mb-0.5" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Quadratic Equations needs attention</p>
+                <p className="text-[11px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Score dropped to 45% — review recommended</p>
               </div>
-
-              <p className="text-[#f97316] text-[14px] font-bold mt-3" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>&#x2728; Just 1 more to go!</p>
-              <Link href="#" className="text-[#f59e0b] text-[13px] font-bold underline mt-2 hover:text-[#d97706] transition-colors" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                View all challenges &rarr;
-              </Link>
-            </div>
-          </div>
-
-          {/* Learning Tip */}
-          <div className="anim-fade-right" style={{ animationDelay: "0.6s" }}>
-            <div className="flex items-center gap-2.5 mb-4">
-              <Lightbulb className="w-[20px] h-[20px] text-[#6b7280]" />
-              <h3 className="font-extrabold text-[17px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Learning Tip</h3>
-            </div>
-
-            <div className="bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] border-[2px] border-[#b9f8cf] rounded-2xl p-5 hover:shadow-lg hover:shadow-green-100 hover:border-[#86efac] transition-all duration-200">
-              <p className="text-[#4b5563] text-[14px] font-medium leading-relaxed" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
-                &ldquo;Try solving problems on your own first before using AI help. It builds stronger understanding!&rdquo;
-              </p>
-              <div className="flex items-center gap-2.5 mt-4">
-                <div className="w-7 h-7 rounded-full bg-[#22c55e] flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-3.5 h-3.5 text-white" />
-                </div>
-                <span className="text-[#008236] font-bold text-[13px]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>AI Learning Coach</span>
+              <div onClick={() => openPicker("Practice Arena", "🏆", "/practice-arena")} className="border-l-[3px] border-amber-400 bg-amber-50/50 rounded-r-xl px-4 py-3 cursor-pointer hover:bg-amber-50 transition-colors">
+                <p className="text-[13px] text-[#0f172a] mb-0.5" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Practice Light &amp; Reflection</p>
+                <p className="text-[11px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Exam in 5 days — 3 weak areas found</p>
+              </div>
+              <div onClick={() => openPicker("Concept Master", "🧠", "/concept-master")} className="border-l-[3px] border-blue-400 bg-blue-50/50 rounded-r-xl px-4 py-3 cursor-pointer hover:bg-blue-50 transition-colors">
+                <p className="text-[13px] text-[#0f172a] mb-0.5" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Revise Chemical Reactions</p>
+                <p className="text-[11px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Last studied 5 days ago — retention dropping</p>
+              </div>
+              <div onClick={() => openPicker("Study Hub", "📖", "/study-hub")} className="border-l-[3px] border-green-400 bg-green-50/50 rounded-r-xl px-4 py-3 cursor-pointer hover:bg-green-50 transition-colors">
+                <p className="text-[13px] text-[#0f172a] mb-0.5" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Read NCERT Ch.4 — Electricity</p>
+                <p className="text-[11px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>New chapter assigned — start with notes</p>
               </div>
             </div>
           </div>
-
         </aside>
       </div>
 
