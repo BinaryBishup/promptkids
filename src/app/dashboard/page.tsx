@@ -125,41 +125,46 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* Today's Events — horizontal ticker banner */}
-          <div className="anim-fade-up rounded-2xl overflow-hidden" style={{ animationDelay: "0.15s" }}>
-            <div className="bg-gradient-to-r from-[#0f172a] to-[#1e293b] px-6 py-4 flex items-center gap-6">
-              {/* Live indicator */}
-              <div className="flex items-center gap-3 flex-shrink-0 pr-6 border-r border-white/10">
-                <div className="relative">
-                  <span className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-30" />
-                  <span className="relative w-3 h-3 bg-red-500 rounded-full block" />
+          {/* Today's Events — segmented strip with equal items */}
+          <div className="anim-fade-up" style={{ animationDelay: "0.15s" }}>
+            <div className="flex items-stretch bg-white border-2 border-[#e5e7eb] rounded-2xl overflow-hidden">
+              {[
+                { icon: Video, label: "Physics Class", sub: "Live now • Join →", color: "text-red-500", bg: "hover:bg-red-50", iconBg: "bg-red-100", href: "/live-classes", live: true },
+                { icon: Clock, label: "Science HW Due", sub: "Due in 2 hours", color: "text-amber-600", bg: "hover:bg-amber-50", iconBg: "bg-amber-100", tool: { name: "Study Buddy", emoji: "📚", path: "/study-buddy" } },
+                { icon: ClipboardList, label: "Maths Assignment", sub: "New • Assigned today", color: "text-blue-600", bg: "hover:bg-blue-50", iconBg: "bg-blue-100", tool: { name: "Study Buddy", emoji: "📚", path: "/study-buddy" } },
+                { icon: Trophy, label: "Science Mid-term", sub: "In 5 days • Mar 28", color: "text-purple-600", bg: "hover:bg-purple-50", iconBg: "bg-purple-100", tool: { name: "Practice Arena", emoji: "🏆", path: "/practice-arena" } },
+              ].map((item, i) => (
+                <div
+                  key={item.label}
+                  onClick={() => item.href ? undefined : item.tool && openPicker(item.tool.name, item.tool.emoji, item.tool.path)}
+                  className={`flex-1 flex items-center gap-3 px-5 py-4 ${item.bg} transition-colors cursor-pointer ${i < 3 ? "border-r border-[#e5e7eb]" : ""}`}
+                >
+                  {item.href ? (
+                    <Link href={item.href} className="flex items-center gap-3 no-underline flex-1">
+                      <div className="relative flex-shrink-0">
+                        {item.live && <span className="absolute inset-0 bg-red-500 rounded-xl animate-ping opacity-20" />}
+                        <div className={`relative w-10 h-10 rounded-xl ${item.iconBg} flex items-center justify-center`}>
+                          <item.icon className={`w-5 h-5 ${item.color}`} />
+                        </div>
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
+                        <span className={`text-[11px] ${item.color}`} style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{item.sub}</span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <>
+                      <div className={`w-10 h-10 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}>
+                        <item.icon className={`w-5 h-5 ${item.color}`} />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
+                        <span className={`text-[11px] ${item.color}`} style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{item.sub}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div>
-                  <span className="text-white text-[14px] block" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Physics Class</span>
-                  <span className="text-white/50 text-[11px]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Live now</span>
-                </div>
-                <Link href="/live-classes" className="ml-2 bg-red-500 text-white text-[11px] px-3 py-1 rounded-full no-underline hover:bg-red-600 transition-colors" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                  Join
-                </Link>
-              </div>
-
-              {/* Scrolling events */}
-              <div className="flex items-center gap-6 overflow-hidden flex-1">
-                {[
-                  { icon: "⏰", text: "Science HW due in 2h", color: "text-amber-400" },
-                  { icon: "📋", text: "New: Maths Assignment", color: "text-blue-400" },
-                  { icon: "📝", text: "Science Mid-term in 5 days", color: "text-purple-400" },
-                ].map((event) => (
-                  <div key={event.text} className="flex items-center gap-2 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity">
-                    <span className="text-[14px]">{event.icon}</span>
-                    <span className={`text-[13px] ${event.color} whitespace-nowrap`} style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{event.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <Link href="/schedule" className="text-white/40 text-[12px] hover:text-white/70 transition-colors no-underline flex-shrink-0" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                View all →
-              </Link>
+              ))}
             </div>
           </div>
 
@@ -197,42 +202,34 @@ export default function DashboardPage() {
 
         {/* RIGHT SIDEBAR */}
         <aside className="w-full lg:w-[370px] flex-shrink-0 bg-white border-t-[2.5px] lg:border-t-0 lg:border-l-[2.5px] border-[#eef0f4] pt-8 pb-10 pl-6 pr-6 lg:pl-[28px] lg:pr-[32px] space-y-8">
-          {/* Recent Activity */}
+          {/* Class XP Leaderboard */}
           <div className="anim-fade-right" style={{ animationDelay: "0.2s" }}>
-            <div className="flex items-center gap-2.5 mb-4">
-              <Clock className="w-[20px] h-[20px] text-[#6b7280]" />
-              <h3 className="font-extrabold text-[17px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Recent Activity</h3>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2.5">
+                <Trophy className="w-[18px] h-[18px] text-amber-500" />
+                <h3 className="font-extrabold text-[16px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Class Rank</h3>
+              </div>
+              <Link href="/achievements" className="text-[12px] text-[#2563eb] no-underline hover:underline" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>See all</Link>
             </div>
-            <div className="flex flex-col gap-3">
-              <div className="bg-[#eff6ff] border-[2px] border-[#dbeafe] rounded-xl p-4 flex items-center gap-3 cursor-pointer hover:bg-[#dbeafe] hover:border-[#93c5fd] hover:scale-[1.02] transition-all duration-200">
-                <div className="w-10 h-10 rounded-xl bg-[#2563eb] flex items-center justify-center flex-shrink-0">
-                  <BookOpen className="w-5 h-5 text-white" />
+            <div className="flex flex-col gap-1">
+              {[
+                { rank: 1, name: "Riya Patel", xp: 3120, medal: "🥇" },
+                { rank: 2, name: "Arjun Sharma", xp: 2340, medal: "🥈", isYou: true },
+                { rank: 3, name: "Vikram Singh", xp: 2100, medal: "🥉" },
+                { rank: 4, name: "Priya Desai", xp: 1890 },
+                { rank: 5, name: "Rahul Kumar", xp: 1650 },
+              ].map((s) => (
+                <div key={s.rank} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl ${s.isYou ? "bg-gradient-to-r from-blue-50 to-purple-50 border border-[#2563eb]/20" : "hover:bg-gray-50"} transition-colors`}>
+                  <span className="w-6 text-center text-[13px] flex-shrink-0" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{s.medal || `#${s.rank}`}</span>
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] text-white flex-shrink-0 ${s.isYou ? "bg-gradient-to-br from-[#2563eb] to-[#7c3aed]" : "bg-gray-300"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                    {s.name.split(" ").map(n => n[0]).join("")}
+                  </div>
+                  <span className={`text-[13px] flex-1 truncate ${s.isYou ? "text-[#2563eb]" : "text-[#374151]"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                    {s.name}{s.isYou && <span className="text-[10px] text-purple-600 ml-1">You</span>}
+                  </span>
+                  <span className="text-[11px] text-[#94a3b8] flex-shrink-0" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{s.xp.toLocaleString()}</span>
                 </div>
-                <div>
-                  <p className="font-bold text-[14px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Science homework</p>
-                  <p className="text-[#9ca3af] text-[12px] font-medium mt-0.5" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Completed 2 hours ago</p>
-                </div>
-              </div>
-
-              <div className="bg-[#faf5ff] border-[2px] border-[#f3e8ff] rounded-xl p-4 flex items-center gap-3 cursor-pointer hover:bg-[#f3e8ff] hover:border-[#d8b4fe] hover:scale-[1.02] transition-all duration-200">
-                <div className="w-10 h-10 rounded-xl bg-[#7c3aed] flex items-center justify-center flex-shrink-0">
-                  <Brain className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="font-bold text-[14px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Mastered: Quadratic Equations</p>
-                  <p className="text-[#9ca3af] text-[12px] font-medium mt-0.5" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Yesterday at 4:30 PM</p>
-                </div>
-              </div>
-
-              <div className="bg-[#fffbeb] border-[2px] border-[#fef3c6] rounded-xl p-4 flex items-center gap-3 cursor-pointer hover:bg-[#fef3c6] hover:border-[#fde68a] hover:scale-[1.02] transition-all duration-200">
-                <div className="w-10 h-10 rounded-xl bg-[#f59e0b] flex items-center justify-center flex-shrink-0">
-                  <Trophy className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="font-bold text-[14px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Earned &quot;Quick Learner&quot; badge</p>
-                  <p className="text-[#9ca3af] text-[12px] font-medium mt-0.5" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>2 days ago</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
