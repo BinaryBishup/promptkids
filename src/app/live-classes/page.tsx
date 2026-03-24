@@ -10,13 +10,31 @@ import {
   Calendar,
   ChevronLeft,
   User,
+  Atom,
+  Calculator,
+  BookOpen,
+  PenTool,
+  Leaf,
+  Magnet,
+  ChevronRight,
 } from "lucide-react";
 
 /* ─── Font helpers ─── */
 const dFont = { fontFamily: "var(--font-display)", fontWeight: 900 } as const;
 const bFont = { fontFamily: "var(--font-body)", fontWeight: 500 } as const;
 
+/* ─── Subject data ─── */
+const subjectCards = [
+  { name: "Science", icon: Atom, color: "text-cyan-600", bgMedium: "bg-cyan-100", borderHover: "hover:border-cyan-300", live: 1, recorded: 2 },
+  { name: "Maths", icon: Calculator, color: "text-purple-600", bgMedium: "bg-purple-100", borderHover: "hover:border-purple-300", live: 0, recorded: 1 },
+  { name: "History", icon: BookOpen, color: "text-orange-600", bgMedium: "bg-orange-100", borderHover: "hover:border-orange-300", live: 0, recorded: 1 },
+  { name: "English", icon: PenTool, color: "text-green-600", bgMedium: "bg-green-100", borderHover: "hover:border-green-300", live: 0, recorded: 1 },
+  { name: "Biology", icon: Leaf, color: "text-pink-600", bgMedium: "bg-pink-100", borderHover: "hover:border-pink-300", live: 0, recorded: 0 },
+  { name: "Physics", icon: Magnet, color: "text-blue-600", bgMedium: "bg-blue-100", borderHover: "hover:border-blue-300", live: 0, recorded: 2 },
+];
+
 /* ─── Types ─── */
+type Step = "subjects" | "classes";
 type Tab = "live" | "past";
 type View = "list" | "player";
 
@@ -127,6 +145,8 @@ const subjectFilters = ["All", "Science", "Maths", "Physics", "English", "Histor
 
 /* ─── Component ─── */
 export default function LiveClassesPage() {
+  const [step, setStep] = useState<Step>("subjects");
+  const [selectedSubjectName, setSelectedSubjectName] = useState("");
   const [activeTab, setActiveTab] = useState<Tab>("live");
   const [subjectFilter, setSubjectFilter] = useState("All");
   const [view, setView] = useState<View>("list");
@@ -159,6 +179,52 @@ export default function LiveClassesPage() {
   const relatedRecordings = selectedRecording
     ? pastClasses.filter((c) => c.title !== selectedRecording.title).slice(0, 3)
     : [];
+
+  /* ═══════════════════ SUBJECT SELECTOR ═══════════════════ */
+  if (step === "subjects") {
+    return (
+      <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <Link href="/dashboard" className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 lc-fade" style={dFont}>
+            <ArrowLeft size={20} /> Back to home
+          </Link>
+
+          <h1 className="text-[36px] text-[#0f172a] mb-3 lc-fade lc-d1" style={dFont}>
+            Live Classes
+          </h1>
+          <p className="text-[18px] text-[#64748b] mb-10 lc-fade lc-d2" style={bFont}>
+            Choose a subject to see live &amp; recorded classes
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+            {subjectCards.map((subject, i) => {
+              const Icon = subject.icon;
+              return (
+                <button
+                  key={subject.name}
+                  onClick={() => { setSelectedSubjectName(subject.name); setSubjectFilter(subject.name); setStep("classes"); }}
+                  className={`group flex flex-col items-center justify-center h-[220px] bg-white border-2 border-[#e5e7eb] rounded-2xl transition-all duration-200 hover:shadow-xl hover:-translate-y-1.5 ${subject.borderHover} cursor-pointer lc-fade lc-d${i + 3}`}
+                >
+                  <div className={`w-[72px] h-[72px] rounded-2xl ${subject.bgMedium} flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-110`}>
+                    <Icon size={36} className={subject.color} />
+                  </div>
+                  <span className="text-[20px] text-[#0f172a]" style={dFont}>{subject.name}</span>
+                  <div className="flex items-center gap-3 mt-2">
+                    {subject.live > 0 && (
+                      <span className="flex items-center gap-1 text-[12px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full" style={dFont}>
+                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> {subject.live} live
+                      </span>
+                    )}
+                    <span className="text-[13px] text-[#94a3b8]" style={bFont}>{subject.recorded} recordings</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   /* ═══════════════════ RECORDING VIEWER ═══════════════════ */
   if (view === "player" && selectedRecording) {
@@ -339,13 +405,13 @@ export default function LiveClassesPage() {
         }}
       >
         <div className="max-w-6xl mx-auto px-8 py-6">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-1.5 text-[14px] text-white/80 hover:text-white transition-colors mb-4 no-underline"
+          <button
+            onClick={() => { setStep("subjects"); setView("list"); }}
+            className="inline-flex items-center gap-1.5 text-[14px] text-white/80 hover:text-white transition-colors mb-4 cursor-pointer"
             style={bFont}
           >
-            <ArrowLeft size={16} /> Back to Dashboard
-          </Link>
+            <ArrowLeft size={16} /> Back to Subjects
+          </button>
 
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div className="lc-fade">
@@ -353,10 +419,10 @@ export default function LiveClassesPage() {
                 className="text-[32px] text-white mb-1"
                 style={dFont}
               >
-                Live Classes
+                {selectedSubjectName} Classes
               </h1>
               <p className="text-[16px] text-white/80" style={bFont}>
-                Join live sessions or watch recorded classes anytime
+                Live sessions &amp; recorded classes for {selectedSubjectName}
               </p>
             </div>
 
