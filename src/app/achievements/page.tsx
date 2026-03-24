@@ -81,9 +81,15 @@ const recentRewards: Reward[] = [
 /* ── Rank colors ────────────────────────────────────────────────── */
 
 const rankColors: Record<number, string> = {
-  1: "bg-yellow-400 text-yellow-900",
-  2: "bg-orange-400 text-white",
-  3: "bg-amber-600 text-white",
+  1: "bg-gradient-to-br from-yellow-300 to-yellow-500 text-yellow-900 shadow-md shadow-yellow-200",
+  2: "bg-gradient-to-br from-gray-300 to-gray-400 text-white shadow-md shadow-gray-200",
+  3: "bg-gradient-to-br from-amber-500 to-amber-700 text-white shadow-md shadow-amber-200",
+};
+
+const rankMedal: Record<number, string> = {
+  1: "🥇",
+  2: "🥈",
+  3: "🥉",
 };
 
 /* ── Avatar colors ──────────────────────────────────────────────── */
@@ -316,18 +322,32 @@ export default function AchievementsPage() {
                   key={entry.name}
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 hover:bg-gray-50 ${
                     entry.isYou
-                      ? "border border-orange-200 bg-orange-50/60"
-                      : ""
-                  }`}
+                      ? "border-2 border-orange-300 bg-orange-50/60 shadow-sm"
+                      : "border border-transparent"
+                  } ${entry.rank <= 3 ? "hover:shadow-md" : ""}`}
                 >
-                  {/* rank */}
+                  {/* rank badge */}
+                  <div className="flex flex-shrink-0 items-center gap-1.5">
+                    {rankMedal[entry.rank] ? (
+                      <span className="text-[20px] leading-none">{rankMedal[entry.rank]}</span>
+                    ) : (
+                      <div
+                        className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 text-gray-600 text-[13px]"
+                        style={dFont}
+                      >
+                        {entry.rank}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* rank number circle for top 3 */}
                   <div
-                    className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[13px] ${
-                      rankColors[entry.rank] || "bg-gray-200 text-gray-600"
+                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-[12px] ${
+                      rankColors[entry.rank] || "bg-gray-100 text-gray-600"
                     }`}
                     style={dFont}
                   >
-                    {entry.rank}
+                    #{entry.rank}
                   </div>
 
                   {/* avatar */}
@@ -347,10 +367,10 @@ export default function AchievementsPage() {
                       {entry.name}
                       {entry.isYou && (
                         <span
-                          className="ml-2 text-[11px] text-orange-500"
-                          style={bFont}
+                          className="ml-2 inline-flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-[10px] text-orange-600 border border-orange-200"
+                          style={dFont}
                         >
-                          (You)
+                          You
                         </span>
                       )}
                     </p>
@@ -359,10 +379,10 @@ export default function AchievementsPage() {
                   {/* stats */}
                   <div className="flex flex-shrink-0 items-center gap-3 text-right">
                     <span
-                      className="text-[13px] text-[#64748b]"
-                      style={bFont}
+                      className="text-[13px] text-[#0f172a]"
+                      style={dFont}
                     >
-                      {entry.xp.toLocaleString()} XP
+                      {entry.xp.toLocaleString()} <span className="text-[#94a3b8] font-normal" style={bFont}>XP</span>
                     </span>
                     <span className="flex items-center gap-1 text-[12px] text-[#94a3b8]" style={bFont}>
                       <Award size={12} />

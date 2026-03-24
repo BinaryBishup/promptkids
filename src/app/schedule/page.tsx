@@ -1,10 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import Link from "next/link";
+import React from "react";
 import {
-  ChevronLeft,
-  ChevronRight,
   Bell,
   CalendarDays,
   BookOpen,
@@ -28,74 +25,72 @@ const anim = (i: number) =>
   `animate-[fadeSlideUp_0.5s_ease_both] [animation-delay:${i * 80}ms]`;
 
 /* ── types ────────────────────────────────────────────────── */
-type EventColor = "blue" | "orange" | "red" | "green";
+type EventType = "class" | "homework" | "exam" | "goal";
 
-interface CalendarEvent {
-  day: number;
-  month: number;
-  year: number;
-  color: EventColor;
-  label: string;
-}
-
-interface UpcomingEvent {
+interface WeekEvent {
   title: string;
-  subject: string;
   time: string;
-  color: EventColor;
-  urgent?: boolean;
-  icon: React.ReactNode;
+  type: EventType;
+  subject: string;
 }
 
 /* ── colour maps ──────────────────────────────────────────── */
-const dotColor: Record<EventColor, string> = {
-  blue: "bg-blue-500",
-  orange: "bg-orange-400",
-  red: "bg-red-500",
-  green: "bg-emerald-500",
+const pillBg: Record<EventType, string> = {
+  class: "bg-blue-100 text-blue-700 border-blue-200",
+  homework: "bg-orange-100 text-orange-700 border-orange-200",
+  exam: "bg-red-100 text-red-700 border-red-200",
+  goal: "bg-emerald-100 text-emerald-700 border-emerald-200",
 };
 
-const barColor: Record<EventColor, string> = {
-  blue: "bg-blue-500",
-  orange: "bg-orange-400",
-  red: "bg-red-500",
-  green: "bg-emerald-500",
+const dotColor: Record<EventType, string> = {
+  class: "bg-blue-500",
+  homework: "bg-orange-400",
+  exam: "bg-red-500",
+  goal: "bg-emerald-500",
 };
 
-const borderColor: Record<EventColor, string> = {
-  blue: "border-l-blue-500",
-  orange: "border-l-orange-400",
-  red: "border-l-red-500",
-  green: "border-l-emerald-500",
-};
-
-const iconBg: Record<EventColor, string> = {
+const iconBg: Record<string, string> = {
   blue: "bg-blue-50 text-blue-600",
   orange: "bg-orange-50 text-orange-600",
   red: "bg-red-50 text-red-600",
   green: "bg-emerald-50 text-emerald-600",
 };
 
-/* ── static data ──────────────────────────────────────────── */
-const calendarEvents: CalendarEvent[] = [
-  { day: 23, month: 2, year: 2025, color: "blue", label: "Live Class" },
-  { day: 24, month: 2, year: 2025, color: "orange", label: "Homework" },
-  { day: 24, month: 2, year: 2025, color: "green", label: "Study Goal" },
-  { day: 25, month: 2, year: 2025, color: "red", label: "Exam" },
-  { day: 25, month: 2, year: 2025, color: "blue", label: "Live Class" },
-  { day: 28, month: 2, year: 2025, color: "red", label: "Exam" },
-  { day: 28, month: 2, year: 2025, color: "blue", label: "Live Class" },
-  { day: 28, month: 2, year: 2025, color: "orange", label: "Homework" },
-  { day: 30, month: 2, year: 2025, color: "green", label: "Study Goal" },
-  { day: 30, month: 2, year: 2025, color: "blue", label: "Live Class" },
-];
+const borderColor: Record<string, string> = {
+  blue: "border-l-blue-500",
+  orange: "border-l-orange-400",
+  red: "border-l-red-500",
+  green: "border-l-emerald-500",
+};
 
-const upcomingEvents: UpcomingEvent[] = [
+/* ── weekly calendar data ─────────────────────────────────── */
+const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const weekDates = [24, 25, 26, 27, 28, 29, 30];
+const today = 28;
+
+const weekEvents: Record<number, WeekEvent[]> = {
+  24: [{ title: "Physics Class", time: "10:00 AM", type: "class", subject: "Physics" }],
+  25: [
+    { title: "Maths Homework", time: "Due 5 PM", type: "homework", subject: "Maths" },
+    { title: "Science Class", time: "2:00 PM", type: "class", subject: "Science" },
+  ],
+  26: [],
+  27: [{ title: "English Essay", time: "Due 3 PM", type: "homework", subject: "English" }],
+  28: [
+    { title: "Physics Class", time: "10:00 AM", type: "class", subject: "Physics" },
+    { title: "Chemistry HW", time: "Due 2 PM", type: "homework", subject: "Chemistry" },
+  ],
+  29: [{ title: "Mock Test", time: "11:00 AM", type: "exam", subject: "Science" }],
+  30: [{ title: "Study Goal", time: "2 hrs", type: "goal", subject: "All" }],
+};
+
+/* ── upcoming events (sidebar) ────────────────────────────── */
+const upcomingEvents = [
   {
     title: "Physics - Newton's Laws",
     subject: "Physics",
     time: "Today, 10:00 AM",
-    color: "blue",
+    color: "blue" as const,
     urgent: true,
     icon: <Atom size={18} />,
   },
@@ -103,7 +98,7 @@ const upcomingEvents: UpcomingEvent[] = [
     title: "Chemistry Homework Due",
     subject: "Chemistry",
     time: "Today, 02:00 PM",
-    color: "orange",
+    color: "orange" as const,
     urgent: true,
     icon: <FlaskConical size={18} />,
   },
@@ -111,21 +106,21 @@ const upcomingEvents: UpcomingEvent[] = [
     title: "Maths - Quadratic Equations",
     subject: "Maths",
     time: "Tomorrow, 11:00 AM",
-    color: "blue",
+    color: "blue" as const,
     icon: <BookOpen size={18} />,
   },
   {
     title: "Biology - Cell Division",
     subject: "Biology",
     time: "Mar 25, 09:30 AM",
-    color: "green",
+    color: "green" as const,
     icon: <Leaf size={18} />,
   },
   {
     title: "Science Mid-term Exam",
     subject: "Science",
     time: "Mar 28",
-    color: "red",
+    color: "red" as const,
     urgent: true,
     icon: <ScrollText size={18} />,
   },
@@ -133,120 +128,55 @@ const upcomingEvents: UpcomingEvent[] = [
     title: "History - Ancient India",
     subject: "History",
     time: "Mar 30, 10:00 AM",
-    color: "blue",
+    color: "blue" as const,
     icon: <Globe size={18} />,
   },
 ];
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+/* ── exam schedule data ───────────────────────────────────── */
+const upcomingExams = [
+  {
+    subject: "Science",
+    title: "Science Mid-term",
+    date: "Mar 28",
+    daysLeft: 5,
+    chapters: ["Newton's Laws", "Chemical Reactions", "Cell Division"],
+    color: "red",
+  },
+  {
+    subject: "Maths",
+    title: "Maths Quiz",
+    date: "Apr 5",
+    daysLeft: 12,
+    chapters: ["Quadratic Equations", "Trigonometry"],
+    color: "blue",
+  },
+  {
+    subject: "English",
+    title: "English Test",
+    date: "Apr 10",
+    daysLeft: 17,
+    chapters: ["Essay Writing", "Grammar", "Comprehension"],
+    color: "green",
+  },
 ];
 
-/* ── calendar helpers ─────────────────────────────────────── */
-function daysInMonth(month: number, year: number) {
-  return new Date(year, month + 1, 0).getDate();
-}
+const examSubjectBg: Record<string, string> = {
+  red: "bg-red-100 text-red-700",
+  blue: "bg-blue-100 text-blue-700",
+  green: "bg-emerald-100 text-emerald-700",
+};
 
-function firstDayOfMonth(month: number, year: number) {
-  return new Date(year, month, 1).getDay();
-}
+const examCountdownBg: Record<string, string> = {
+  red: "bg-red-50 border-red-200 text-red-600",
+  blue: "bg-blue-50 border-blue-200 text-blue-600",
+  green: "bg-emerald-50 border-emerald-200 text-emerald-600",
+};
 
 /* ================================================================== */
 /*  PAGE                                                               */
 /* ================================================================== */
 export default function SchedulePage() {
-  const [currentMonth, setCurrentMonth] = useState(2); // March (0-indexed)
-  const [currentYear, setCurrentYear] = useState(2025);
-
-  const totalDays = useMemo(
-    () => daysInMonth(currentMonth, currentYear),
-    [currentMonth, currentYear]
-  );
-  const startDay = useMemo(
-    () => firstDayOfMonth(currentMonth, currentYear),
-    [currentMonth, currentYear]
-  );
-
-  const prevMonth = () => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11);
-      setCurrentYear((y) => y - 1);
-    } else {
-      setCurrentMonth((m) => m - 1);
-    }
-  };
-
-  const nextMonth = () => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0);
-      setCurrentYear((y) => y + 1);
-    } else {
-      setCurrentMonth((m) => m + 1);
-    }
-  };
-
-  /* events for the visible month */
-  const eventsForDay = (day: number) =>
-    calendarEvents.filter(
-      (e) => e.day === day && e.month === currentMonth && e.year === currentYear
-    );
-
-  const isToday = (day: number) =>
-    currentMonth === 2 && currentYear === 2025 && day === 28;
-
-  /* build grid cells */
-  const blanks = Array.from({ length: startDay }, (_, i) => (
-    <div key={`b-${i}`} />
-  ));
-
-  const days = Array.from({ length: totalDays }, (_, i) => {
-    const day = i + 1;
-    const events = eventsForDay(day);
-    const today = isToday(day);
-    return (
-      <div
-        key={day}
-        className={`relative flex flex-col items-center justify-start pt-2 h-[72px] rounded-xl transition-all ${
-          today
-            ? "ring-2 ring-blue-500 bg-blue-50/60"
-            : "hover:bg-gray-50"
-        }`}
-      >
-        <span
-          className={`text-[14px] leading-none ${
-            today ? "text-blue-600 font-bold" : "text-gray-700"
-          }`}
-          style={bFont}
-        >
-          {day}
-        </span>
-        {events.length > 0 && (
-          <div className="flex gap-[3px] mt-auto mb-2">
-            {events.map((ev, idx) => (
-              <span
-                key={idx}
-                className={`w-[18px] h-[4px] rounded-full ${barColor[ev.color]}`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  });
-
-  /* ── RENDER ──────────────────────────────────────────────── */
   return (
     <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
       {/* keyframes */}
@@ -280,7 +210,7 @@ export default function SchedulePage() {
                 <span className="text-[13px] text-[#64748b]" style={bFont}>This Week</span>
               </div>
               <span className="text-[22px] text-[#0f172a] leading-none" style={dFont}>
-                12 <span className="text-[13px] font-normal text-[#94a3b8]">Events</span>
+                8 <span className="text-[13px] font-normal text-[#94a3b8]">Events</span>
               </span>
             </div>
 
@@ -290,7 +220,7 @@ export default function SchedulePage() {
                 <span className="text-[13px] text-[#64748b]" style={bFont}>Upcoming</span>
               </div>
               <span className="text-[22px] text-[#0f172a] leading-none" style={dFont}>
-                2 <span className="text-[13px] font-normal text-[#94a3b8]">Exams</span>
+                3 <span className="text-[13px] font-normal text-[#94a3b8]">Exams</span>
               </span>
             </div>
           </div>
@@ -300,73 +230,176 @@ export default function SchedulePage() {
       {/* ─── CONTENT ──────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-6 md:px-12 py-10">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* ── CALENDAR ──────────────────────────────────── */}
-          <section
-            className={`lg:w-[60%] bg-white border border-gray-200 rounded-2xl p-6 ${anim(4)}`}
-          >
-            {/* month header */}
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-[22px] text-[#0f172a]" style={dFont}>
-                {MONTHS[currentMonth]} {currentYear}
-              </h2>
-              <div className="flex gap-2">
-                <button
-                  onClick={prevMonth}
-                  className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
-                  aria-label="Previous month"
-                >
-                  <ChevronLeft size={18} className="text-gray-600" />
-                </button>
-                <button
-                  onClick={nextMonth}
-                  className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
-                  aria-label="Next month"
-                >
-                  <ChevronRight size={18} className="text-gray-600" />
-                </button>
+          {/* ── LEFT COLUMN ────────────────────────────────── */}
+          <div className="lg:w-[60%] flex flex-col gap-8">
+            {/* ── WEEKLY CALENDAR ──────────────────────────── */}
+            <section
+              className={`bg-white border border-gray-200 rounded-2xl p-6 ${anim(4)}`}
+            >
+              {/* week header */}
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-[22px] text-[#0f172a]" style={dFont}>
+                  This Week
+                </h2>
+                <span className="text-[14px] text-[#64748b]" style={bFont}>
+                  March 24 - 30, 2025
+                </span>
               </div>
-            </div>
 
-            {/* day headers */}
-            <div className="grid grid-cols-7 mb-2">
-              {DAYS.map((d) => (
-                <div
-                  key={d}
-                  className="text-center text-[12px] text-gray-400 uppercase tracking-wider py-2"
-                  style={dFont}
-                >
-                  {d}
-                </div>
-              ))}
-            </div>
+              {/* weekly grid */}
+              <div className="grid grid-cols-7 gap-2">
+                {weekDays.map((day, idx) => {
+                  const date = weekDates[idx];
+                  const isToday = date === today;
+                  const events = weekEvents[date] || [];
 
-            {/* day grid */}
-            <div className="grid grid-cols-7 gap-[2px]">
-              {blanks}
-              {days}
-            </div>
+                  return (
+                    <div
+                      key={day}
+                      className={`flex flex-col rounded-xl border p-3 min-h-[160px] transition-all ${
+                        isToday
+                          ? "border-blue-300 bg-blue-50/60 ring-2 ring-blue-500/30"
+                          : "border-gray-100 bg-gray-50/40 hover:border-gray-200 hover:bg-gray-50"
+                      }`}
+                    >
+                      {/* day name */}
+                      <span
+                        className={`text-[11px] uppercase tracking-wider text-center mb-1 ${
+                          isToday ? "text-blue-600" : "text-gray-400"
+                        }`}
+                        style={dFont}
+                      >
+                        {day}
+                      </span>
 
-            {/* legend */}
-            <div className="flex flex-wrap gap-5 mt-6 pt-5 border-t border-gray-100">
-              {(
-                [
-                  ["blue", "Live Class"],
-                  ["orange", "Homework"],
-                  ["red", "Exam"],
-                  ["green", "Study Goal"],
-                ] as const
-              ).map(([color, label]) => (
-                <div key={color} className="flex items-center gap-2">
-                  <span
-                    className={`w-3 h-3 rounded-full ${dotColor[color]}`}
-                  />
-                  <span className="text-[13px] text-gray-500" style={bFont}>
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
+                      {/* date number */}
+                      <div className="flex justify-center mb-3">
+                        <span
+                          className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-[15px] ${
+                            isToday
+                              ? "bg-blue-600 text-white"
+                              : "text-gray-700"
+                          }`}
+                          style={dFont}
+                        >
+                          {date}
+                        </span>
+                      </div>
+
+                      {/* events as pills */}
+                      <div className="flex flex-col gap-1.5 flex-1">
+                        {events.map((ev, i) => (
+                          <div
+                            key={i}
+                            className={`rounded-lg border px-2 py-1.5 text-center ${pillBg[ev.type]}`}
+                          >
+                            <div className="flex items-center gap-1 justify-center mb-0.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${dotColor[ev.type]}`} />
+                              <span className="text-[10px] truncate leading-tight" style={dFont}>
+                                {ev.title}
+                              </span>
+                            </div>
+                            <span className="text-[9px] opacity-75 block" style={bFont}>
+                              {ev.time}
+                            </span>
+                          </div>
+                        ))}
+                        {events.length === 0 && (
+                          <div className="flex-1 flex items-center justify-center">
+                            <span className="text-[11px] text-gray-300" style={bFont}>
+                              No events
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* legend */}
+              <div className="flex flex-wrap gap-5 mt-6 pt-5 border-t border-gray-100">
+                {(
+                  [
+                    ["class", "Live Class"],
+                    ["homework", "Homework"],
+                    ["exam", "Exam"],
+                    ["goal", "Study Goal"],
+                  ] as const
+                ).map(([type, label]) => (
+                  <div key={type} className="flex items-center gap-2">
+                    <span className={`w-3 h-3 rounded-full ${dotColor[type]}`} />
+                    <span className="text-[13px] text-gray-500" style={bFont}>
+                      {label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* ── EXAM SCHEDULE ────────────────────────────── */}
+            <section
+              className={`bg-white border border-gray-200 rounded-2xl p-6 ${anim(5)}`}
+            >
+              <div className="flex items-center gap-2 mb-5">
+                <ScrollText size={20} className="text-red-500" />
+                <h2 className="text-[22px] text-[#0f172a]" style={dFont}>
+                  Upcoming Exams
+                </h2>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {upcomingExams.map((exam, i) => (
+                  <div
+                    key={exam.title}
+                    className={`flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-gray-100 bg-gray-50/40 p-4 transition-all hover:shadow-sm ${anim(6 + i)}`}
+                  >
+                    {/* countdown */}
+                    <div
+                      className={`flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-[72px] rounded-xl border ${examCountdownBg[exam.color]}`}
+                    >
+                      <span className="text-[22px] leading-none" style={dFont}>
+                        {exam.daysLeft}
+                      </span>
+                      <span className="text-[10px] mt-0.5" style={bFont}>
+                        days left
+                      </span>
+                    </div>
+
+                    {/* details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-[15px] text-[#0f172a]" style={dFont}>
+                          {exam.title}
+                        </h3>
+                        <span
+                          className={`text-[11px] px-2.5 py-0.5 rounded-full ${examSubjectBg[exam.color]}`}
+                          style={dFont}
+                        >
+                          {exam.subject}
+                        </span>
+                      </div>
+                      <p className="text-[13px] text-[#64748b] mb-2" style={bFont}>
+                        <Clock size={12} className="inline mr-1 -translate-y-px" />
+                        {exam.date}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {exam.chapters.map((ch) => (
+                          <span
+                            key={ch}
+                            className="text-[11px] bg-white border border-gray-200 text-gray-600 px-2.5 py-1 rounded-lg"
+                            style={bFont}
+                          >
+                            {ch}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
 
           {/* ── SIDEBAR ───────────────────────────────────── */}
           <aside className="lg:w-[40%] flex flex-col gap-6">

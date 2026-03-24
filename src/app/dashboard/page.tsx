@@ -127,6 +127,27 @@ export default function DashboardPage() {
             ))}
           </div>
 
+          {/* Action Required */}
+          <div className="anim-fade-up" style={{ animationDelay: "0.2s" }}>
+            <div className="flex items-center gap-3 overflow-x-auto pb-2">
+              {[
+                { emoji: "📝", label: "Science Homework Due", time: "in 2 hours", color: "border-red-300 bg-red-50 text-red-700", urgent: true },
+                { emoji: "🎥", label: "Live Physics Class", time: "at 2:00 PM", color: "border-blue-300 bg-blue-50 text-blue-700" },
+                { emoji: "📊", label: "Maths Mock Test", time: "Tomorrow", color: "border-amber-300 bg-amber-50 text-amber-700" },
+                { emoji: "📖", label: "History Chapter 4", time: "Due Friday", color: "border-purple-300 bg-purple-50 text-purple-700" },
+              ].map((action) => (
+                <div key={action.label} className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 ${action.color} flex-shrink-0 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200`}>
+                  <span className="text-[18px]">{action.emoji}</span>
+                  <div>
+                    <span className="text-[13px] block" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{action.label}</span>
+                    <span className="text-[11px] opacity-70" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{action.time}</span>
+                  </div>
+                  {action.urgent && <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />}
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Choose Your Learning Tool */}
           <div>
             <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>

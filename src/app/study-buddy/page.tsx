@@ -479,7 +479,7 @@ export default function StudyHubPage() {
                   ))}
                 </div>
 
-                <div className="border-t border-[#e5e7eb] p-3 flex-shrink-0">
+                <div className="border-t border-[#e5e7eb] p-3 flex-shrink-0 sticky bottom-0 bg-white z-10">
                   <form onSubmit={(e) => { e.preventDefault(); const input = e.currentTarget.querySelector("input") as HTMLInputElement; sendChatMessage(input.value); input.value = ""; }} className="flex gap-2">
                     <input type="text" placeholder="Ask a follow-up..." className="flex-1 bg-[#f8fafc] border-2 border-[#e5e7eb] rounded-xl px-4 py-2.5 text-[14px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-purple-400" />
                     <button type="submit" className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center text-white hover:bg-[#6d28d9] transition-colors cursor-pointer flex-shrink-0"><Send size={16} /></button>

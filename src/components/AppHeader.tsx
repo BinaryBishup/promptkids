@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import {
   Bell,
@@ -33,9 +33,28 @@ interface AppHeaderProps {
 
 export default function AppHeader({ breadcrumbs, rightContent, contextInfo }: AppHeaderProps) {
   const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const profileTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const notifTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openProfile = useCallback(() => {
+    if (profileTimeout.current) clearTimeout(profileTimeout.current);
+    setProfileOpen(true);
+  }, []);
+  const closeProfile = useCallback(() => {
+    profileTimeout.current = setTimeout(() => setProfileOpen(false), 250);
+  }, []);
+
+  const openNotif = useCallback(() => {
+    if (notifTimeout.current) clearTimeout(notifTimeout.current);
+    setNotifOpen(true);
+  }, []);
+  const closeNotif = useCallback(() => {
+    notifTimeout.current = setTimeout(() => setNotifOpen(false), 250);
+  }, []);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b-[2.5px] border-[#eef0f4] h-[64px] flex items-center justify-between px-5 gap-4">
+    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-t-[3px] border-t-[#2563eb] border-b-[2.5px] border-[#eef0f4] h-[64px] flex items-center justify-between px-5 gap-4">
       {/* Left: Back + Logo + Breadcrumbs */}
       <div className="flex items-center gap-3 min-w-0 flex-1">
         {/* Back button (if breadcrumbs exist) */}
@@ -96,27 +115,60 @@ export default function AppHeader({ breadcrumbs, rightContent, contextInfo }: Ap
         )}
       </div>
 
-      {/* Right: custom content + bell + user */}
+      {/* Right: XP badge + custom content + bell + user */}
       <div className="flex items-center gap-3 flex-shrink-0">
+        {/* XP/Streak badge — desktop only */}
+        <div className="hidden md:flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-full text-[13px]" style={dFont}>
+          <span>🔥 7</span>
+          <span className="text-amber-300">|</span>
+          <span>⭐ 340 XP</span>
+        </div>
+
         {rightContent}
 
-        <button className="relative p-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
-          <Bell className="w-5 h-5 text-[#6b7280]" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#f97316] rounded-full border-2 border-white" />
-        </button>
+        {/* Notification dropdown */}
+        <div className="relative" onMouseEnter={openNotif} onMouseLeave={closeNotif}>
+          <button className="relative p-2 rounded-lg hover:bg-gray-50 transition-all duration-200">
+            <Bell className="w-5 h-5 text-[#6b7280]" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#f97316] rounded-full border-2 border-white" />
+          </button>
 
-        {/* User dropdown */}
-        <div className="relative">
+          {notifOpen && (
+            <div className="absolute right-0 top-11 w-[300px] bg-white rounded-2xl shadow-2xl border-2 border-[#e5e7eb] z-50 overflow-hidden">
+              <div className="px-4 pt-4 pb-2">
+                <p className="text-[14px] text-[#0f172a]" style={dFont}>Notifications</p>
+              </div>
+              <div className="flex flex-col">
+                {[
+                  { text: "Science homework due in 2 hours", dot: "bg-orange-400", time: "30 min ago" },
+                  { text: "Live class starting at 2:00 PM", dot: "bg-blue-500", time: "1 hour ago" },
+                  { text: "New achievement unlocked! 🏆", dot: "bg-green-500", time: "2 hours ago" },
+                ].map((n) => (
+                  <div key={n.text} className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer">
+                    <span className={`w-2.5 h-2.5 rounded-full ${n.dot} flex-shrink-0 mt-1.5`} />
+                    <div className="min-w-0">
+                      <p className="text-[13px] text-[#374151]" style={bFont}>{n.text}</p>
+                      <p className="text-[11px] text-[#94a3b8] mt-0.5" style={bFont}>{n.time}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-[#e5e7eb] px-4 py-2.5">
+                <Link href="/notifications" className="text-[13px] text-[#2563eb] no-underline hover:underline" style={dFont}>View all</Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* User dropdown — hover */}
+        <div className="relative" onMouseEnter={openProfile} onMouseLeave={closeProfile}>
           <button
-            onClick={() => setProfileOpen(!profileOpen)}
-            className="w-9 h-9 rounded-full bg-gray-100 border-2 border-[#e5e7eb] flex items-center justify-center hover:border-[#7c3aed]/40 transition-all duration-200 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-gradient-to-br from-[#2563eb] to-[#7c3aed] border-2 border-[#e5e7eb] flex items-center justify-center hover:border-[#7c3aed]/40 transition-all duration-200 cursor-pointer"
           >
-            <User className="w-4 h-4 text-[#6b7280]" />
+            <span className="text-white text-[12px] leading-none" style={dFont}>AS</span>
           </button>
 
           {profileOpen && (
-            <>
-              <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />
               <div className="absolute right-0 top-12 w-[260px] bg-white rounded-2xl shadow-2xl border-2 border-[#e5e7eb] z-50 overflow-hidden">
                 <div className="px-5 pt-5 pb-3 flex flex-col items-center">
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#2563eb] to-[#7c3aed] flex items-center justify-center mb-2">
@@ -164,7 +216,6 @@ export default function AppHeader({ breadcrumbs, rightContent, contextInfo }: Ap
                   </button>
                 </div>
               </div>
-            </>
           )}
         </div>
       </div>
