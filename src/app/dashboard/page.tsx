@@ -76,11 +76,9 @@ export default function DashboardPage() {
       {/* TOP NAV BAR */}
       <nav className="sticky top-0 z-50 bg-white border-b-[2.5px] border-[#eef0f4] h-[78px] flex items-center justify-between px-6 anim-slide-down">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-[14px] bg-gradient-to-br from-[#2563eb] to-[#7c3aed] flex items-center justify-center flex-shrink-0 hover:scale-110 hover:shadow-lg hover:shadow-blue-200 transition-all duration-200 cursor-pointer" style={{ animation: "pulseGlow 3s ease-in-out infinite" }}>
-            <Sparkles className="w-6 h-6 text-white" />
-          </div>
+          <span className="font-mono text-sm font-bold text-[#2563eb] bg-[#2563eb]/10 px-2 py-1 rounded hover:bg-[#2563eb]/20 transition-colors cursor-pointer">{`>_`}</span>
           <div className="flex flex-col">
-            <span className="font-extrabold text-[#0f172a] text-lg leading-tight" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>PromptKids</span>
+            <span className="font-extrabold text-[#0f172a] text-lg leading-tight" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Prompt<span className="text-[#f97316]">Kids</span></span>
             <span className="text-[#9ca3af] text-xs leading-tight font-medium" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>AI Learning Platform</span>
           </div>
         </div>
