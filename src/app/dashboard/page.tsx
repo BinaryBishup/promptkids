@@ -126,13 +126,13 @@ export default function DashboardPage() {
                   {/* Menu items */}
                   <div className="border-t border-[#e5e7eb]">
                     {[
-                      { icon: User, label: "My Profile" },
-                      { icon: CalendarDays, label: "My Schedule" },
-                      { icon: Award, label: "Achievements" },
-                      { icon: Library, label: "My Library" },
-                      { icon: Settings, label: "Settings" },
+                      { icon: User, label: "My Profile", href: "/profile" },
+                      { icon: CalendarDays, label: "My Schedule", href: "/schedule" },
+                      { icon: Award, label: "Achievements", href: "/achievements" },
+                      { icon: Library, label: "My Library", href: "/study-hub" },
+                      { icon: Settings, label: "Settings", href: "/settings" },
                     ].map((item) => (
-                      <button key={item.label} className="w-full flex items-center justify-between px-6 py-3.5 hover:bg-gray-50 transition-colors cursor-pointer">
+                      <Link key={item.label} href={item.href} className="w-full flex items-center justify-between px-6 py-3.5 hover:bg-gray-50 transition-colors cursor-pointer no-underline">
                         <div className="flex items-center gap-3">
                           <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
                             <item.icon className="w-[18px] h-[18px] text-[#6b7280]" />
@@ -140,7 +140,7 @@ export default function DashboardPage() {
                           <span className="text-[14px] text-[#374151]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{item.label}</span>
                         </div>
                         <ChevronRight className="w-4 h-4 text-[#d1d5db]" />
-                      </button>
+                      </Link>
                     ))}
                   </div>
 
@@ -441,15 +441,15 @@ export default function DashboardPage() {
             <h3 className="font-extrabold text-[17px] text-[#0f172a] mb-4" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Quick Access</h3>
             <div className="flex flex-col gap-1">
               {[
-                { icon: CalendarDays, label: "My Schedule", color: "text-[#2563eb]" },
-                { icon: Award, label: "Achievements", color: "text-[#7c3aed]" },
-                { icon: Library, label: "My Library", color: "text-[#10b981]" },
-                { icon: Settings, label: "Settings", color: "text-[#6b7280]" },
+                { icon: CalendarDays, label: "My Schedule", color: "text-[#2563eb]", href: "/schedule" },
+                { icon: Award, label: "Achievements", color: "text-[#7c3aed]", href: "/achievements" },
+                { icon: Library, label: "My Library", color: "text-[#10b981]", href: "/study-hub" },
+                { icon: Settings, label: "Settings", color: "text-[#6b7280]", href: "/settings" },
               ].map((item) => (
-                <button key={item.label} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer w-full text-left" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
+                <Link key={item.label} href={item.href} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer w-full text-left no-underline" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
                   <item.icon className={`w-5 h-5 ${item.color}`} />
                   <span className="text-[15px] text-[#374151]">{item.label}</span>
-                </button>
+                </Link>
               ))}
             </div>
           </div>
