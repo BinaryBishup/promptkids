@@ -487,8 +487,8 @@ export default function PracticeArenaPage() {
 
         <div className="flex flex-col lg:flex-row gap-8 flex-1">
           {/* Main question area */}
-          <div className="flex-1 pa-fade pa-d1 flex flex-col">
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 flex-1 flex flex-col">
+          <div className="flex-1 pa-fade pa-d1">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8">
               {/* Tags row */}
               <div className="flex flex-wrap items-center gap-2 mb-5">
                 <span className={`${dc.bg} ${dc.text} px-3 py-1 rounded-full text-[12px]`} style={dFont}>
@@ -515,9 +515,7 @@ export default function PracticeArenaPage() {
               )}
 
               {/* Answer area */}
-              <div className="flex-1 flex flex-col justify-center">
-                {renderAnswerArea()}
-              </div>
+              {renderAnswerArea()}
 
               {/* Next button */}
               <button
