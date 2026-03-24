@@ -110,50 +110,21 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Stat Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#2563eb]/40 hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.1s" }}>
-              <div className="w-12 h-12 rounded-xl bg-[#eff6ff] flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-6 h-6 text-[#2563eb]" />
-              </div>
-              <div>
-                <p className="text-[#2563eb] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.4s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>5</p>
-                <p className="text-[#6b7280] text-[13px] font-semibold mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Homework Done</p>
-              </div>
-            </div>
-
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#7c3aed]/40 hover:shadow-lg hover:shadow-purple-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.15s" }}>
-              <div className="w-12 h-12 rounded-xl bg-[#faf5ff] flex items-center justify-center flex-shrink-0">
-                <Brain className="w-6 h-6 text-[#7c3aed]" />
-              </div>
-              <div>
-                <p className="text-[#7c3aed] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.45s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>12</p>
-                <p className="text-[#6b7280] text-[13px] font-semibold mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Concepts Learned</p>
-              </div>
-            </div>
-
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#22c55e]/40 hover:shadow-lg hover:shadow-green-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.2s" }}>
-              <div className="w-12 h-12 rounded-xl bg-[#f0fdf4] flex items-center justify-center flex-shrink-0">
-                <TrendingDown className="w-6 h-6 text-[#22c55e]" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <p className="text-[#22c55e] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.5s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>28%</p>
-                  <TrendingDown className="w-4 h-4 text-[#22c55e]" />
+          {/* Quick Access */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 anim-fade-up" style={{ animationDelay: "0.1s" }}>
+            {[
+              { icon: CalendarDays, label: "My Schedule", color: "text-[#2563eb]", bg: "bg-[#eff6ff]", borderHover: "hover:border-[#2563eb]/40", shadowHover: "hover:shadow-blue-100", href: "/schedule" },
+              { icon: Award, label: "Achievements", color: "text-[#7c3aed]", bg: "bg-[#faf5ff]", borderHover: "hover:border-[#7c3aed]/40", shadowHover: "hover:shadow-purple-100", href: "/achievements" },
+              { icon: Library, label: "My Library", color: "text-[#10b981]", bg: "bg-[#ecfdf5]", borderHover: "hover:border-[#10b981]/40", shadowHover: "hover:shadow-emerald-100", href: "/study-hub" },
+              { icon: Settings, label: "Settings", color: "text-[#6b7280]", bg: "bg-gray-50", borderHover: "hover:border-gray-300", shadowHover: "hover:shadow-gray-100", href: "/settings" },
+            ].map((item) => (
+              <Link key={item.label} href={item.href} className={`flex items-center gap-3 bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl px-5 py-4 ${item.borderHover} hover:shadow-lg ${item.shadowHover} hover:-translate-y-0.5 transition-all duration-200 no-underline cursor-pointer`}>
+                <div className={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center flex-shrink-0`}>
+                  <item.icon className={`w-5 h-5 ${item.color}`} />
                 </div>
-                <p className="text-[#6b7280] text-[13px] font-semibold mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>AI Dependency</p>
-              </div>
-            </div>
-
-            <div className="anim-fade-up bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl h-[116px] flex items-center gap-5 px-6 cursor-pointer hover:border-[#f59e0b]/40 hover:shadow-lg hover:shadow-amber-100 hover:-translate-y-1 transition-all duration-200" style={{ animationDelay: "0.25s" }}>
-              <div className="w-12 h-12 rounded-xl bg-[#fffbeb] flex items-center justify-center flex-shrink-0">
-                <Trophy className="w-6 h-6 text-[#f59e0b]" />
-              </div>
-              <div>
-                <p className="text-[#f59e0b] font-black text-[28px] leading-none anim-count" style={{ animationDelay: "0.55s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>8</p>
-                <p className="text-[#6b7280] text-[13px] font-semibold mt-1" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Badges Earned</p>
-              </div>
-            </div>
+                <span className="text-[14px] text-[#374151]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
+              </Link>
+            ))}
           </div>
 
           {/* Choose Your Learning Tool */}
@@ -312,23 +283,6 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Quick Access */}
-          <div className="anim-fade-right" style={{ animationDelay: "0.7s" }}>
-            <h3 className="font-extrabold text-[17px] text-[#0f172a] mb-4" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Quick Access</h3>
-            <div className="flex flex-col gap-1">
-              {[
-                { icon: CalendarDays, label: "My Schedule", color: "text-[#2563eb]", href: "/schedule" },
-                { icon: Award, label: "Achievements", color: "text-[#7c3aed]", href: "/achievements" },
-                { icon: Library, label: "My Library", color: "text-[#10b981]", href: "/study-hub" },
-                { icon: Settings, label: "Settings", color: "text-[#6b7280]", href: "/settings" },
-              ].map((item) => (
-                <Link key={item.label} href={item.href} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer w-full text-left no-underline" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
-                  <item.icon className={`w-5 h-5 ${item.color}`} />
-                  <span className="text-[15px] text-[#374151]">{item.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
         </aside>
       </div>
 

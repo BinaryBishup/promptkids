@@ -28,12 +28,13 @@ import {
   Globe,
   Play,
   ExternalLink,
+  ChevronRight,
 } from "lucide-react";
 
 import AppHeader from "@/components/AppHeader";
 
 /* ─── Types ─── */
-type Step = "subjects" | "learn";
+type Step = "subjects" | "topics" | "learn";
 
 interface Subject {
   name: string;
@@ -122,6 +123,44 @@ export default function ConceptMasterPage() {
 
   const handleSubjectClick = (subject: Subject) => {
     setSelectedSubject(subject);
+    setStep("topics");
+  };
+
+  const [selectedTopic, setSelectedTopic] = useState("");
+
+  const topicsBySubject: Record<string, { name: string; desc: string }[]> = {
+    Science: [
+      { name: "Light & Reflection", desc: "Laws of reflection, mirrors, and light behavior" },
+      { name: "Chemical Reactions", desc: "Types of reactions and chemical equations" },
+      { name: "Force & Motion", desc: "Newton's laws and motion principles" },
+      { name: "Sound", desc: "Sound waves, frequency, and propagation" },
+      { name: "Electricity", desc: "Electric current, circuits, and Ohm's law" },
+    ],
+    Maths: [
+      { name: "Quadratic Equations", desc: "Solving and graphing quadratic equations" },
+      { name: "Trigonometry", desc: "Ratios, identities, and applications" },
+      { name: "Statistics", desc: "Mean, median, mode, and probability" },
+    ],
+    History: [
+      { name: "French Revolution", desc: "Causes, events, and aftermath" },
+      { name: "World War II", desc: "Timeline, causes, and global impact" },
+    ],
+    English: [
+      { name: "Essay Writing", desc: "Structure, arguments, and persuasion" },
+      { name: "Grammar", desc: "Tenses, voice, and sentence structure" },
+    ],
+    Biology: [
+      { name: "Cell Structure", desc: "Cell organelles and their functions" },
+      { name: "Photosynthesis", desc: "Process, factors, and importance" },
+    ],
+    Physics: [
+      { name: "Waves", desc: "Types, properties, and behavior" },
+      { name: "Thermodynamics", desc: "Heat, energy, and laws" },
+    ],
+  };
+
+  const handleTopicClick = (topicName: string) => {
+    setSelectedTopic(topicName);
     setStep("learn");
   };
 
@@ -168,7 +207,43 @@ export default function ConceptMasterPage() {
     );
   }
 
-  /* ─── STEP 2: Learn Interface ─── */
+  /* ─── STEP 2: Topic Selector ─── */
+  if (step === "topics" && selectedSubject) {
+    const topics = topicsBySubject[selectedSubject.name] || [];
+    return (
+      <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Concept Master", onClick: () => setStep("subjects") }, { label: selectedSubject.name }]} />
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="flex items-center gap-4 mb-3 cm-fade">
+            <div className={`w-12 h-12 rounded-xl ${selectedSubject.bgMedium} flex items-center justify-center`}>
+              <span className={selectedSubject.textColor}>{selectedSubject.icon}</span>
+            </div>
+            <h1 className="text-[32px] text-[#0f172a]" style={dFont}>{selectedSubject.name} — Topics</h1>
+          </div>
+          <p className="text-[18px] text-[#64748b] mb-10 cm-fade" style={bFont}>Pick a topic to start learning with AI</p>
+
+          <div className="flex flex-col gap-4">
+            {topics.map((topic, i) => (
+              <button
+                key={topic.name}
+                onClick={() => handleTopicClick(topic.name)}
+                className={`group flex items-center justify-between bg-white border-2 border-[#e5e7eb] rounded-2xl px-8 py-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${selectedSubject.borderHover} cursor-pointer text-left cm-fade`}
+                style={{ animationDelay: `${0.05 * (i + 1)}s` }}
+              >
+                <div>
+                  <span className="block text-[18px] text-[#0f172a] mb-1" style={dFont}>{topic.name}</span>
+                  <span className="text-[14px] text-[#94a3b8]" style={bFont}>{topic.desc}</span>
+                </div>
+                <ChevronRight size={22} className="text-gray-300 group-hover:text-gray-500 transition-colors flex-shrink-0" />
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── STEP 3: Learn Interface ─── */
   if (step === "learn" && selectedSubject) {
     return (
       <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={bFont}>
