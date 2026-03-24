@@ -127,17 +127,17 @@ export default function DashboardPage() {
 
           {/* Today's Events — segmented strip with equal items */}
           <div className="anim-fade-up" style={{ animationDelay: "0.15s" }}>
-            <div className="flex items-stretch bg-white border-2 border-[#e5e7eb] rounded-2xl overflow-hidden">
+            <div className="flex items-stretch bg-[#1e293b] rounded-2xl overflow-hidden">
               {[
-                { icon: Video, label: "Physics Class", sub: "Live now • Join →", color: "text-red-500", bg: "hover:bg-red-50", iconBg: "bg-red-100", href: "/live-classes", live: true },
-                { icon: Clock, label: "Science HW Due", sub: "Due in 2 hours", color: "text-amber-600", bg: "hover:bg-amber-50", iconBg: "bg-amber-100", tool: { name: "Study Buddy", emoji: "📚", path: "/study-buddy" } },
-                { icon: ClipboardList, label: "Maths Assignment", sub: "New • Assigned today", color: "text-blue-600", bg: "hover:bg-blue-50", iconBg: "bg-blue-100", tool: { name: "Study Buddy", emoji: "📚", path: "/study-buddy" } },
-                { icon: Trophy, label: "Science Mid-term", sub: "In 5 days • Mar 28", color: "text-purple-600", bg: "hover:bg-purple-50", iconBg: "bg-purple-100", tool: { name: "Practice Arena", emoji: "🏆", path: "/practice-arena" } },
+                { icon: Video, label: "Physics Class", sub: "Live now • Join →", color: "text-red-400", bg: "hover:bg-white/5", iconBg: "bg-red-500/20", href: "/live-classes", live: true },
+                { icon: Clock, label: "Science HW Due", sub: "Due in 2 hours", color: "text-amber-400", bg: "hover:bg-white/5", iconBg: "bg-amber-500/20", tool: { name: "Study Buddy", emoji: "📚", path: "/study-buddy" } },
+                { icon: ClipboardList, label: "Maths Assignment", sub: "New • Assigned today", color: "text-blue-400", bg: "hover:bg-white/5", iconBg: "bg-blue-500/20", tool: { name: "Study Buddy", emoji: "📚", path: "/study-buddy" } },
+                { icon: Trophy, label: "Science Mid-term", sub: "In 5 days • Mar 28", color: "text-purple-400", bg: "hover:bg-white/5", iconBg: "bg-purple-500/20", tool: { name: "Practice Arena", emoji: "🏆", path: "/practice-arena" } },
               ].map((item, i) => (
                 <div
                   key={item.label}
                   onClick={() => item.href ? undefined : item.tool && openPicker(item.tool.name, item.tool.emoji, item.tool.path)}
-                  className={`flex-1 flex items-center gap-3 px-5 py-4 ${item.bg} transition-colors cursor-pointer ${i < 3 ? "border-r border-[#e5e7eb]" : ""}`}
+                  className={`flex-1 flex items-center gap-3 px-5 py-4 ${item.bg} transition-colors cursor-pointer ${i < 3 ? "border-r border-white/10" : ""}`}
                 >
                   {item.href ? (
                     <Link href={item.href} className="flex items-center gap-3 no-underline flex-1">
@@ -148,7 +148,7 @@ export default function DashboardPage() {
                         </div>
                       </div>
                       <div className="min-w-0">
-                        <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
+                        <span className="text-[13px] text-white block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
                         <span className={`text-[11px] ${item.color}`} style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{item.sub}</span>
                       </div>
                     </Link>
@@ -158,7 +158,7 @@ export default function DashboardPage() {
                         <item.icon className={`w-5 h-5 ${item.color}`} />
                       </div>
                       <div className="min-w-0">
-                        <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
+                        <span className="text-[13px] text-white block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{item.label}</span>
                         <span className={`text-[11px] ${item.color}`} style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{item.sub}</span>
                       </div>
                     </>
@@ -211,6 +211,13 @@ export default function DashboardPage() {
               </div>
               <Link href="/achievements" className="text-[12px] text-[#2563eb] no-underline hover:underline" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>See all</Link>
             </div>
+            {/* Header row */}
+            <div className="flex items-center px-3 py-1.5 text-[11px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
+              <span className="w-6 flex-shrink-0" />
+              <span className="w-7 flex-shrink-0 mr-2.5" />
+              <span className="flex-1">Student</span>
+              <span className="flex-shrink-0">XP</span>
+            </div>
             <div className="flex flex-col gap-1">
               {[
                 { rank: 1, name: "Riya Patel", xp: 3120, medal: "🥇" },
@@ -227,7 +234,7 @@ export default function DashboardPage() {
                   <span className={`text-[13px] flex-1 truncate ${s.isYou ? "text-[#2563eb]" : "text-[#374151]"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
                     {s.name}{s.isYou && <span className="text-[10px] text-purple-600 ml-1">You</span>}
                   </span>
-                  <span className="text-[11px] text-[#94a3b8] flex-shrink-0" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{s.xp.toLocaleString()}</span>
+                  <span className={`text-[12px] flex-shrink-0 ${s.isYou ? "text-[#2563eb]" : "text-[#0f172a]"}`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{s.xp.toLocaleString()}</span>
                 </div>
               ))}
             </div>
