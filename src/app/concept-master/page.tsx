@@ -215,23 +215,6 @@ export default function ConceptMasterPage() {
               </span>
             </div>
 
-            {/* Progress bar */}
-            <div className="bg-gradient-to-r from-[#faf5ff] to-[#eff6ff] rounded-[14px] p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[14px] text-purple-600" style={bFont}>
-                  Step 3 of 7 — You&apos;re doing great!
-                </span>
-                <span className="text-[14px] text-purple-600" style={dFont}>
-                  43%
-                </span>
-              </div>
-              <div className="w-full h-[10px] bg-white rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-[#7c3aed] rounded-full transition-all duration-500"
-                  style={{ width: "43%" }}
-                />
-              </div>
-            </div>
           </div>
 
           {/* Chat area */}
