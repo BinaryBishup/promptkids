@@ -1,453 +1,212 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import {
-  Trophy,
-  Star,
-  Lock,
-  Crown,
-  Zap,
-  Award,
-  Gift,
-  TrendingUp,
-  ChevronRight,
-} from "lucide-react";
+import { Trophy, Star, Lock, Crown, Zap, ChevronRight } from "lucide-react";
 import AppHeader from "@/components/AppHeader";
 
 const dFont = { fontFamily: "var(--font-display)", fontWeight: 900 } as const;
 const bFont = { fontFamily: "var(--font-body)", fontWeight: 500 } as const;
 
-/* ── Badge Data ─────────────────────────────────────────────────── */
-
-type Badge = {
-  emoji: string;
-  name: string;
-  description: string;
-  earned: boolean;
-  progress?: string;
-};
-
-const badges: Badge[] = [
-  { emoji: "🔥", name: "First Streak", description: "Complete 3 days in a row", earned: true },
-  { emoji: "📚", name: "Bookworm", description: "Read 10 study materials", earned: true },
-  { emoji: "🧠", name: "Quick Learner", description: "Master a concept in under 5 min", earned: true },
-  { emoji: "💡", name: "Problem Solver", description: "Solve 20 problems independently", earned: true },
-  { emoji: "⭐", name: "Star Student", description: "Score 90%+ on 5 quizzes", earned: true },
-  { emoji: "🏆", name: "Champion", description: "Win a weekly challenge", earned: true },
-  { emoji: "🎯", name: "Sharpshooter", description: "Get 100% on any quiz", earned: true },
-  { emoji: "🤝", name: "Team Player", description: "Help a classmate via study group", earned: true },
-  { emoji: "🔬", name: "Science Whiz", description: "Complete all Science modules", earned: false, progress: "Complete 3 more modules" },
-  { emoji: "📐", name: "Math Master", description: "Score 95%+ in all Math quizzes", earned: false, progress: "Complete 2 more quizzes" },
-  { emoji: "🌍", name: "Explorer", description: "Study all 6 subjects", earned: false, progress: "Study 2 more subjects" },
-  { emoji: "👑", name: "Legend", description: "Reach Level 10", earned: false, progress: "Reach 3 more levels" },
+const leaderboard = [
+  { rank: 1, name: "Riya Patel", xp: 3120, medal: "🥇" },
+  { rank: 2, name: "Arjun Sharma", xp: 2340, medal: "🥈", isYou: true },
+  { rank: 3, name: "Vikram Singh", xp: 2100, medal: "🥉" },
+  { rank: 4, name: "Priya Desai", xp: 1890 },
+  { rank: 5, name: "Rahul Kumar", xp: 1650 },
+  { rank: 6, name: "Sneha Gupta", xp: 1520 },
+  { rank: 7, name: "Aditya Rao", xp: 1380 },
+  { rank: 8, name: "Meera Joshi", xp: 1200 },
 ];
 
-/* ── Leaderboard Data ───────────────────────────────────────────── */
-
-type LeaderEntry = {
-  rank: number;
-  name: string;
-  xp: number;
-  badgeCount: number;
-  isYou: boolean;
-  avatar: string;
-};
-
-const leaderboard: LeaderEntry[] = [
-  { rank: 1, name: "Riya Patel", xp: 3120, badgeCount: 10, isYou: false, avatar: "RP" },
-  { rank: 2, name: "Arjun Sharma", xp: 2340, badgeCount: 8, isYou: true, avatar: "AS" },
-  { rank: 3, name: "Vikram Singh", xp: 2100, badgeCount: 7, isYou: false, avatar: "VS" },
-  { rank: 4, name: "Priya Desai", xp: 1890, badgeCount: 6, isYou: false, avatar: "PD" },
-  { rank: 5, name: "Rahul Kumar", xp: 1650, badgeCount: 5, isYou: false, avatar: "RK" },
+const badges = [
+  { emoji: "🔥", name: "First Streak", desc: "3-day streak", earned: true },
+  { emoji: "📚", name: "Bookworm", desc: "Read 10 materials", earned: true },
+  { emoji: "🧠", name: "Quick Learner", desc: "Master in <5 min", earned: true },
+  { emoji: "💡", name: "Problem Solver", desc: "20 problems solo", earned: true },
+  { emoji: "⭐", name: "Star Student", desc: "90%+ on 5 quizzes", earned: true },
+  { emoji: "🏆", name: "Champion", desc: "Win weekly challenge", earned: true },
+  { emoji: "🎯", name: "Sharpshooter", desc: "100% on any quiz", earned: true },
+  { emoji: "🤝", name: "Team Player", desc: "Help a classmate", earned: true },
+  { emoji: "🔬", name: "Science Whiz", desc: "All Science modules", earned: false, progress: "3 more" },
+  { emoji: "📐", name: "Math Master", desc: "95%+ all Math quizzes", earned: false, progress: "2 more" },
+  { emoji: "🌍", name: "Explorer", desc: "Study all 6 subjects", earned: false, progress: "2 subjects" },
+  { emoji: "👑", name: "Legend", desc: "Reach Level 10", earned: false, progress: "3 levels" },
 ];
-
-/* ── Recent Rewards ─────────────────────────────────────────────── */
-
-type Reward = {
-  emoji: string;
-  title: string;
-  xp: number;
-  date: string;
-};
-
-const recentRewards: Reward[] = [
-  { emoji: "🎯", title: "Perfect Quiz Score", xp: 150, date: "Today" },
-  { emoji: "🔥", title: "7-Day Streak Bonus", xp: 200, date: "Yesterday" },
-  { emoji: "📚", title: "Completed Chapter 8", xp: 100, date: "Mar 22" },
-  { emoji: "🏆", title: "Weekly Challenge Winner", xp: 300, date: "Mar 20" },
-];
-
-/* ── Rank colors ────────────────────────────────────────────────── */
-
-const rankColors: Record<number, string> = {
-  1: "bg-gradient-to-br from-yellow-300 to-yellow-500 text-yellow-900 shadow-md shadow-yellow-200",
-  2: "bg-gradient-to-br from-gray-300 to-gray-400 text-white shadow-md shadow-gray-200",
-  3: "bg-gradient-to-br from-amber-500 to-amber-700 text-white shadow-md shadow-amber-200",
-};
-
-const rankMedal: Record<number, string> = {
-  1: "🥇",
-  2: "🥈",
-  3: "🥉",
-};
-
-/* ── Avatar colors ──────────────────────────────────────────────── */
-
-const avatarColors = [
-  "bg-violet-500",
-  "bg-orange-500",
-  "bg-emerald-500",
-  "bg-sky-500",
-  "bg-rose-500",
-];
-
-/* ── Filter type ────────────────────────────────────────────────── */
-
-type Filter = "all" | "earned" | "locked";
-
-/* ── Page ───────────────────────────────────────────────────────── */
 
 export default function AchievementsPage() {
-  const [filter, setFilter] = useState<Filter>("all");
+  const [badgeFilter, setBadgeFilter] = useState<"all" | "earned" | "locked">("all");
 
-  const filteredBadges =
-    filter === "all"
-      ? badges
-      : filter === "earned"
-        ? badges.filter((b) => b.earned)
-        : badges.filter((b) => !b.earned);
-
-  const currentXP = 2340;
-  const nextLevelXP = 3000;
-  const xpPercent = Math.round((currentXP / nextLevelXP) * 100);
+  const filtered = badgeFilter === "all" ? badges : badgeFilter === "earned" ? badges.filter(b => b.earned) : badges.filter(b => !b.earned);
 
   return (
     <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
-      {/* ── App Header ──────────────────────────────── */}
       <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Achievements" }]} />
 
-      {/* ── Page title + stats ──────────────────────────────── */}
-      <div className="mx-auto max-w-5xl px-6 pt-8 pb-4 sm:px-8">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h1 className="text-[28px] leading-tight text-[#0f172a]" style={dFont}>
-              Achievements &amp; Rewards
-            </h1>
-            <p className="mt-1 text-[15px] text-[#64748b]" style={bFont}>
-              Celebrate your learning milestones!
-            </p>
-          </div>
+      {/* Page title + XP bar */}
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-4">
+        <h1 className="text-[28px] text-[#0f172a] mb-2" style={dFont}>Achievements &amp; Rewards</h1>
+        <p className="text-[15px] text-[#64748b] mb-6" style={bFont}>Celebrate your learning milestones!</p>
 
-          {/* stat cards */}
-          <div className="flex gap-4">
-            <div className="flex items-center gap-3 rounded-2xl bg-orange-50 border border-orange-200 px-5 py-3 transition-transform hover:scale-105">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100">
-                <Award size={20} className="text-orange-600" />
-              </div>
-              <div>
-                <p className="text-[20px] leading-none text-[#0f172a]" style={dFont}>8/12</p>
-                <p className="text-[13px] text-[#64748b]" style={bFont}>Badges Earned</p>
-              </div>
+        {/* XP Progress */}
+        <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex items-center gap-4 flex-1">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-100 to-yellow-100 flex items-center justify-center flex-shrink-0">
+              <span className="text-[28px]">⭐</span>
             </div>
-
-            <div className="flex items-center gap-3 rounded-2xl bg-purple-50 border border-purple-200 px-5 py-3 transition-transform hover:scale-105">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100">
-                <Zap size={20} className="text-purple-600" />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[15px] text-[#0f172a]" style={dFont}>2,340 / 3,000 XP</span>
+                <span className="text-[13px] text-[#22c55e]" style={dFont}>Level 7 → 8</span>
               </div>
-              <div>
-                <p className="text-[20px] leading-none text-[#0f172a]" style={dFont}>2,340</p>
-                <p className="text-[13px] text-[#64748b]" style={bFont}>Total XP</p>
+              <div className="w-full h-3 bg-[#f1f5f9] rounded-full overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-to-r from-[#22c55e] to-[#10b981]" style={{ width: "78%" }} />
               </div>
+              <p className="text-[12px] text-[#94a3b8] mt-1" style={bFont}>660 XP to next level</p>
+            </div>
+          </div>
+          <div className="flex gap-3 flex-shrink-0">
+            <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2 text-center">
+              <p className="text-[20px] text-[#f59e0b]" style={dFont}>8/12</p>
+              <p className="text-[11px] text-[#94a3b8]" style={bFont}>Badges</p>
+            </div>
+            <div className="bg-purple-50 border border-purple-200 rounded-xl px-4 py-2 text-center">
+              <p className="text-[20px] text-[#7c3aed]" style={dFont}>#2</p>
+              <p className="text-[11px] text-[#94a3b8]" style={bFont}>Class Rank</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Content ─────────────────────────────────────────────── */}
-      <main className="mx-auto max-w-5xl space-y-8 px-6 py-8 sm:px-8">
-        {/* ── XP Progress Card ──────────────────────────────────── */}
-        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
-          <div className="mb-4 flex items-center gap-2">
-            <TrendingUp size={20} className="text-emerald-500" />
-            <h2 className="text-[20px] text-[#0f172a]" style={dFont}>
-              Your XP Journey
-            </h2>
-          </div>
-
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-[14px] text-[#64748b]" style={bFont}>
-                Level 7 &rarr; Level 8
-              </p>
-            </div>
-            <p className="text-[14px] text-[#64748b]" style={bFont}>
-              <span className="text-[#0f172a]" style={dFont}>
-                {currentXP.toLocaleString()}
-              </span>{" "}
-              / {nextLevelXP.toLocaleString()} XP
-            </p>
-          </div>
-
-          {/* bar */}
-          <div className="mt-3 h-5 w-full overflow-hidden rounded-full bg-gray-100">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-700 ease-out"
-              style={{ width: `${xpPercent}%` }}
-            />
-          </div>
-
-          <p className="mt-2 text-[13px] text-emerald-600" style={bFont}>
-            <Zap size={14} className="mr-1 inline -translate-y-px" />
-            660 XP to next level
-          </p>
-        </section>
-
-        {/* ── Badges Section ────────────────────────────────────── */}
-        <section>
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-[22px] text-[#0f172a]" style={dFont}>
-                Your Badges
-              </h2>
-              <p className="text-[14px] text-[#64748b]" style={bFont}>
-                8 of 12 earned
-              </p>
-            </div>
-
-            {/* Filter pills */}
-            <div className="flex gap-2">
-              {(["all", "earned", "locked"] as Filter[]).map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setFilter(f)}
-                  className={`rounded-full px-4 py-1.5 text-[13px] capitalize transition-all ${
-                    filter === f
-                      ? "bg-orange-500 text-white shadow-sm"
-                      : "bg-white text-[#64748b] border border-gray-200 hover:border-orange-300 hover:text-orange-600"
-                  }`}
-                  style={dFont}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Badge grid */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {filteredBadges.map((badge) => (
-              <div
-                key={badge.name}
-                className={`group relative rounded-2xl border bg-white p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
-                  badge.earned
-                    ? "border-gray-200"
-                    : "border-dashed border-gray-300 opacity-75"
-                }`}
-              >
-                {/* emoji */}
-                <div
-                  className={`mx-auto mb-3 flex h-[60px] w-[60px] items-center justify-center rounded-2xl text-[32px] transition-transform duration-300 group-hover:scale-110 ${
-                    badge.earned
-                      ? "bg-orange-50"
-                      : "bg-gray-100 grayscale"
-                  }`}
-                >
-                  {badge.emoji}
-                </div>
-
-                {/* name */}
-                <h3
-                  className="mb-1 text-[15px] text-[#0f172a]"
-                  style={dFont}
-                >
-                  {badge.name}
-                </h3>
-
-                {/* description */}
-                <p
-                  className="mb-3 text-[12px] text-[#94a3b8]"
-                  style={bFont}
-                >
-                  {badge.description}
-                </p>
-
-                {/* status badge */}
-                {badge.earned ? (
-                  <span
-                    className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-[12px] text-emerald-600"
-                    style={dFont}
-                  >
-                    <Star size={12} className="fill-emerald-500" />
-                    Earned
-                  </span>
-                ) : (
-                  <div className="space-y-1.5">
-                    <span
-                      className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-[12px] text-gray-500"
-                      style={dFont}
-                    >
-                      <Lock size={12} />
-                      Locked
-                    </span>
-                    {badge.progress && (
-                      <p
-                        className="text-[11px] text-orange-500"
-                        style={bFont}
-                      >
-                        {badge.progress}
-                      </p>
-                    )}
-                  </div>
-                )}
+      {/* Two-column: Leaderboard left, Badges right */}
+      <div className="max-w-6xl mx-auto px-6 py-6">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* LEFT — Class Leaderboard */}
+          <div className="lg:w-[40%] flex-shrink-0">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 sticky top-20">
+              <div className="flex items-center gap-2 mb-5">
+                <Crown size={20} className="text-amber-500" />
+                <h2 className="text-[18px] text-[#0f172a]" style={dFont}>Class Rank</h2>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* ── Bottom two-column row ─────────────────────────────── */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          {/* ── Leaderboard Card ──────────────────────────────────── */}
-          <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
-            <div className="mb-5 flex items-center gap-2">
-              <Trophy size={20} className="text-yellow-500" />
-              <h2 className="text-[20px] text-[#0f172a]" style={dFont}>
-                Class Leaderboard
-              </h2>
+              <div className="flex flex-col gap-2">
+                {leaderboard.map((student) => (
+                  <div
+                    key={student.rank}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                      student.isYou
+                        ? "bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-[#2563eb]/30"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
+                    {/* Rank */}
+                    <span className="w-8 text-center flex-shrink-0">
+                      {student.medal ? (
+                        <span className="text-[20px]">{student.medal}</span>
+                      ) : (
+                        <span className="text-[14px] text-[#94a3b8]" style={dFont}>#{student.rank}</span>
+                      )}
+                    </span>
+
+                    {/* Avatar */}
+                    <div className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-[12px] text-white ${
+                      student.isYou ? "bg-gradient-to-br from-[#2563eb] to-[#7c3aed]" : "bg-gray-300"
+                    }`} style={dFont}>
+                      {student.name.split(" ").map(n => n[0]).join("")}
+                    </div>
+
+                    {/* Name + XP */}
+                    <div className="flex-1 min-w-0">
+                      <span className={`text-[14px] block truncate ${student.isYou ? "text-[#2563eb]" : "text-[#0f172a]"}`} style={dFont}>
+                        {student.name} {student.isYou && <span className="text-[11px] text-[#7c3aed] bg-purple-100 px-1.5 py-0.5 rounded-full ml-1">You</span>}
+                      </span>
+                    </div>
+
+                    {/* XP */}
+                    <span className="text-[13px] text-[#64748b] flex-shrink-0" style={dFont}>{student.xp.toLocaleString()} XP</span>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
 
-            <div className="space-y-3">
-              {leaderboard.map((entry, idx) => (
-                <div
-                  key={entry.name}
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 hover:bg-gray-50 ${
-                    entry.isYou
-                      ? "border-2 border-orange-300 bg-orange-50/60 shadow-sm"
-                      : "border border-transparent"
-                  } ${entry.rank <= 3 ? "hover:shadow-md" : ""}`}
-                >
-                  {/* rank badge */}
-                  <div className="flex flex-shrink-0 items-center gap-1.5">
-                    {rankMedal[entry.rank] ? (
-                      <span className="text-[20px] leading-none">{rankMedal[entry.rank]}</span>
+          {/* RIGHT — Badges */}
+          <div className="flex-1">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-2">
+                  <Star size={20} className="text-amber-500" />
+                  <h2 className="text-[18px] text-[#0f172a]" style={dFont}>Badges</h2>
+                  <span className="text-[13px] text-[#94a3b8] ml-1" style={bFont}>8 of 12</span>
+                </div>
+                <div className="flex gap-1.5">
+                  {(["all", "earned", "locked"] as const).map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setBadgeFilter(f)}
+                      className={`px-3 py-1.5 rounded-full text-[12px] transition-all cursor-pointer ${
+                        badgeFilter === f ? "bg-[#2563eb] text-white" : "bg-gray-100 text-[#6b7280] hover:bg-gray-200"
+                      }`}
+                      style={dFont}
+                    >
+                      {f.charAt(0).toUpperCase() + f.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {filtered.map((badge) => (
+                  <div
+                    key={badge.name}
+                    className={`flex flex-col items-center text-center p-5 rounded-2xl border-2 transition-all duration-200 ${
+                      badge.earned
+                        ? "border-[#e5e7eb] bg-white hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+                        : "border-dashed border-gray-200 bg-gray-50/50 opacity-60"
+                    }`}
+                  >
+                    <span className="text-[36px] mb-2">{badge.emoji}</span>
+                    <span className="text-[13px] text-[#0f172a] mb-0.5" style={dFont}>{badge.name}</span>
+                    <span className="text-[11px] text-[#94a3b8]" style={bFont}>{badge.desc}</span>
+                    {badge.earned ? (
+                      <span className="mt-2 text-[10px] text-[#22c55e] bg-green-50 px-2 py-0.5 rounded-full" style={dFont}>Earned ✓</span>
                     ) : (
-                      <div
-                        className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 text-gray-600 text-[13px]"
-                        style={dFont}
-                      >
-                        {entry.rank}
-                      </div>
+                      <span className="mt-2 text-[10px] text-[#94a3b8] flex items-center gap-1" style={bFont}>
+                        <Lock size={10} /> {badge.progress}
+                      </span>
                     )}
                   </div>
-
-                  {/* rank number circle for top 3 */}
-                  <div
-                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-[12px] ${
-                      rankColors[entry.rank] || "bg-gray-100 text-gray-600"
-                    }`}
-                    style={dFont}
-                  >
-                    #{entry.rank}
-                  </div>
-
-                  {/* avatar */}
-                  <div
-                    className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-[12px] text-white ${avatarColors[idx]}`}
-                    style={dFont}
-                  >
-                    {entry.avatar}
-                  </div>
-
-                  {/* name */}
-                  <div className="min-w-0 flex-1">
-                    <p
-                      className="truncate text-[14px] text-[#0f172a]"
-                      style={dFont}
-                    >
-                      {entry.name}
-                      {entry.isYou && (
-                        <span
-                          className="ml-2 inline-flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-[10px] text-orange-600 border border-orange-200"
-                          style={dFont}
-                        >
-                          You
-                        </span>
-                      )}
-                    </p>
-                  </div>
-
-                  {/* stats */}
-                  <div className="flex flex-shrink-0 items-center gap-3 text-right">
-                    <span
-                      className="text-[13px] text-[#0f172a]"
-                      style={dFont}
-                    >
-                      {entry.xp.toLocaleString()} <span className="text-[#94a3b8] font-normal" style={bFont}>XP</span>
-                    </span>
-                    <span className="flex items-center gap-1 text-[12px] text-[#94a3b8]" style={bFont}>
-                      <Award size={12} />
-                      {entry.badgeCount}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ── Recent Rewards Card ──────────────────────────────── */}
-          <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
-            <div className="mb-5 flex items-center gap-2">
-              <Gift size={20} className="text-purple-500" />
-              <h2 className="text-[20px] text-[#0f172a]" style={dFont}>
-                Recent Rewards
-              </h2>
+                ))}
+              </div>
             </div>
 
-            <div className="space-y-3">
-              {recentRewards.map((reward) => (
-                <div
-                  key={reward.title}
-                  className="group flex items-center gap-4 rounded-xl px-4 py-3 transition-all duration-200 hover:bg-gray-50"
-                >
-                  {/* emoji */}
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-purple-50 text-[22px] transition-transform duration-300 group-hover:scale-110">
-                    {reward.emoji}
+            {/* Recent Rewards */}
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 mt-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Zap size={18} className="text-amber-500" />
+                <h2 className="text-[16px] text-[#0f172a]" style={dFont}>Recent Rewards</h2>
+              </div>
+              <div className="flex flex-col gap-2">
+                {[
+                  { emoji: "🎯", title: "Perfect Score — Science Quiz", xp: "+50 XP", time: "Today" },
+                  { emoji: "🔥", title: "7-Day Study Streak", xp: "+30 XP", time: "Today" },
+                  { emoji: "📚", title: "Completed Light & Reflection", xp: "+75 XP", time: "Yesterday" },
+                  { emoji: "🧠", title: "Mastered Quadratic Equations", xp: "+60 XP", time: "2 days ago" },
+                ].map((reward) => (
+                  <div key={reward.title} className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors">
+                    <span className="text-[22px]">{reward.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[13px] text-[#0f172a] block truncate" style={dFont}>{reward.title}</span>
+                      <span className="text-[11px] text-[#94a3b8]" style={bFont}>{reward.time}</span>
+                    </div>
+                    <span className="text-[13px] text-[#22c55e] flex-shrink-0" style={dFont}>{reward.xp}</span>
                   </div>
-
-                  {/* text */}
-                  <div className="min-w-0 flex-1">
-                    <p
-                      className="truncate text-[14px] text-[#0f172a]"
-                      style={dFont}
-                    >
-                      {reward.title}
-                    </p>
-                    <p
-                      className="text-[12px] text-[#94a3b8]"
-                      style={bFont}
-                    >
-                      {reward.date}
-                    </p>
-                  </div>
-
-                  {/* xp earned */}
-                  <span
-                    className="flex flex-shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-[13px] text-emerald-600"
-                    style={dFont}
-                  >
-                    +{reward.xp} XP
-                  </span>
-
-                  <ChevronRight
-                    size={16}
-                    className="flex-shrink-0 text-gray-300 transition-transform group-hover:translate-x-1 group-hover:text-gray-500"
-                  />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </section>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

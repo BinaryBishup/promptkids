@@ -127,52 +127,39 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* Action Required */}
-          <div className="anim-fade-up" style={{ animationDelay: "0.2s" }}>
-            <div className="flex items-center gap-3 overflow-x-auto pb-2">
-              {[
-                { emoji: "📝", label: "Science Homework Due", time: "in 2 hours", color: "border-red-300 bg-red-50 text-red-700", urgent: true },
-                { emoji: "🎥", label: "Live Physics Class", time: "at 2:00 PM", color: "border-blue-300 bg-blue-50 text-blue-700" },
-                { emoji: "📊", label: "Maths Mock Test", time: "Tomorrow", color: "border-amber-300 bg-amber-50 text-amber-700" },
-                { emoji: "📖", label: "History Chapter 4", time: "Due Friday", color: "border-purple-300 bg-purple-50 text-purple-700" },
-              ].map((action) => (
-                <div key={action.label} className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 ${action.color} flex-shrink-0 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200`}>
-                  <span className="text-[18px]">{action.emoji}</span>
-                  <div>
-                    <span className="text-[13px] block" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{action.label}</span>
-                    <span className="text-[11px] opacity-70" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{action.time}</span>
-                  </div>
-                  {action.urgent && <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Choose Your Learning Tool */}
+          {/* Choose Your Learning Tool — with pending actions embedded */}
           <div>
-            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.3s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
+            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.2s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {[
-                { name: "Live Classes", emoji: "🎥", path: "/live-classes", icon: Video, color: "#ef4444", bg: "bg-red-50", bgHover: "group-hover:bg-red-100", borderHover: "hover:border-[#ef4444]/40", shadowHover: "hover:shadow-red-100/60", delay: "0.35s" },
-                { name: "Study Buddy", emoji: "📚", path: "/study-buddy", icon: BookOpen, color: "#2563eb", bg: "bg-[#eff6ff]", bgHover: "group-hover:bg-[#dbeafe]", borderHover: "hover:border-[#2563eb]/40", shadowHover: "hover:shadow-blue-100/60", delay: "0.4s" },
-                { name: "Concept Master", emoji: "🧠", path: "/concept-master", icon: Brain, color: "#7c3aed", bg: "bg-[#faf5ff]", bgHover: "group-hover:bg-[#f3e8ff]", borderHover: "hover:border-[#7c3aed]/40", shadowHover: "hover:shadow-purple-100/60", delay: "0.45s" },
-                { name: "Practice Arena", emoji: "🏆", path: "/practice-arena", icon: Trophy, color: "#f59e0b", bg: "bg-[#fffbeb]", bgHover: "group-hover:bg-[#fef3c6]", borderHover: "hover:border-[#f59e0b]/40", shadowHover: "hover:shadow-amber-100/60", delay: "0.5s" },
-                { name: "Study Hub", emoji: "📖", path: "/study-hub", icon: ClipboardList, color: "#10b981", bg: "bg-[#ecfdf5]", bgHover: "group-hover:bg-[#d1fae5]", borderHover: "hover:border-[#10b981]/40", shadowHover: "hover:shadow-emerald-100/60", delay: "0.55s" },
-                { name: "Explore Lab", emoji: "✨", path: "#", icon: SparklesIcon, color: "#ec4899", bg: "bg-pink-50", bgHover: "group-hover:bg-pink-100", borderHover: "hover:border-[#ec4899]/40", shadowHover: "hover:shadow-pink-100/60", delay: "0.6s" },
+                { name: "Live Classes", emoji: "🎥", path: "/live-classes", icon: Video, color: "#ef4444", bg: "bg-red-50", bgHover: "group-hover:bg-red-100", borderHover: "hover:border-[#ef4444]/40", shadowHover: "hover:shadow-red-100/60", delay: "0.25s", desc: "Join live sessions & watch recordings", badge: { text: "🔴 Live at 2:00 PM", bg: "bg-red-100 text-red-600" } },
+                { name: "Study Buddy", emoji: "📚", path: "/study-buddy", icon: BookOpen, color: "#2563eb", bg: "bg-[#eff6ff]", bgHover: "group-hover:bg-[#dbeafe]", borderHover: "hover:border-[#2563eb]/40", shadowHover: "hover:shadow-blue-100/60", delay: "0.3s", desc: "Get guided help with homework", badge: { text: "📝 Science HW due in 2h", bg: "bg-red-100 text-red-600" } },
+                { name: "Concept Master", emoji: "🧠", path: "/concept-master", icon: Brain, color: "#7c3aed", bg: "bg-[#faf5ff]", bgHover: "group-hover:bg-[#f3e8ff]", borderHover: "hover:border-[#7c3aed]/40", shadowHover: "hover:shadow-purple-100/60", delay: "0.35s", desc: "Learn new topics with AI tutor", badge: null },
+                { name: "Practice Arena", emoji: "🏆", path: "/practice-arena", icon: Trophy, color: "#f59e0b", bg: "bg-[#fffbeb]", bgHover: "group-hover:bg-[#fef3c6]", borderHover: "hover:border-[#f59e0b]/40", shadowHover: "hover:shadow-amber-100/60", delay: "0.4s", desc: "Practice with various question types", badge: { text: "📊 Mock Test tomorrow", bg: "bg-amber-100 text-amber-700" } },
+                { name: "Study Hub", emoji: "📖", path: "/study-hub", icon: ClipboardList, color: "#10b981", bg: "bg-[#ecfdf5]", bgHover: "group-hover:bg-[#d1fae5]", borderHover: "hover:border-[#10b981]/40", shadowHover: "hover:shadow-emerald-100/60", delay: "0.45s", desc: "Notes, PDFs & previous year papers", badge: { text: "📖 History Ch.4 due Fri", bg: "bg-purple-100 text-purple-700" } },
+                { name: "Explore Lab", emoji: "✨", path: "#", icon: SparklesIcon, color: "#ec4899", bg: "bg-pink-50", bgHover: "group-hover:bg-pink-100", borderHover: "hover:border-[#ec4899]/40", shadowHover: "hover:shadow-pink-100/60", delay: "0.5s", desc: "Interactive gamified learning", badge: null },
               ].map((tool) => (
                 <div
                   key={tool.name}
                   onClick={() => openPicker(tool.name, tool.emoji, tool.path)}
-                  className={`anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer ${tool.borderHover} hover:shadow-xl ${tool.shadowHover} hover:-translate-y-1.5 transition-all duration-250`}
+                  className={`anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-3 cursor-pointer ${tool.borderHover} hover:shadow-xl ${tool.shadowHover} hover:-translate-y-1.5 transition-all duration-250 relative`}
                   style={{ animationDelay: tool.delay }}
                 >
-                  <div className={`w-14 h-14 rounded-2xl ${tool.bg} flex items-center justify-center ${tool.bgHover} group-hover:scale-110 transition-all duration-200`}>
-                    <tool.icon className="w-8 h-8" style={{ color: tool.color }} />
+                  {/* Pending action badge */}
+                  {tool.badge && (
+                    <div className={`absolute -top-2.5 right-4 ${tool.badge.bg} text-[11px] px-2.5 py-1 rounded-full shadow-sm`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+                      {tool.badge.text}
+                    </div>
+                  )}
+                  <div className="flex items-start justify-between">
+                    <div className={`w-13 h-13 rounded-2xl ${tool.bg} flex items-center justify-center ${tool.bgHover} group-hover:scale-110 transition-all duration-200`}>
+                      <tool.icon className="w-7 h-7" style={{ color: tool.color }} />
+                    </div>
                   </div>
-                  <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{tool.name}</h3>
-                  <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{tool.name === "Live Classes" ? "Join live sessions & watch recordings" : tool.name === "Study Buddy" ? "Get guided help with homework" : tool.name === "Concept Master" ? "Learn new topics with AI tutor" : tool.name === "Practice Arena" ? "Practice with various question types" : tool.name === "Study Hub" ? "Notes, PDFs & previous year papers" : "Interactive gamified learning"}</p>
-                  <span className="text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900, color: tool.color }}>
-                    Get started <ChevronRight className="w-5 h-5" />
+                  <h3 className="font-extrabold text-[17px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{tool.name}</h3>
+                  <p className="text-[13px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{tool.desc}</p>
+                  <span className="text-[13px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900, color: tool.color }}>
+                    Get started <ChevronRight className="w-4 h-4" />
                   </span>
                 </div>
               ))}
