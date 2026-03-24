@@ -95,11 +95,11 @@ const assignmentsBySubject: Record<string, Assignment[]> = {
 };
 
 const helpLevels = [
-  { level: 1, name: "Think First", desc: "Guiding questions to help you think", attemptsNeeded: 0 },
-  { level: 2, name: "Concept Hint", desc: "Formula or rule reminder", attemptsNeeded: 2 },
-  { level: 3, name: "Similar Example", desc: "Solved similar problem", attemptsNeeded: 4 },
-  { level: 4, name: "Step by Step", desc: "Walk through your question", attemptsNeeded: 6 },
-  { level: 5, name: "Full Answer", desc: "Complete solution (Parents notified)", attemptsNeeded: 8 },
+  { level: 1, name: "Think First", desc: "Guiding questions to help you think", emoji: "💡", xp: 65, attemptsNeeded: 0 },
+  { level: 2, name: "Concept Hint", desc: "Formula or rule reminder", emoji: "📐", xp: 50, attemptsNeeded: 2 },
+  { level: 3, name: "Similar Example", desc: "Solved similar problem", emoji: "🧩", xp: 35, attemptsNeeded: 4 },
+  { level: 4, name: "Step by Step", desc: "Walk through your question", emoji: "👣", xp: 20, attemptsNeeded: 6 },
+  { level: 5, name: "Full Answer", desc: "Complete solution (Parents notified)", emoji: "✅", xp: 5, attemptsNeeded: 8 },
 ];
 
 const aiResponses: Record<number, string[]> = {
@@ -149,7 +149,8 @@ export default function StudyHubPage() {
       @keyframes slideUp { from { opacity:0; transform:translateY(100%) } to { opacity:1; transform:translateY(0) } }
       .chat-slide { animation: slideUp .3s ease-out both }
       @keyframes slideInRight { from { transform:translateX(100%); opacity:0 } to { transform:translateX(0); opacity:1 } }
-      .sidebar-slide-in { animation: slideInRight .5s cubic-bezier(0.16,1,0.3,1) both }
+      .sidebar-slide-in { animation: slideInRight .6s cubic-bezier(0.16,1,0.3,1) both }
+      .push-left { transition: all .6s cubic-bezier(0.16,1,0.3,1) }
     `;
     document.head.appendChild(s);
   }, []);
@@ -171,28 +172,41 @@ export default function StudyHubPage() {
     setStep("workspace");
   };
 
+  // Calculate current AI level based on attempts
+  const getCurrentLevel = (att: number) => {
+    const reversed = [...helpLevels].reverse();
+    return reversed.find(h => att >= h.attemptsNeeded + 2) || helpLevels[0];
+  };
+
+  const currentHelpLevel = getCurrentLevel(attempts);
+  const maxXP = 75;
+  const currentXP = helpUnlocked ? (currentHelpLevel?.xp || 5) : maxXP;
+
   const handleSubmit = () => {
     const newAttempts = attempts + 1;
     setAttempts(newAttempts);
-    // Show help modal after 2nd failed attempt (if help not yet unlocked)
     if (!helpUnlocked && newAttempts >= 2) {
       setTimeout(() => {
         setModalStage("offer");
         setShowHelpModal(true);
       }, 800);
+    } else if (helpUnlocked) {
+      // Auto-advance to next level if more attempts
+      const newLevel = getCurrentLevel(newAttempts);
+      if (newLevel.level > (chatLevel || 0)) {
+        openHelp(newLevel.level);
+      }
     }
   };
 
   const handleAcceptHelp = () => {
     setModalStage("unlocking");
-    // Simulate unlocking animation
-    setTimeout(() => {
-      setModalStage("ready");
-    }, 1500);
+    setTimeout(() => setModalStage("ready"), 1500);
     setTimeout(() => {
       setShowHelpModal(false);
       setHelpUnlocked(true);
-      openHelp(1); // auto-open Level 1
+      const lvl = getCurrentLevel(attempts);
+      openHelp(lvl.level);
     }, 2500);
   };
 
@@ -332,8 +346,8 @@ export default function StudyHubPage() {
 
         {/* 60/40 layout */}
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-          {/* LEFT — centered at 60% width always, aligned left when sidebar opens */}
-          <div className={`overflow-y-auto p-6 lg:p-8 space-y-6 transition-all duration-500 ${helpUnlocked ? "flex-1 lg:w-[60%]" : "w-full max-w-4xl mx-auto"}`}>
+          {/* LEFT — centered until sidebar pushes it left */}
+          <div className={`overflow-y-auto p-6 lg:p-8 space-y-6 push-left ${helpUnlocked ? "flex-1 lg:w-[60%]" : "w-full max-w-4xl mx-auto"}`}>
             {/* Assignment Question */}
             <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 sh-fade sh-d1">
               <h2 className="flex items-center gap-2.5 text-[20px] text-[#0f172a] mb-6" style={dFont}>
@@ -393,27 +407,46 @@ export default function StudyHubPage() {
 
           </div>
 
-          {/* RIGHT 40% — Slides in only after help is unlocked */}
+          {/* RIGHT 40% — Slides in pushing content left */}
           {helpUnlocked && (
             <div className="lg:w-[40%] flex-shrink-0 border-t lg:border-t-0 lg:border-l-2 border-[#eef0f4] bg-white flex flex-col overflow-hidden sidebar-slide-in">
-              {/* Help levels */}
+              {/* Current AI Level — compact header */}
               <div className="p-5 border-b border-[#e5e7eb]">
-                <div className="flex items-center gap-2.5 mb-3">
-                  <Bot size={18} className="text-purple-500" />
-                  <h3 className="text-[15px] text-[#0f172a]" style={dFont}>AI Help — Pick a level</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <Bot size={18} className="text-purple-500" />
+                    <h3 className="text-[15px] text-[#0f172a]" style={dFont}>AI Study Buddy</h3>
+                  </div>
+                  <span className="text-[12px] text-[#94a3b8]" style={bFont}>Level {chatLevel || currentHelpLevel.level}/5</span>
                 </div>
-                <div className="flex flex-col gap-2">
-                  {helpLevels.map((hl) => {
-                    const isUnlocked = attempts >= hl.attemptsNeeded;
-                    const isActive = chatOpen && chatLevel === hl.level;
-                    const colors = ["border-green-300 bg-green-50 hover:bg-green-100","border-blue-300 bg-blue-50 hover:bg-blue-100","border-amber-300 bg-amber-50 hover:bg-amber-100","border-purple-300 bg-purple-50 hover:bg-purple-100","border-red-300 bg-red-50 hover:bg-red-100"];
-                    const activeColors = ["border-green-500 bg-green-500 text-white shadow-lg shadow-green-200","border-blue-500 bg-blue-500 text-white shadow-lg shadow-blue-200","border-amber-500 bg-amber-500 text-white shadow-lg shadow-amber-200","border-purple-500 bg-purple-500 text-white shadow-lg shadow-purple-200","border-red-500 bg-red-500 text-white shadow-lg shadow-red-200"];
+
+                {/* Current + Next level as two cards */}
+                <div className="flex gap-2">
+                  {helpLevels.filter(hl => {
+                    const current = chatLevel || currentHelpLevel.level;
+                    return hl.level === current || hl.level === current + 1;
+                  }).map((hl) => {
+                    const isCurrent = hl.level === (chatLevel || currentHelpLevel.level);
+                    const isUnlocked = attempts >= hl.attemptsNeeded + 2;
                     return (
-                      <button key={hl.level} onClick={() => isUnlocked && openHelp(hl.level)} disabled={!isUnlocked} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border-2 transition-all duration-200 text-left ${isActive ? activeColors[hl.level-1] : isUnlocked ? `${colors[hl.level-1]} cursor-pointer hover:-translate-y-0.5` : "border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed"}`}>
-                        <span className="text-[18px] flex-shrink-0">{["💡","📐","🧩","👣","✅"][hl.level-1]}</span>
+                      <button
+                        key={hl.level}
+                        onClick={() => isUnlocked && openHelp(hl.level)}
+                        disabled={!isUnlocked}
+                        className={`flex-1 flex items-center gap-2.5 px-3 py-3 rounded-xl border-2 transition-all duration-200 text-left ${
+                          isCurrent
+                            ? "border-purple-400 bg-purple-50 shadow-sm"
+                            : isUnlocked
+                            ? "border-[#e5e7eb] hover:border-purple-200 cursor-pointer"
+                            : "border-[#e5e7eb] bg-gray-50/50 opacity-50 cursor-not-allowed"
+                        }`}
+                      >
+                        <span className="text-[20px] flex-shrink-0">{hl.emoji}</span>
                         <div className="min-w-0">
-                          <span className={`text-[13px] block ${isActive ? "text-white" : "text-[#0f172a]"}`} style={dFont}>{hl.name}</span>
-                          <span className={`text-[11px] block ${isActive ? "text-white/70" : "text-[#94a3b8]"}`} style={bFont}>{isUnlocked ? hl.desc : `${hl.attemptsNeeded-attempts} more`}</span>
+                          <span className={`text-[12px] block ${isCurrent ? "text-purple-700" : "text-[#0f172a]"}`} style={dFont}>
+                            {isCurrent ? "Active" : isUnlocked ? "Next" : `${hl.attemptsNeeded + 2 - attempts} more`}
+                          </span>
+                          <span className="text-[11px] block text-[#94a3b8]" style={bFont}>{hl.name}</span>
                         </div>
                       </button>
                     );
@@ -421,49 +454,46 @@ export default function StudyHubPage() {
                 </div>
               </div>
 
-              {/* Chat */}
+              {/* Chat — always open since we auto-open on unlock */}
               <div className="flex-1 flex flex-col min-h-0">
-                {!chatOpen ? (
-                  <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-                    <span className="text-[32px] mb-3">👆</span>
-                    <p className="text-[14px] text-[#374151]" style={dFont}>Pick a help level above</p>
-                    <p className="text-[12px] text-[#94a3b8] mt-1" style={bFont}>Start with Level 1 for a gentle hint</p>
+                <div className="flex items-center justify-between bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-5 py-3 flex-shrink-0">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-[18px]">{currentHelpLevel.emoji}</span>
+                    <span className="text-white text-[14px]" style={dFont}>{helpLevels.find(h => h.level === chatLevel)?.name || currentHelpLevel.name}</span>
                   </div>
-                ) : (
-                  <div className="flex-1 flex flex-col min-h-0">
-                    <div className="flex items-center justify-between bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-5 py-3 flex-shrink-0">
-                      <div className="flex items-center gap-2.5">
-                        <Sparkles size={16} className="text-white" />
-                        <span className="text-white text-[14px]" style={dFont}>{helpLevels.find(h => h.level === chatLevel)?.name}</span>
-                      </div>
-                      <button onClick={() => setChatOpen(false)} className="text-white/60 hover:text-white transition-colors cursor-pointer"><X size={18} /></button>
+                  <span className="text-white/60 text-[12px]" style={bFont}>{helpLevels.find(h => h.level === chatLevel)?.desc}</span>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-5 space-y-4">
+                  {chatMessages.map((msg, i) => (
+                    <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                      <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed whitespace-pre-line ${msg.role === "user" ? "bg-[#7c3aed] text-white rounded-br-md" : "bg-[#f3f4f6] text-[#374151] rounded-bl-md"}`} style={bFont}>{msg.text}</div>
                     </div>
-                    <div className="flex-1 overflow-y-auto p-5 space-y-4">
-                      {chatMessages.map((msg, i) => (
-                        <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                          <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed whitespace-pre-line ${msg.role === "user" ? "bg-[#7c3aed] text-white rounded-br-md" : "bg-[#f3f4f6] text-[#374151] rounded-bl-md"}`} style={bFont}>{msg.text}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="border-t border-[#e5e7eb] p-3 flex-shrink-0">
-                      <form onSubmit={(e) => { e.preventDefault(); const input = e.currentTarget.querySelector("input") as HTMLInputElement; sendChatMessage(input.value); input.value = ""; }} className="flex gap-2">
-                        <input type="text" placeholder="Ask a follow-up..." className="flex-1 bg-[#f8fafc] border-2 border-[#e5e7eb] rounded-xl px-4 py-2.5 text-[14px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-purple-400" />
-                        <button type="submit" className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center text-white hover:bg-[#6d28d9] transition-colors cursor-pointer flex-shrink-0"><Send size={16} /></button>
-                      </form>
-                    </div>
-                  </div>
-                )}
+                  ))}
+                </div>
+
+                <div className="border-t border-[#e5e7eb] p-3 flex-shrink-0">
+                  <form onSubmit={(e) => { e.preventDefault(); const input = e.currentTarget.querySelector("input") as HTMLInputElement; sendChatMessage(input.value); input.value = ""; }} className="flex gap-2">
+                    <input type="text" placeholder="Ask a follow-up..." className="flex-1 bg-[#f8fafc] border-2 border-[#e5e7eb] rounded-xl px-4 py-2.5 text-[14px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-purple-400" />
+                    <button type="submit" className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center text-white hover:bg-[#6d28d9] transition-colors cursor-pointer flex-shrink-0"><Send size={16} /></button>
+                  </form>
+                </div>
               </div>
 
-              {/* Reward */}
+              {/* XP Reward — reduces with higher help level */}
               <div className="flex-shrink-0 p-4 border-t border-[#e5e7eb]">
-                <div className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-xl p-4 flex items-center gap-3">
+                <div className={`rounded-xl p-4 flex items-center gap-3 ${currentXP >= 50 ? "bg-gradient-to-r from-[#2563eb] to-[#7c3aed]" : currentXP >= 20 ? "bg-gradient-to-r from-amber-500 to-orange-500" : "bg-gradient-to-r from-red-500 to-red-600"}`}>
                   <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0"><Trophy size={18} className="text-white" /></div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-white text-[13px]" style={dFont}>Completion Reward</p>
-                    <p className="text-white/60 text-[11px]" style={bFont}>Minimal AI help = bonus</p>
+                    <p className="text-white text-[13px]" style={dFont}>Reward</p>
+                    <p className="text-white/60 text-[11px]" style={bFont}>
+                      {currentXP >= 50 ? "Great job using minimal help!" : currentXP >= 20 ? "Try less help for more XP" : "Max help = less XP"}
+                    </p>
                   </div>
-                  <p className="text-white text-[18px] flex-shrink-0" style={dFont}>+75 XP</p>
+                  <div className="text-right flex-shrink-0">
+                    <p className="text-white text-[20px]" style={dFont}>+{currentXP} XP</p>
+                    <p className="text-white/40 text-[10px] line-through" style={bFont}>{currentXP < maxXP ? `${maxXP} XP` : ""}</p>
+                  </div>
                 </div>
               </div>
             </div>
