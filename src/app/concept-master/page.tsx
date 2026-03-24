@@ -510,8 +510,8 @@ export default function ConceptMasterPage() {
           </div>
           {/* End scrollable section */}
 
-          {/* Test Yourself — pinned at bottom */}
-          <div className="border-t border-[#e5e7eb] p-5">
+          {/* Test Yourself — sticky at bottom */}
+          <div className="sticky bottom-0 border-t border-[#e5e7eb] p-5 bg-white z-10">
             <div className="bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] border-2 border-[#b9f8cf] rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles size={18} className="text-[#22c55e]" />
