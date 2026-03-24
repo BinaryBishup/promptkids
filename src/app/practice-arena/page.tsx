@@ -318,7 +318,7 @@ export default function PracticeArenaPage() {
                 <button
                   key={i}
                   onClick={() => setMcqAnswer(i)}
-                  className={`flex items-center gap-3 px-5 py-4 border-2 rounded-xl transition-all duration-200 cursor-pointer text-left ${
+                  className={`flex items-center gap-4 px-6 py-5 border-2 rounded-xl transition-all duration-200 cursor-pointer text-left ${
                     selected ? "border-[#2563eb] bg-blue-50/50" : "border-[#e5e7eb] bg-white hover:border-blue-200"
                   }`}
                 >
@@ -346,7 +346,7 @@ export default function PracticeArenaPage() {
                     else next.add(i);
                     setMcaAnswers(next);
                   }}
-                  className={`flex items-center gap-3 px-5 py-4 border-2 rounded-xl transition-all duration-200 cursor-pointer text-left ${
+                  className={`flex items-center gap-4 px-6 py-5 border-2 rounded-xl transition-all duration-200 cursor-pointer text-left ${
                     selected ? "border-[#2563eb] bg-blue-50/50" : "border-[#e5e7eb] bg-white hover:border-blue-200"
                   }`}
                 >
@@ -465,10 +465,10 @@ export default function PracticeArenaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
-      <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={bFont}>
+      <div className="max-w-6xl mx-auto px-6 py-10 w-full flex-1 flex flex-col">
         {/* Top progress bar */}
-        <div className="mb-8 pa-fade">
+        <div className="mb-10 pa-fade">
           <div className="flex items-center justify-between mb-3">
             <span className="text-[16px] text-[#374151]" style={dFont}>
               Question {currentQ + 1} of {quizQuestions.length}
@@ -485,10 +485,10 @@ export default function PracticeArenaPage() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-8 flex-1">
           {/* Main question area */}
-          <div className="flex-1 pa-fade pa-d1">
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6">
+          <div className="flex-1 pa-fade pa-d1 flex flex-col">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 flex-1 flex flex-col">
               {/* Tags row */}
               <div className="flex flex-wrap items-center gap-2 mb-5">
                 <span className={`${dc.bg} ${dc.text} px-3 py-1 rounded-full text-[12px]`} style={dFont}>
@@ -503,19 +503,21 @@ export default function PracticeArenaPage() {
               </div>
 
               {/* Question text */}
-              <h2 className="text-[18px] text-[#0f172a] leading-relaxed" style={dFont}>
+              <h2 className="text-[20px] text-[#0f172a] leading-relaxed mb-2" style={dFont}>
                 {q.text}
               </h2>
 
               {/* Optional image placeholder */}
               {q.image && (
-                <div className="mt-5 h-[200px] rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                <div className="mt-6 h-[220px] rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
                   <span className="text-gray-400 text-[14px]" style={bFont}>Image placeholder</span>
                 </div>
               )}
 
               {/* Answer area */}
-              {renderAnswerArea()}
+              <div className="flex-1 flex flex-col justify-center">
+                {renderAnswerArea()}
+              </div>
 
               {/* Next button */}
               <button
@@ -530,7 +532,7 @@ export default function PracticeArenaPage() {
 
           {/* Right sidebar — Session Overview */}
           <div className="w-full lg:w-[280px] flex-shrink-0 pa-fade pa-d2">
-            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-5 sticky top-8">
+            <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6 sticky top-8">
               <h3 className="text-[16px] text-[#0f172a] mb-4" style={dFont}>
                 Session Overview
               </h3>
