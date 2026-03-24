@@ -18,6 +18,7 @@ import {
   Play,
   ClipboardList,
   Sparkles,
+  Eye,
 } from "lucide-react";
 
 /* ─── Types ─── */
@@ -440,219 +441,222 @@ export default function StudyHubPage() {
     );
   }
 
-  /* ═══════════════════ STEP 4: Document Viewer ═══════════════════ */
+  /* ═══════════════════ STEP 4: Viewer (dynamic by type) ═══════════════════ */
   if (step === "viewer" && selectedSubject && selectedChapter && selectedMaterial) {
     const cc = categoryColors[selectedMaterial.category];
+    const cat = selectedMaterial.category;
+
+    const renderContent = () => {
+      /* ── Chapter Notes ── */
+      if (cat === "Chapter Notes") return (
+        <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 sh-fade sh-d2">
+          <p className="text-[18px] text-[#9ca3af] italic mb-4" style={bFont}>Light &amp; Reflection - Complete Notes</p>
+          <hr className="border-[#e5e7eb] mb-8" />
+          {[
+            { title: "1. Introduction to Light", body: "Light is a form of energy that enables us to see objects around us. It travels in straight lines and exhibits both wave and particle properties." },
+            { title: "2. Properties of Light", terms: [["Rectilinear Propagation", "Light travels in straight lines"], ["Reflection", "Bouncing back of light when it strikes a surface"], ["Refraction", "Bending of light when it passes from one medium to another"], ["Speed", "Light travels at 3 \u00d7 10\u2078 m/s in vacuum"]] },
+          ].map((s, i) => (
+            <div key={i} className="mb-8">
+              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>{s.title}</h2>
+              {s.body && <p className="text-[15px] text-[#374151] leading-relaxed" style={bFont}>{s.body}</p>}
+              {s.terms && <div className="flex flex-col gap-3 text-[15px] text-[#374151] leading-relaxed" style={bFont}>{s.terms.map(([t, d]) => <p key={t}><span style={dFont}>{t}:</span> {d}</p>)}</div>}
+            </div>
+          ))}
+          <div className="mb-8">
+            <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>3. Laws of Reflection</h2>
+            <p className="text-[15px] text-[#374151] leading-relaxed mb-3" style={bFont}><span style={dFont}>First Law:</span> The incident ray, reflected ray, and normal all lie in the same plane.</p>
+            <p className="text-[15px] text-[#374151] leading-relaxed mb-4" style={bFont}><span style={dFont}>Second Law:</span> The angle of incidence equals the angle of reflection.</p>
+            <div className="border-l-4 border-blue-500 bg-[#eff6ff] rounded-xl py-3 px-6"><div className="bg-[#1e40af] text-white text-center py-2 px-4 rounded-lg text-[16px]" style={dFont}>&ang;i = &ang;r</div></div>
+          </div>
+          <div className="mb-8">
+            <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>4. Mirror Formula</h2>
+            <div className="border-l-4 border-blue-500 bg-[#eff6ff] rounded-xl py-3 px-6 mb-4"><div className="bg-[#1e40af] text-white text-center py-2 px-4 rounded-lg text-[16px]" style={dFont}>1/f = 1/v + 1/u</div></div>
+            <div className="text-[15px] text-[#374151] leading-relaxed ml-4" style={bFont}><p>f = focal length</p><p>v = image distance</p><p>u = object distance</p></div>
+          </div>
+          <div>
+            <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>5. Types of Mirrors</h2>
+            <div className="flex flex-col gap-3 text-[15px] text-[#374151] leading-relaxed" style={bFont}>
+              <p><span style={dFont}>Plane Mirror:</span> Flat reflecting surface, produces virtual, erect, same-size images.</p>
+              <p><span style={dFont}>Concave Mirror:</span> Curved inward, converges light. Used in torches, headlights.</p>
+              <p><span style={dFont}>Convex Mirror:</span> Curved outward, diverges light. Used as rear-view mirrors.</p>
+            </div>
+          </div>
+        </div>
+      );
+
+      /* ── PDF Document (NCERT Solutions) ── */
+      if (cat === "PDF Document") return (
+        <div className="sh-fade sh-d2 space-y-6">
+          {/* PDF toolbar */}
+          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-[14px] text-[#374151]" style={bFont}>Page 1 of 18</span>
+              <div className="flex gap-1">
+                <button className="w-8 h-8 rounded-lg border border-[#e5e7eb] flex items-center justify-center hover:bg-gray-50 cursor-pointer text-[#6b7280]" style={dFont}>&larr;</button>
+                <button className="w-8 h-8 rounded-lg border border-[#e5e7eb] flex items-center justify-center hover:bg-gray-50 cursor-pointer text-[#6b7280]" style={dFont}>&rarr;</button>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button className="px-3 py-1.5 rounded-lg border border-[#e5e7eb] text-[13px] text-[#6b7280] hover:bg-gray-50 cursor-pointer" style={dFont}>100%</button>
+              <button className="px-3 py-1.5 rounded-lg bg-[#10b981] text-white text-[13px] hover:bg-[#059669] cursor-pointer flex items-center gap-1.5" style={dFont}><Download size={14} /> Download</button>
+            </div>
+          </div>
+          {/* PDF pages */}
+          {[1, 2, 3].map(pg => (
+            <div key={pg} className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-10 shadow-sm">
+              <div className="text-center mb-6">
+                <p className="text-[11px] text-[#94a3b8] uppercase tracking-wider mb-2" style={bFont}>NCERT Solutions — Light &amp; Reflection</p>
+                <h3 className="text-[16px] text-[#0f172a] mb-1" style={dFont}>Exercise {pg}.{pg}</h3>
+              </div>
+              {[1, 2, 3].map(q => (
+                <div key={q} className="mb-6 last:mb-0">
+                  <p className="text-[14px] text-[#0f172a] mb-2" style={dFont}>Q{(pg - 1) * 3 + q}. {["Define the term reflection of light.", "State the laws of reflection.", "What is the difference between regular and diffuse reflection?", "A concave mirror produces three times magnified real image. If the object distance is 20 cm, find the image distance.", "Draw a ray diagram to show image formation by a convex mirror.", "What is the focal length of a plane mirror?", "Explain why a convex mirror is used as a rear-view mirror.", "Name the type of mirror used in solar furnaces.", "An object is placed at a distance of 10 cm from a convex mirror of focal length 15 cm. Find the position of the image."][((pg - 1) * 3 + q - 1) % 9]}</p>
+                  <div className="border-l-3 border-[#10b981] bg-[#f0fdf4] rounded-lg p-4 ml-4">
+                    <p className="text-[11px] text-[#10b981] uppercase tracking-wider mb-1" style={dFont}>Answer</p>
+                    <p className="text-[13px] text-[#374151] leading-relaxed" style={bFont}>
+                      {["Reflection is the phenomenon of bouncing back of light when it strikes a polished surface. The light ray that falls on the surface is called the incident ray, and the ray that bounces back is called the reflected ray.", "The two laws of reflection are: (i) The angle of incidence is equal to the angle of reflection. (ii) The incident ray, the reflected ray, and the normal at the point of incidence all lie in the same plane.", "Regular reflection occurs when light reflects off a smooth, polished surface like a mirror — all reflected rays are parallel. Diffuse reflection occurs on rough surfaces where reflected rays scatter in different directions.", "Given: m = -3, u = -20 cm. Using m = -v/u, we get -3 = -v/(-20), so v = -60 cm. The image is formed at 60 cm in front of the mirror.", "For a convex mirror, the image is always virtual, erect, and smaller than the object regardless of the object position. Ray diagrams show parallel rays diverging after reflection, appearing to come from behind the mirror.", "A plane mirror has a focal length of infinity (\u221e) because its radius of curvature is infinite. Parallel rays remain parallel after reflection.", "A convex mirror always forms a virtual, erect, and diminished image. It provides a wider field of view compared to a plane mirror of the same size, allowing drivers to see a larger area behind them.", "Concave mirrors are used in solar furnaces because they converge sunlight to a single point (focus), generating very high temperatures that can be used to heat substances.", "Given: u = -10 cm, f = +15 cm. Using 1/v = 1/f - 1/u = 1/15 - 1/(-10) = 1/15 + 1/10 = 5/30 = 1/6. So v = +6 cm. The image is virtual and formed 6 cm behind the mirror."][((pg - 1) * 3 + q - 1) % 9]}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              <div className="text-center mt-6"><span className="text-[12px] text-[#94a3b8]" style={bFont}>Page {pg}</span></div>
+            </div>
+          ))}
+        </div>
+      );
+
+      /* ── Previous Year Questions (Solved) ── */
+      if (cat === "Previous Year Questions") return (
+        <div className="sh-fade sh-d2 space-y-6">
+          {["2024", "2023", "2022", "2021"].map((year, yi) => (
+            <div key={year} className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[13px]" style={dFont}>{year} Board Exam</span>
+                <span className="text-[13px] text-[#94a3b8]" style={bFont}>CBSE Class 10 — Science</span>
+              </div>
+              {[
+                { q: "What is meant by the power of a lens? Define its SI unit.", marks: 2 },
+                { q: "Draw a ray diagram to show the formation of image by a concave mirror when the object is placed between the pole and focus.", marks: 3 },
+                { q: "A student performs an experiment with a concave mirror. The focal length is 15 cm. Where should the object be placed to get a real, inverted image of the same size?", marks: 3 },
+              ].map((item, qi) => (
+                <div key={qi} className="mb-6 last:mb-0">
+                  <div className="flex items-start justify-between mb-2">
+                    <p className="text-[14px] text-[#0f172a] flex-1" style={dFont}>Q{yi * 3 + qi + 1}. {item.q}</p>
+                    <span className="text-[12px] text-[#94a3b8] bg-gray-100 px-2 py-0.5 rounded-full flex-shrink-0 ml-3" style={bFont}>{item.marks} marks</span>
+                  </div>
+                  <div className="border-l-3 border-orange-400 bg-[#fff7ed] rounded-lg p-4 ml-4">
+                    <p className="text-[11px] text-orange-600 uppercase tracking-wider mb-1" style={dFont}>Model Answer</p>
+                    <p className="text-[13px] text-[#374151] leading-relaxed" style={bFont}>
+                      {["The power of a lens is the degree of convergence or divergence of light rays achieved by a lens. It is defined as the reciprocal of the focal length in metres. SI unit: Dioptre (D). P = 1/f.", "When an object is placed between the pole (P) and focus (F) of a concave mirror, a virtual, erect, and magnified image is formed behind the mirror. The ray parallel to principal axis reflects through F, and the ray directed towards C reflects back along the same path.", "For a real, inverted image of the same size, the object must be placed at the center of curvature (C). Since f = 15 cm, R = 2f = 30 cm. The object should be placed at 30 cm from the mirror."][qi]}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      );
+
+      /* ── Quick Summary ── */
+      if (cat === "Quick Summary") return (
+        <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 sh-fade sh-d2">
+          <div className="text-center mb-8">
+            <span className="text-[40px]">⚡</span>
+            <h3 className="text-[20px] text-[#0f172a] mt-2 mb-1" style={dFont}>Quick Revision — Light &amp; Reflection</h3>
+            <p className="text-[14px] text-[#94a3b8]" style={bFont}>One-page summary for last-minute revision</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { title: "Key Formulas", icon: "📐", items: ["\u2220i = \u2220r (Law of Reflection)", "1/f = 1/v + 1/u (Mirror Formula)", "m = -v/u (Magnification)", "R = 2f (Radius = 2 \u00d7 Focal Length)"], color: "border-blue-200 bg-blue-50/50" },
+              { title: "Mirror Types", icon: "🪞", items: ["Plane → Virtual, same size, laterally inverted", "Concave → Real/Virtual, converging", "Convex → Virtual, erect, diminished"], color: "border-purple-200 bg-purple-50/50" },
+              { title: "Sign Convention", icon: "±", items: ["Distances measured from pole", "Along incident light → positive", "Against incident light → negative", "Above principal axis → positive"], color: "border-green-200 bg-green-50/50" },
+              { title: "Applications", icon: "💡", items: ["Concave → Torches, headlights, solar furnace", "Convex → Rear-view mirrors, ATM security", "Plane → Periscopes, kaleidoscopes"], color: "border-amber-200 bg-amber-50/50" },
+            ].map((card) => (
+              <div key={card.title} className={`border-2 ${card.color} rounded-xl p-5`}>
+                <h4 className="text-[15px] text-[#0f172a] mb-3 flex items-center gap-2" style={dFont}><span>{card.icon}</span> {card.title}</h4>
+                <ul className="flex flex-col gap-2">
+                  {card.items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-[13px] text-[#374151] leading-relaxed" style={bFont}>
+                      <span className="text-[#10b981] mt-0.5 flex-shrink-0">•</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+      /* ── Video Lecture ── */
+      if (cat === "Video Lecture") return (
+        <div className="sh-fade sh-d2 space-y-6">
+          {/* Video player */}
+          <div className="bg-black rounded-2xl overflow-hidden aspect-video relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col items-center justify-center">
+              <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mb-4 hover:bg-white/30 transition-colors cursor-pointer hover:scale-110">
+                <Play size={36} className="text-white ml-1" />
+              </div>
+              <p className="text-white/60 text-[14px]" style={bFont}>Laws of Reflection — Animated Explanation</p>
+              <p className="text-white/40 text-[12px] mt-1" style={bFont}>Duration: 12:45</p>
+            </div>
+            {/* Progress bar */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20"><div className="h-full bg-[#10b981] w-[35%]" /></div>
+          </div>
+          {/* Video info */}
+          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6">
+            <h3 className="text-[18px] text-[#0f172a] mb-2" style={dFont}>Video Lecture — Laws of Reflection</h3>
+            <p className="text-[14px] text-[#64748b] mb-4" style={bFont}>Animated explanation with real-world examples. Covers all key concepts for board exam preparation.</p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {["Laws of Reflection", "Mirror Types", "Ray Diagrams", "Applications"].map(tag => (
+                <span key={tag} className="bg-purple-50 text-purple-600 text-[12px] px-3 py-1 rounded-full" style={bFont}>{tag}</span>
+              ))}
+            </div>
+            <div className="flex items-center gap-4 text-[13px] text-[#94a3b8]" style={bFont}>
+              <span className="flex items-center gap-1"><Clock size={14} /> 12:45 mins</span>
+              <span className="flex items-center gap-1"><Eye size={14} /> 2.3k views</span>
+            </div>
+          </div>
+          {/* Chapters/timestamps */}
+          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-6">
+            <h4 className="text-[15px] text-[#0f172a] mb-4" style={dFont}>Chapters</h4>
+            {[
+              { time: "0:00", title: "Introduction", active: true },
+              { time: "1:30", title: "What is Reflection?" },
+              { time: "3:45", title: "Laws of Reflection" },
+              { time: "6:10", title: "Types of Mirrors" },
+              { time: "8:30", title: "Ray Diagrams" },
+              { time: "10:50", title: "Applications & Summary" },
+            ].map((ch) => (
+              <button key={ch.time} className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-colors cursor-pointer ${ch.active ? "bg-[#10b981]/10 border border-[#10b981]/30" : "hover:bg-gray-50"}`}>
+                <span className={`text-[13px] tabular-nums flex-shrink-0 ${ch.active ? "text-[#10b981]" : "text-[#94a3b8]"}`} style={dFont}>{ch.time}</span>
+                <span className={`text-[14px] ${ch.active ? "text-[#10b981]" : "text-[#374151]"}`} style={bFont}>{ch.title}</span>
+                {ch.active && <span className="ml-auto text-[11px] text-[#10b981]" style={dFont}>Now Playing</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+
+      return null;
+    };
+
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
         <div className="max-w-4xl mx-auto px-6 py-12">
-          {/* Back button */}
-          <button
-            onClick={() => setStep("materials")}
-            className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer"
-            style={dFont}
-          >
+          <button onClick={() => setStep("materials")} className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer" style={dFont}>
             <ArrowLeft size={20} /> Back to materials
           </button>
 
-          {/* Header */}
-          <div className="sh-fade sh-d1 mb-2">
+          <div className="sh-fade sh-d1 mb-8">
             <div className="flex items-center gap-3 mb-3">
-              <span className={`${cc.bg} ${cc.text} text-[12px] px-3 py-1 rounded-full`} style={dFont}>
-                {selectedMaterial.category}
-              </span>
-              <span className="text-[14px] text-[#9ca3af]" style={bFont}>
-                {selectedSubject.name} / {selectedChapter.name}
-              </span>
+              <span className={`${cc.bg} ${cc.text} text-[12px] px-3 py-1 rounded-full`} style={dFont}>{selectedMaterial.category}</span>
+              <span className="text-[14px] text-[#9ca3af]" style={bFont}>{selectedSubject.name} / {selectedChapter.name}</span>
             </div>
-            <h1 className="text-[28px] text-[#0f172a] mb-2" style={dFont}>
-              {selectedMaterial.title}
-            </h1>
-            <p className="text-[16px] text-[#64748b] mb-8" style={bFont}>
-              {selectedMaterial.description}
-            </p>
+            <h1 className="text-[28px] text-[#0f172a] mb-2" style={dFont}>{selectedMaterial.title}</h1>
+            <p className="text-[16px] text-[#64748b]" style={bFont}>{selectedMaterial.description}</p>
           </div>
 
-          {/* White content card */}
-          <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 sh-fade sh-d2">
-            {/* Document title */}
-            <p className="text-[18px] text-[#9ca3af] italic mb-4" style={bFont}>
-              Light &amp; Reflection - Complete Notes
-            </p>
-            <hr className="border-[#e5e7eb] mb-8" />
-
-            {/* Section 1 */}
-            <div className="mb-8">
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                1. Introduction to Light
-              </h2>
-              <p className="text-[15px] text-[#374151] leading-relaxed" style={bFont}>
-                Light is a form of energy that enables us to see objects. It is an electromagnetic wave that
-                travels in straight lines. The study of light and its interaction with matter is called optics.
-                Light can travel through vacuum and does not require a material medium for propagation.
-              </p>
-            </div>
-
-            {/* Section 2 */}
-            <div className="mb-8">
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                2. Properties of Light
-              </h2>
-              <div className="flex flex-col gap-3 text-[15px] text-[#374151] leading-relaxed" style={bFont}>
-                <p>
-                  <span style={dFont}>Rectilinear Propagation:</span> Light travels in straight lines. This
-                  property is responsible for the formation of shadows.
-                </p>
-                <p>
-                  <span style={dFont}>Reflection:</span> When light bounces off a surface, it is called
-                  reflection. The angle of incidence equals the angle of reflection.
-                </p>
-                <p>
-                  <span style={dFont}>Refraction:</span> The bending of light when it passes from one medium
-                  to another of different optical density.
-                </p>
-                <p>
-                  <span style={dFont}>Speed:</span> Light travels at approximately 3 x 10&#8312; m/s in vacuum,
-                  making it the fastest known entity in the universe.
-                </p>
-              </div>
-            </div>
-
-            {/* Section 3 */}
-            <div className="mb-8">
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                3. Laws of Reflection
-              </h2>
-              <div className="flex flex-col gap-3 text-[15px] text-[#374151] leading-relaxed" style={bFont}>
-                <p>
-                  <span style={dFont}>First Law:</span> The incident ray, the reflected ray, and the normal
-                  to the mirror at the point of incidence all lie in the same plane.
-                </p>
-                <p>
-                  <span style={dFont}>Second Law:</span> The angle of incidence is always equal to the angle
-                  of reflection.
-                </p>
-              </div>
-              {/* Formula block */}
-              <div className="mt-4 border-l-4 border-blue-500 bg-[#eff6ff] rounded-xl py-3 px-6">
-                <div className="bg-[#1e40af] text-white text-center py-2 px-4 rounded-lg text-[16px]" style={dFont}>
-                  &ang;i = &ang;r
-                </div>
-              </div>
-            </div>
-
-            {/* Section 4 */}
-            <div className="mb-8">
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                4. Types of Mirrors
-              </h2>
-              <div className="flex flex-col gap-3 text-[15px] text-[#374151] leading-relaxed" style={bFont}>
-                <p>
-                  <span style={dFont}>Plane Mirror:</span> A flat, smooth reflecting surface that forms
-                  virtual, erect images of the same size as the object. The image is laterally inverted.
-                </p>
-                <p>
-                  <span style={dFont}>Concave Mirror:</span> A spherical mirror whose reflecting surface is
-                  curved inward. It converges light and can form both real and virtual images depending on
-                  the object position.
-                </p>
-                <p>
-                  <span style={dFont}>Convex Mirror:</span> A spherical mirror whose reflecting surface is
-                  curved outward. It always forms virtual, erect, and diminished images. Used as rear-view
-                  mirrors in vehicles.
-                </p>
-              </div>
-            </div>
-
-            {/* Section 5 */}
-            <div className="mb-8">
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                5. Mirror Formula
-              </h2>
-              {/* Formula block */}
-              <div className="border-l-4 border-blue-500 bg-[#eff6ff] rounded-xl py-3 px-6 mb-4">
-                <div className="bg-[#1e40af] text-white text-center py-2 px-4 rounded-lg text-[16px]" style={dFont}>
-                  1/f = 1/v + 1/u
-                </div>
-              </div>
-              <div className="text-[15px] text-[#374151] leading-relaxed" style={bFont}>
-                <p className="mb-1"><span style={dFont}>Where:</span></p>
-                <p className="ml-4">f = focal length of the mirror</p>
-                <p className="ml-4">v = image distance from the mirror</p>
-                <p className="ml-4">u = object distance from the mirror</p>
-              </div>
-            </div>
-
-            {/* Section 6 */}
-            <div className="mb-8">
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                6. Important Terms
-              </h2>
-              <div className="flex flex-col gap-3 text-[15px] text-[#374151] leading-relaxed" style={bFont}>
-                <p>
-                  <span style={dFont}>Principal Axis:</span> The straight line passing through the pole and
-                  the centre of curvature of the mirror.
-                </p>
-                <p>
-                  <span style={dFont}>Focal Point:</span> The point on the principal axis where parallel rays
-                  of light converge (concave) or appear to diverge from (convex) after reflection.
-                </p>
-                <p>
-                  <span style={dFont}>Focal Length:</span> The distance between the pole and the focal point
-                  of the mirror.
-                </p>
-                <p>
-                  <span style={dFont}>Center of Curvature:</span> The center of the sphere of which the mirror
-                  is a part. The radius of curvature is twice the focal length (R = 2f).
-                </p>
-              </div>
-            </div>
-
-            {/* Section 7 */}
-            <div className="mb-8">
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                7. Ray Diagrams
-              </h2>
-              <p className="text-[15px] text-[#374151] mb-3 leading-relaxed" style={bFont}>
-                To construct ray diagrams for spherical mirrors, use these three rules:
-              </p>
-              <ul className="flex flex-col gap-2 text-[15px] text-[#374151] leading-relaxed ml-4" style={bFont}>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#10b981] mt-0.5">&rarr;</span>
-                  A ray parallel to the principal axis passes through (or appears to pass through) the focal point after reflection.
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#10b981] mt-0.5">&rarr;</span>
-                  A ray passing through the focal point becomes parallel to the principal axis after reflection.
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#10b981] mt-0.5">&rarr;</span>
-                  A ray passing through the centre of curvature retraces its path after reflection.
-                </li>
-              </ul>
-            </div>
-
-            {/* Section 8 */}
-            <div>
-              <h2 className="text-[18px] text-[#0f172a] mb-3" style={dFont}>
-                8. Applications
-              </h2>
-              <div className="flex flex-col gap-3 text-[15px] text-[#374151] leading-relaxed" style={bFont}>
-                <p>
-                  <span style={dFont}>Concave Mirrors:</span> Used in torches, headlights, and solar
-                  concentrators. Dentists use small concave mirrors to see enlarged images of teeth.
-                </p>
-                <p>
-                  <span style={dFont}>Convex Mirrors:</span> Used as rear-view mirrors in vehicles because
-                  they provide a wider field of view, allowing drivers to see more of the road behind them.
-                </p>
-                <p>
-                  <span style={dFont}>Plane Mirrors:</span> Used in periscopes, kaleidoscopes, and dressing
-                  tables. They produce same-size, laterally inverted images.
-                </p>
-              </div>
-            </div>
-          </div>
+          {renderContent()}
         </div>
       </div>
     );
