@@ -332,8 +332,8 @@ export default function StudyHubPage() {
 
         {/* 60/40 layout */}
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-          {/* LEFT — full width until help unlocked, then 60% */}
-          <div className={`flex-1 overflow-y-auto p-6 lg:p-8 space-y-6 transition-all duration-500 ${helpUnlocked ? "lg:w-[60%]" : "w-full"}`}>
+          {/* LEFT — centered at 60% width always, aligned left when sidebar opens */}
+          <div className={`overflow-y-auto p-6 lg:p-8 space-y-6 transition-all duration-500 ${helpUnlocked ? "flex-1 lg:w-[60%]" : "w-full max-w-4xl mx-auto"}`}>
             {/* Assignment Question */}
             <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl p-8 sh-fade sh-d1">
               <h2 className="flex items-center gap-2.5 text-[20px] text-[#0f172a] mb-6" style={dFont}>
