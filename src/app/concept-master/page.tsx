@@ -432,8 +432,29 @@ export default function ConceptMasterPage() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* Bottom input bar */}
-          <div className="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-8 lg:px-16 xl:px-24 py-5">
+          {/* Bottom input bar with context upload buttons */}
+          <div className="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-8 lg:px-16 xl:px-24 py-4">
+            {/* Context upload row */}
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-[11px] text-[#94a3b8] mr-1" style={bFont}>Add:</span>
+              {[
+                { icon: Upload, label: "PDF", color: "text-[#2563eb]", bg: "hover:bg-blue-50", border: "border-blue-200" },
+                { icon: Youtube, label: "YouTube", color: "text-[#ef4444]", bg: "hover:bg-red-50", border: "border-red-200" },
+                { icon: FileText, label: "Document", color: "text-[#10b981]", bg: "hover:bg-green-50", border: "border-green-200" },
+                { icon: ImageIcon, label: "Picture", color: "text-[#f59e0b]", bg: "hover:bg-amber-50", border: "border-amber-200" },
+                { icon: Globe, label: "Web Link", color: "text-[#7c3aed]", bg: "hover:bg-purple-50", border: "border-purple-200" },
+                { icon: NotebookPen, label: "Notes", color: "text-[#6366f1]", bg: "hover:bg-indigo-50", border: "border-indigo-200" },
+              ].map((a) => (
+                <button
+                  key={a.label}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border ${a.border} ${a.bg} transition-all duration-150 cursor-pointer`}
+                >
+                  <a.icon size={14} className={a.color} />
+                  <span className="text-[12px] text-[#374151]" style={dFont}>{a.label}</span>
+                </button>
+              ))}
+            </div>
+            {/* Input */}
             <div className="flex gap-3 items-center">
               <input
                 type="text"
@@ -454,38 +475,11 @@ export default function ConceptMasterPage() {
         </div>
 
         {/* ─── Right Sidebar ─── */}
-        <div className="w-full lg:w-[340px] bg-white border-t lg:border-t-0 lg:border-l border-[#e5e7eb] p-6 space-y-6 flex-shrink-0 overflow-y-auto">
-          {/* Add Information */}
+        <div className="w-full lg:w-[340px] bg-white border-t lg:border-t-0 lg:border-l border-[#e5e7eb] flex-shrink-0 flex flex-col">
+          {/* Scrollable top section */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* Revision Note */}
           <div className="cm-fade cm-d1">
-            <h3 className="text-[15px] text-[#0f172a] mb-3" style={dFont}>
-              Add Information
-            </h3>
-            <p className="text-[12px] text-[#94a3b8] mb-4" style={bFont}>
-              Give the AI more context to help you better
-            </p>
-            <div className="grid grid-cols-2 gap-2.5">
-              {[
-                { icon: Upload, label: "Upload PDF", desc: "Study material", color: "text-[#2563eb]", bg: "bg-blue-50 hover:bg-blue-100", border: "border-blue-200" },
-                { icon: Youtube, label: "Add YouTube Video", desc: "Paste a link", color: "text-[#ef4444]", bg: "bg-red-50 hover:bg-red-100", border: "border-red-200" },
-                { icon: FileText, label: "Add Document", desc: "Word, text files", color: "text-[#10b981]", bg: "bg-green-50 hover:bg-green-100", border: "border-green-200" },
-                { icon: ImageIcon, label: "Add Picture", desc: "Photo reference", color: "text-[#f59e0b]", bg: "bg-amber-50 hover:bg-amber-100", border: "border-amber-200" },
-                { icon: Globe, label: "Add Web Link", desc: "Any website", color: "text-[#7c3aed]", bg: "bg-purple-50 hover:bg-purple-100", border: "border-purple-200" },
-                { icon: NotebookPen, label: "Add Notes", desc: "Your own notes", color: "text-[#6366f1]", bg: "bg-indigo-50 hover:bg-indigo-100", border: "border-indigo-200" },
-              ].map((action) => (
-                <button
-                  key={action.label}
-                  className={`flex flex-col items-center gap-1.5 py-4 px-3 rounded-xl border-2 ${action.border} ${action.bg} transition-all duration-200 cursor-pointer hover:-translate-y-0.5 hover:shadow-sm`}
-                >
-                  <action.icon className={`w-5 h-5 ${action.color}`} />
-                  <span className="text-[12px] text-[#374151]" style={dFont}>{action.label}</span>
-                  <span className="text-[10px] text-[#94a3b8]" style={bFont}>{action.desc}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Revision Note — compact */}
-          <div className="cm-fade cm-d2">
             <div className="bg-[#fffbeb] border-2 border-[#fee685] rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-[13px] text-[#0f172a]" style={dFont}>
@@ -513,8 +507,11 @@ export default function ConceptMasterPage() {
             </div>
           </div>
 
-          {/* Test Yourself — with AI progress */}
-          <div className="cm-fade cm-d3">
+          </div>
+          {/* End scrollable section */}
+
+          {/* Test Yourself — pinned at bottom */}
+          <div className="border-t border-[#e5e7eb] p-5">
             <div className="bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] border-2 border-[#b9f8cf] rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles size={18} className="text-[#22c55e]" />
