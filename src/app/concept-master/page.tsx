@@ -14,11 +14,17 @@ import {
   Brain,
   Lightbulb,
   Sparkles,
-  Target,
   NotebookPen,
   FileDown,
   Save,
   User,
+  Upload,
+  Youtube,
+  FileText,
+  Image as ImageIcon,
+  Loader2,
+  CheckCircle2,
+  Zap,
 } from "lucide-react";
 
 /* ─── Types ─── */
@@ -69,6 +75,9 @@ export default function ConceptMasterPage() {
   const [userMessages, setUserMessages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [inlineInput, setInlineInput] = useState("");
+  const [quizGenerating, setQuizGenerating] = useState(false);
+  const [quizProgress, setQuizProgress] = useState(0);
+  const [quizReady, setQuizReady] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   /* ─── Animations ─── */
@@ -172,7 +181,7 @@ export default function ConceptMasterPage() {
         {/* ─── Left Column ─── */}
         <div className="flex-1 flex flex-col min-h-screen">
           {/* Header area */}
-          <div className="bg-white border-b border-[#e5e7eb] px-6 py-6 cm-fade">
+          <div className="bg-white border-b border-[#e5e7eb] px-8 lg:px-12 py-6 cm-fade">
             <button
               onClick={() => setStep("subjects")}
               className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-5 cursor-pointer"
@@ -223,7 +232,7 @@ export default function ConceptMasterPage() {
           </div>
 
           {/* Chat area */}
-          <div className="flex-1 overflow-y-auto bg-gradient-to-b from-white to-purple-50/30 px-6 py-6 space-y-6">
+          <div className="flex-1 overflow-y-auto bg-gradient-to-b from-white to-purple-50/30 px-8 lg:px-16 xl:px-24 py-8 space-y-6">
             {/* Message 1: User */}
             <div className="flex justify-end gap-3 cm-msg" style={{ animationDelay: "0.1s" }}>
               <div className="bg-[#7c3aed] text-white rounded-2xl rounded-tr-lg px-5 py-4 max-w-[500px]">
@@ -366,7 +375,7 @@ export default function ConceptMasterPage() {
           </div>
 
           {/* Bottom input bar */}
-          <div className="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-5 py-5">
+          <div className="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-8 lg:px-16 xl:px-24 py-5">
             <div className="flex gap-3 items-center">
               <input
                 type="text"
@@ -387,93 +396,139 @@ export default function ConceptMasterPage() {
         </div>
 
         {/* ─── Right Sidebar ─── */}
-        <div className="w-full lg:w-[320px] bg-white border-t lg:border-t-0 lg:border-l border-[#e5e7eb] p-6 space-y-6 flex-shrink-0 overflow-y-auto">
-          {/* Your revision note */}
+        <div className="w-full lg:w-[340px] bg-white border-t lg:border-t-0 lg:border-l border-[#e5e7eb] p-6 space-y-6 flex-shrink-0 overflow-y-auto">
+          {/* Quick Actions */}
           <div className="cm-fade cm-d1">
-            <div className="flex items-center gap-2 mb-4">
-              <NotebookPen size={18} className="text-[#0f172a]" />
-              <span className="text-[14px] text-[#0f172a]" style={dFont}>
-                Your revision note
-              </span>
+            <h3 className="text-[15px] text-[#0f172a] mb-4" style={dFont}>
+              Quick Actions
+            </h3>
+            <div className="grid grid-cols-2 gap-2.5">
+              {[
+                { icon: NotebookPen, label: "Quick Notes", color: "text-[#7c3aed]", bg: "bg-purple-50 hover:bg-purple-100", border: "border-purple-200" },
+                { icon: Upload, label: "Upload PDF", color: "text-[#2563eb]", bg: "bg-blue-50 hover:bg-blue-100", border: "border-blue-200" },
+                { icon: Youtube, label: "YouTube Video", color: "text-[#ef4444]", bg: "bg-red-50 hover:bg-red-100", border: "border-red-200" },
+                { icon: FileText, label: "Document", color: "text-[#10b981]", bg: "bg-green-50 hover:bg-green-100", border: "border-green-200" },
+                { icon: ImageIcon, label: "Picture", color: "text-[#f59e0b]", bg: "bg-amber-50 hover:bg-amber-100", border: "border-amber-200" },
+                { icon: Save, label: "Save Chat", color: "text-[#6366f1]", bg: "bg-indigo-50 hover:bg-indigo-100", border: "border-indigo-200" },
+              ].map((action) => (
+                <button
+                  key={action.label}
+                  className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 ${action.border} ${action.bg} transition-all duration-200 cursor-pointer hover:-translate-y-0.5 hover:shadow-sm`}
+                >
+                  <action.icon className={`w-5 h-5 ${action.color}`} />
+                  <span className="text-[12px] text-[#374151]" style={dFont}>{action.label}</span>
+                </button>
+              ))}
             </div>
+          </div>
 
-            <div className="bg-[#fffbeb] border-2 border-[#fee685] rounded-2xl p-5">
-              <h4
-                className="text-[14px] text-[#0f172a] mb-4"
-                style={dFont}
-              >
-                Why ice floats — Science
-              </h4>
-
-              {/* Key concept */}
-              <div className="mb-4">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Target size={14} className="text-gray-400" />
-                  <span className="text-[12px] text-gray-400" style={dFont}>
-                    Key concept
-                  </span>
+          {/* Revision Note — compact */}
+          <div className="cm-fade cm-d2">
+            <div className="bg-[#fffbeb] border-2 border-[#fee685] rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-[13px] text-[#0f172a]" style={dFont}>
+                  Revision Note
+                </h4>
+                <div className="flex gap-2">
+                  <button className="w-8 h-8 rounded-lg border border-[#7c3aed] flex items-center justify-center hover:bg-purple-50 transition-colors cursor-pointer">
+                    <FileDown size={14} className="text-[#7c3aed]" />
+                  </button>
+                  <button className="w-8 h-8 rounded-lg bg-[#7c3aed] flex items-center justify-center hover:bg-[#6d28d9] transition-colors cursor-pointer">
+                    <Save size={14} className="text-white" />
+                  </button>
                 </div>
-                <p className="text-[13px] text-[#374151] leading-relaxed" style={bFont}>
-                  Ice is less dense than water due to molecular structure
-                </p>
               </div>
-
-              {/* The analogy */}
-              <div className="mb-5">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Lightbulb size={14} className="text-gray-400" />
-                  <span className="text-[12px] text-gray-400" style={dFont}>
-                    The analogy
-                  </span>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <Zap size={12} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-[12px] text-[#374151] leading-relaxed" style={bFont}>Ice is less dense than water due to molecular structure</p>
                 </div>
-                <p className="text-[13px] text-[#374151] leading-relaxed" style={bFont}>
-                  Magic bag that gets lighter when packed
-                </p>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex gap-3">
-                <button
-                  className="flex-1 flex items-center justify-center gap-2 text-[14px] text-[#7c3aed] border-2 border-[#7c3aed] rounded-xl py-2.5 hover:bg-purple-50 transition-colors cursor-pointer"
-                  style={dFont}
-                >
-                  <FileDown size={16} /> PDF
-                </button>
-                <button
-                  className="flex-1 flex items-center justify-center gap-2 text-[14px] text-white bg-[#7c3aed] rounded-xl py-2.5 hover:bg-[#6d28d9] transition-colors cursor-pointer"
-                  style={dFont}
-                >
-                  <Save size={16} /> Save
-                </button>
+                <div className="flex items-start gap-2">
+                  <Lightbulb size={12} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-[12px] text-[#374151] leading-relaxed" style={bFont}>Magic bag analogy — gets lighter when packed tightly</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Test yourself */}
+          {/* Test Yourself — with AI progress */}
           <div className="cm-fade cm-d3">
             <div className="bg-gradient-to-b from-[#f0fdf4] to-[#ecfdf5] border-2 border-[#b9f8cf] rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles size={18} className="text-[#22c55e]" />
-                <span className="text-[14px] text-[#0f172a]" style={dFont}>
-                  Test yourself
+                <span className="text-[15px] text-[#0f172a]" style={dFont}>
+                  Test Yourself
                 </span>
               </div>
 
-              <div className="text-center mb-4">
-                <p className="text-[24px] text-[#22c55e]" style={dFont}>
-                  5 MCQs
-                </p>
-                <p className="text-[14px] text-[#64748b] mt-1" style={bFont}>
-                  Auto-generated quiz ready
-                </p>
-              </div>
+              {!quizGenerating && !quizReady && (
+                <>
+                  <p className="text-[13px] text-[#64748b] mb-4 leading-relaxed" style={bFont}>
+                    AI will generate a personalized quiz based on what you&apos;ve learned in this session.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setQuizGenerating(true);
+                      setQuizProgress(0);
+                      const interval = setInterval(() => {
+                        setQuizProgress((prev) => {
+                          if (prev >= 100) {
+                            clearInterval(interval);
+                            setQuizGenerating(false);
+                            setQuizReady(true);
+                            return 100;
+                          }
+                          return prev + Math.random() * 15 + 5;
+                        });
+                      }, 400);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 bg-[#22c55e] text-white text-[14px] rounded-xl py-3 hover:bg-[#16a34a] transition-colors cursor-pointer"
+                    style={dFont}
+                  >
+                    <Zap size={16} /> Generate Quiz with AI
+                  </button>
+                </>
+              )}
 
-              <button
-                className="w-full bg-[#22c55e] text-white text-[15px] rounded-xl py-3 hover:bg-[#16a34a] transition-colors cursor-pointer"
-                style={dFont}
-              >
-                Start Quiz (+50 XP)
-              </button>
+              {quizGenerating && (
+                <div className="text-center">
+                  <Loader2 size={28} className="text-[#22c55e] animate-spin mx-auto mb-3" />
+                  <p className="text-[14px] text-[#0f172a] mb-1" style={dFont}>
+                    Creating your quiz...
+                  </p>
+                  <p className="text-[12px] text-[#64748b] mb-4" style={bFont}>
+                    Analyzing your conversation to build questions
+                  </p>
+                  <div className="w-full h-3 bg-white rounded-full overflow-hidden mb-2">
+                    <div
+                      className="h-full bg-gradient-to-r from-[#22c55e] to-[#10b981] rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min(quizProgress, 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-[12px] text-[#22c55e]" style={dFont}>
+                    {Math.min(Math.round(quizProgress), 100)}%
+                  </p>
+                </div>
+              )}
+
+              {quizReady && (
+                <div className="text-center">
+                  <CheckCircle2 size={28} className="text-[#22c55e] mx-auto mb-3" />
+                  <p className="text-[14px] text-[#0f172a] mb-1" style={dFont}>
+                    5 Questions Ready!
+                  </p>
+                  <p className="text-[12px] text-[#64748b] mb-4" style={bFont}>
+                    Based on: Density, Ice, Molecular Structure
+                  </p>
+                  <Link
+                    href="/practice-arena"
+                    className="w-full flex items-center justify-center gap-2 bg-[#22c55e] text-white text-[14px] rounded-xl py-3 hover:bg-[#16a34a] transition-colors cursor-pointer no-underline"
+                    style={dFont}
+                  >
+                    <Sparkles size={16} /> Start Quiz (+50 XP)
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
