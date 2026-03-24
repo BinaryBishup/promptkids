@@ -339,7 +339,12 @@ export default function StudyHubPage() {
             </div>
             <div className="flex items-center gap-3 flex-shrink-0">
               <span className="text-[12px] text-[#94a3b8]" style={bFont}>Attempts: {attempts}</span>
-              <span className="text-[12px] text-[#94a3b8]" style={bFont}>{wordCount} words</span>
+              <div className="w-px h-5 bg-[#e5e7eb]" />
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentXP >= 50 ? "bg-purple-100 text-purple-700" : currentXP >= 20 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600"}`}>
+                <Trophy size={14} />
+                <span className="text-[13px]" style={dFont}>+{currentXP} XP</span>
+                {currentXP < maxXP && <span className="text-[10px] line-through opacity-50" style={bFont}>{maxXP}</span>}
+              </div>
             </div>
           </div>
         </div>
@@ -480,22 +485,6 @@ export default function StudyHubPage() {
                 </div>
               </div>
 
-              {/* XP Reward — reduces with higher help level */}
-              <div className="flex-shrink-0 p-4 border-t border-[#e5e7eb]">
-                <div className={`rounded-xl p-4 flex items-center gap-3 ${currentXP >= 50 ? "bg-gradient-to-r from-[#2563eb] to-[#7c3aed]" : currentXP >= 20 ? "bg-gradient-to-r from-amber-500 to-orange-500" : "bg-gradient-to-r from-red-500 to-red-600"}`}>
-                  <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0"><Trophy size={18} className="text-white" /></div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white text-[13px]" style={dFont}>Reward</p>
-                    <p className="text-white/60 text-[11px]" style={bFont}>
-                      {currentXP >= 50 ? "Great job using minimal help!" : currentXP >= 20 ? "Try less help for more XP" : "Max help = less XP"}
-                    </p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-white text-[20px]" style={dFont}>+{currentXP} XP</p>
-                    <p className="text-white/40 text-[10px] line-through" style={bFont}>{currentXP < maxXP ? `${maxXP} XP` : ""}</p>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
         </div>
