@@ -127,39 +127,86 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* Choose Your Learning Tool — with pending actions embedded */}
+          {/* Today's Events */}
+          <div className="anim-fade-up" style={{ animationDelay: "0.15s" }}>
+            <h3 className="text-[16px] text-[#0f172a] mb-4 flex items-center gap-2" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
+              <span className="text-[18px]">📋</span> Today&apos;s Events
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+              {/* Live Class */}
+              <div className="flex items-center gap-3 bg-red-50 border-2 border-red-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+                  <Video className="w-5 h-5 text-red-500" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[13px] text-[#0f172a] truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Physics Class</span>
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
+                  </div>
+                  <span className="text-[11px] text-red-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Live now • 2:00 PM</span>
+                </div>
+              </div>
+
+              {/* Due Homework */}
+              <div className="flex items-center gap-3 bg-amber-50 border-2 border-amber-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="w-5 h-5 text-amber-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Science HW Due</span>
+                  <span className="text-[11px] text-amber-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Due in 2 hours</span>
+                </div>
+              </div>
+
+              {/* Today's Homework */}
+              <div className="flex items-center gap-3 bg-blue-50 border-2 border-blue-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <ClipboardList className="w-5 h-5 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Maths Assignment</span>
+                  <span className="text-[11px] text-blue-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>New • Assigned today</span>
+                </div>
+              </div>
+
+              {/* Upcoming Test */}
+              <div className="flex items-center gap-3 bg-purple-50 border-2 border-purple-200 rounded-2xl px-4 py-3.5 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+                <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
+                  <Trophy className="w-5 h-5 text-purple-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] text-[#0f172a] block truncate" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Science Mid-term</span>
+                  <span className="text-[11px] text-purple-600" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>In 5 days • Mar 28</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Choose Your Learning Tool */}
           <div>
-            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.2s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
+            <h2 className="font-extrabold text-[22px] text-[#0f172a] mb-6 anim-fade-up" style={{ animationDelay: "0.25s", fontFamily: 'var(--font-display)', fontWeight: 900 }}>Choose Your Learning Tool</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {[
-                { name: "Live Classes", emoji: "🎥", path: "/live-classes", icon: Video, color: "#ef4444", bg: "bg-red-50", bgHover: "group-hover:bg-red-100", borderHover: "hover:border-[#ef4444]/40", shadowHover: "hover:shadow-red-100/60", delay: "0.25s", desc: "Join live sessions & watch recordings", badge: { text: "🔴 Live at 2:00 PM", bg: "bg-red-100 text-red-600" } },
-                { name: "Study Buddy", emoji: "📚", path: "/study-buddy", icon: BookOpen, color: "#2563eb", bg: "bg-[#eff6ff]", bgHover: "group-hover:bg-[#dbeafe]", borderHover: "hover:border-[#2563eb]/40", shadowHover: "hover:shadow-blue-100/60", delay: "0.3s", desc: "Get guided help with homework", badge: { text: "📝 Science HW due in 2h", bg: "bg-red-100 text-red-600" } },
-                { name: "Concept Master", emoji: "🧠", path: "/concept-master", icon: Brain, color: "#7c3aed", bg: "bg-[#faf5ff]", bgHover: "group-hover:bg-[#f3e8ff]", borderHover: "hover:border-[#7c3aed]/40", shadowHover: "hover:shadow-purple-100/60", delay: "0.35s", desc: "Learn new topics with AI tutor", badge: null },
-                { name: "Practice Arena", emoji: "🏆", path: "/practice-arena", icon: Trophy, color: "#f59e0b", bg: "bg-[#fffbeb]", bgHover: "group-hover:bg-[#fef3c6]", borderHover: "hover:border-[#f59e0b]/40", shadowHover: "hover:shadow-amber-100/60", delay: "0.4s", desc: "Practice with various question types", badge: { text: "📊 Mock Test tomorrow", bg: "bg-amber-100 text-amber-700" } },
-                { name: "Study Hub", emoji: "📖", path: "/study-hub", icon: ClipboardList, color: "#10b981", bg: "bg-[#ecfdf5]", bgHover: "group-hover:bg-[#d1fae5]", borderHover: "hover:border-[#10b981]/40", shadowHover: "hover:shadow-emerald-100/60", delay: "0.45s", desc: "Notes, PDFs & previous year papers", badge: { text: "📖 History Ch.4 due Fri", bg: "bg-purple-100 text-purple-700" } },
-                { name: "Explore Lab", emoji: "✨", path: "#", icon: SparklesIcon, color: "#ec4899", bg: "bg-pink-50", bgHover: "group-hover:bg-pink-100", borderHover: "hover:border-[#ec4899]/40", shadowHover: "hover:shadow-pink-100/60", delay: "0.5s", desc: "Interactive gamified learning", badge: null },
+                { name: "Live Classes", emoji: "🎥", path: "/live-classes", icon: Video, color: "#ef4444", bg: "bg-red-50", bgHover: "group-hover:bg-red-100", borderHover: "hover:border-[#ef4444]/40", shadowHover: "hover:shadow-red-100/60", delay: "0.3s", desc: "Join live sessions & watch recordings" },
+                { name: "Study Buddy", emoji: "📚", path: "/study-buddy", icon: BookOpen, color: "#2563eb", bg: "bg-[#eff6ff]", bgHover: "group-hover:bg-[#dbeafe]", borderHover: "hover:border-[#2563eb]/40", shadowHover: "hover:shadow-blue-100/60", delay: "0.35s", desc: "Get guided help with homework" },
+                { name: "Concept Master", emoji: "🧠", path: "/concept-master", icon: Brain, color: "#7c3aed", bg: "bg-[#faf5ff]", bgHover: "group-hover:bg-[#f3e8ff]", borderHover: "hover:border-[#7c3aed]/40", shadowHover: "hover:shadow-purple-100/60", delay: "0.4s", desc: "Learn new topics with AI tutor" },
+                { name: "Practice Arena", emoji: "🏆", path: "/practice-arena", icon: Trophy, color: "#f59e0b", bg: "bg-[#fffbeb]", bgHover: "group-hover:bg-[#fef3c6]", borderHover: "hover:border-[#f59e0b]/40", shadowHover: "hover:shadow-amber-100/60", delay: "0.45s", desc: "Practice with various question types" },
+                { name: "Study Hub", emoji: "📖", path: "/study-hub", icon: ClipboardList, color: "#10b981", bg: "bg-[#ecfdf5]", bgHover: "group-hover:bg-[#d1fae5]", borderHover: "hover:border-[#10b981]/40", shadowHover: "hover:shadow-emerald-100/60", delay: "0.5s", desc: "Notes, PDFs & previous year papers" },
+                { name: "Explore Lab", emoji: "✨", path: "#", icon: SparklesIcon, color: "#ec4899", bg: "bg-pink-50", bgHover: "group-hover:bg-pink-100", borderHover: "hover:border-[#ec4899]/40", shadowHover: "hover:shadow-pink-100/60", delay: "0.55s", desc: "Interactive gamified learning" },
               ].map((tool) => (
                 <div
                   key={tool.name}
                   onClick={() => openPicker(tool.name, tool.emoji, tool.path)}
-                  className={`anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-7 flex flex-col gap-3 cursor-pointer ${tool.borderHover} hover:shadow-xl ${tool.shadowHover} hover:-translate-y-1.5 transition-all duration-250 relative`}
+                  className={`anim-fade-up group bg-white border-[2.5px] border-[#e5e7eb] rounded-2xl p-8 flex flex-col gap-4 cursor-pointer ${tool.borderHover} hover:shadow-xl ${tool.shadowHover} hover:-translate-y-1.5 transition-all duration-250`}
                   style={{ animationDelay: tool.delay }}
                 >
-                  {/* Pending action badge */}
-                  {tool.badge && (
-                    <div className={`absolute -top-2.5 right-4 ${tool.badge.bg} text-[11px] px-2.5 py-1 rounded-full shadow-sm`} style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                      {tool.badge.text}
-                    </div>
-                  )}
-                  <div className="flex items-start justify-between">
-                    <div className={`w-13 h-13 rounded-2xl ${tool.bg} flex items-center justify-center ${tool.bgHover} group-hover:scale-110 transition-all duration-200`}>
-                      <tool.icon className="w-7 h-7" style={{ color: tool.color }} />
-                    </div>
+                  <div className={`w-14 h-14 rounded-2xl ${tool.bg} flex items-center justify-center ${tool.bgHover} group-hover:scale-110 transition-all duration-200`}>
+                    <tool.icon className="w-8 h-8" style={{ color: tool.color }} />
                   </div>
-                  <h3 className="font-extrabold text-[17px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{tool.name}</h3>
-                  <p className="text-[13px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{tool.desc}</p>
-                  <span className="text-[13px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900, color: tool.color }}>
-                    Get started <ChevronRight className="w-4 h-4" />
+                  <h3 className="font-extrabold text-[18px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>{tool.name}</h3>
+                  <p className="text-[14px] text-[#4a5565]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{tool.desc}</p>
+                  <span className="text-[14px] inline-flex items-center gap-1.5 mt-auto group-hover:gap-3 transition-all duration-200" style={{ fontFamily: 'var(--font-display)', fontWeight: 900, color: tool.color }}>
+                    Get started <ChevronRight className="w-5 h-5" />
                   </span>
                 </div>
               ))}
