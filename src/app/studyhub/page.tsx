@@ -131,6 +131,9 @@ export default function StudyHubPage() {
   const [chatOpen, setChatOpen] = useState(false);
   const [chatLevel, setChatLevel] = useState<number | null>(null);
   const [chatMessages, setChatMessages] = useState<{ role: "ai" | "user"; text: string }[]>([]);
+  const [showHelpModal, setShowHelpModal] = useState(false);
+  const [helpUnlocked, setHelpUnlocked] = useState(false);
+  const [modalStage, setModalStage] = useState<"offer" | "unlocking" | "ready">("offer");
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -167,7 +170,28 @@ export default function StudyHubPage() {
   };
 
   const handleSubmit = () => {
-    setAttempts((a) => a + 1);
+    const newAttempts = attempts + 1;
+    setAttempts(newAttempts);
+    // Show help modal after 1st failed attempt (if help not yet unlocked)
+    if (!helpUnlocked && newAttempts >= 1) {
+      setTimeout(() => {
+        setModalStage("offer");
+        setShowHelpModal(true);
+      }, 800);
+    }
+  };
+
+  const handleAcceptHelp = () => {
+    setModalStage("unlocking");
+    // Simulate unlocking animation
+    setTimeout(() => {
+      setModalStage("ready");
+    }, 1500);
+    setTimeout(() => {
+      setShowHelpModal(false);
+      setHelpUnlocked(true);
+      openHelp(1); // auto-open Level 1
+    }, 2500);
   };
 
   const openHelp = (level: number) => {
@@ -367,18 +391,38 @@ export default function StudyHubPage() {
 
           </div>
 
-          {/* RIGHT 40% — AI Help + Chat */}
+          {/* RIGHT 40% — Hidden until unlocked, then AI Help + Chat */}
           <div className="lg:w-[40%] flex-shrink-0 border-t lg:border-t-0 lg:border-l-2 border-[#eef0f4] bg-white flex flex-col overflow-hidden">
-            <div className="p-5 border-b border-[#e5e7eb]">
-              <div className="flex items-center gap-2.5 mb-4">
-                <Bot size={18} className="text-purple-500" />
-                <h3 className="text-[16px] text-[#0f172a]" style={dFont}>
-                  {attempts > 0 ? "Need help? Pick a level" : "AI Help"}
-                </h3>
+            {!helpUnlocked ? (
+              /* Before unlock — encouraging empty state */
+              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center mb-5">
+                  <span className="text-[36px]">🧠</span>
+                </div>
+                <h3 className="text-[18px] text-[#0f172a] mb-2" style={dFont}>You got this!</h3>
+                <p className="text-[14px] text-[#94a3b8] max-w-[240px] leading-relaxed" style={bFont}>
+                  Try solving it on your own first. Give it your best shot! 💪
+                </p>
+                {attempts > 0 && (
+                  <div className="mt-6 flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      {[1, 2, 3].map((star) => (
+                        <span key={star} className={`text-[20px] ${star <= attempts ? "opacity-100" : "opacity-20"}`}>⭐</span>
+                      ))}
+                    </div>
+                    <p className="text-[12px] text-[#94a3b8]" style={bFont}>{attempts} attempt{attempts > 1 ? "s" : ""} made</p>
+                  </div>
+                )}
               </div>
-
-              {attempts > 0 ? (
-                <div className="flex flex-col gap-2">
+            ) : (
+              /* After unlock — AI Help levels + Chat */
+              <>
+                <div className="p-5 border-b border-[#e5e7eb]">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <Bot size={18} className="text-purple-500" />
+                    <h3 className="text-[15px] text-[#0f172a]" style={dFont}>AI Help — Pick a level</h3>
+                  </div>
+                  <div className="flex flex-col gap-2">
                     {helpLevels.map((hl) => {
                       const isUnlocked = attempts >= hl.attemptsNeeded;
                       const isActive = chatOpen && chatLevel === hl.level;
@@ -401,7 +445,7 @@ export default function StudyHubPage() {
                           key={hl.level}
                           onClick={() => isUnlocked && openHelp(hl.level)}
                           disabled={!isUnlocked}
-                          className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all duration-200 text-left ${
+                          className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border-2 transition-all duration-200 text-left ${
                             isActive
                               ? activeColors[hl.level - 1]
                               : isUnlocked
@@ -409,9 +453,7 @@ export default function StudyHubPage() {
                               : "border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed"
                           }`}
                         >
-                          <span className="text-[20px] flex-shrink-0">
-                            {["💡", "📐", "🧩", "👣", "✅"][hl.level - 1]}
-                          </span>
+                          <span className="text-[18px] flex-shrink-0">{["💡", "📐", "🧩", "👣", "✅"][hl.level - 1]}</span>
                           <div className="min-w-0">
                             <span className={`text-[13px] block ${isActive ? "text-white" : "text-[#0f172a]"}`} style={dFont}>{hl.name}</span>
                             <span className={`text-[11px] block ${isActive ? "text-white/70" : "text-[#94a3b8]"}`} style={bFont}>
@@ -422,81 +464,65 @@ export default function StudyHubPage() {
                       );
                     })}
                   </div>
-              ) : (
-                <div className="bg-purple-50/50 border-2 border-purple-100 rounded-2xl p-5 text-center">
-                  <p className="text-[14px] text-[#64748b]" style={bFont}>
-                    Submit your attempt to unlock AI help 🔓
-                  </p>
                 </div>
-              )}
-            </div>
 
-            {/* Chat section — fills remaining space */}
-            <div className="flex-1 flex flex-col min-h-0">
-              {!chatOpen ? (
-                <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-                  <div className="w-14 h-14 rounded-full bg-purple-50 flex items-center justify-center mb-3">
-                    <MessageCircle size={24} className="text-purple-300" />
-                  </div>
-                  <p className="text-[15px] text-[#374151] mb-1" style={dFont}>
-                    {attempts > 0 ? "Click a level to get help" : "Submit an attempt first"}
-                  </p>
-                  <p className="text-[13px] text-[#94a3b8]" style={bFont}>Your AI buddy will guide you</p>
-                </div>
-              ) : (
-                <>
-                  {/* Chat header */}
-                  <div className="flex items-center justify-between bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-5 py-3 flex-shrink-0">
-                    <div className="flex items-center gap-2.5">
-                      <Sparkles size={16} className="text-white" />
-                      <span className="text-white text-[14px]" style={dFont}>
-                        Level {chatLevel}: {helpLevels.find(h => h.level === chatLevel)?.name}
-                      </span>
+                {/* Chat */}
+                <div className="flex-1 flex flex-col min-h-0">
+                  {!chatOpen ? (
+                    <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+                      <span className="text-[32px] mb-3">👆</span>
+                      <p className="text-[14px] text-[#374151]" style={dFont}>Pick a help level above</p>
+                      <p className="text-[12px] text-[#94a3b8] mt-1" style={bFont}>Start with Level 1 for a gentle hint</p>
                     </div>
-                    <button onClick={() => setChatOpen(false)} className="text-white/60 hover:text-white transition-colors cursor-pointer">
-                      <X size={18} />
-                    </button>
-                  </div>
-
-                  {/* Messages */}
-                  <div className="flex-1 overflow-y-auto p-5 space-y-4">
-                    {chatMessages.map((msg, i) => (
-                      <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed whitespace-pre-line ${
-                          msg.role === "user"
-                            ? "bg-[#7c3aed] text-white rounded-br-md"
-                            : "bg-[#f3f4f6] text-[#374151] rounded-bl-md"
-                        }`} style={bFont}>
-                          {msg.text}
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-5 py-3 flex-shrink-0">
+                        <div className="flex items-center gap-2.5">
+                          <Sparkles size={16} className="text-white" />
+                          <span className="text-white text-[14px]" style={dFont}>
+                            {helpLevels.find(h => h.level === chatLevel)?.name}
+                          </span>
                         </div>
+                        <button onClick={() => setChatOpen(false)} className="text-white/60 hover:text-white transition-colors cursor-pointer">
+                          <X size={18} />
+                        </button>
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Input */}
-                  <div className="border-t border-[#e5e7eb] p-3 flex-shrink-0">
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        const input = e.currentTarget.querySelector("input") as HTMLInputElement;
-                        sendChatMessage(input.value);
-                        input.value = "";
-                      }}
-                      className="flex gap-2"
-                    >
-                      <input
-                        type="text"
-                        placeholder="Ask a follow-up..."
-                        className="flex-1 bg-[#f8fafc] border-2 border-[#e5e7eb] rounded-xl px-4 py-2.5 text-[14px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-purple-400"
-                      />
-                      <button type="submit" className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center text-white hover:bg-[#6d28d9] transition-colors cursor-pointer flex-shrink-0">
-                        <Send size={16} />
-                      </button>
-                    </form>
-                  </div>
-                </>
-              )}
-            </div>
+                      <div className="flex-1 overflow-y-auto p-5 space-y-4">
+                        {chatMessages.map((msg, i) => (
+                          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                            <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed whitespace-pre-line ${
+                              msg.role === "user"
+                                ? "bg-[#7c3aed] text-white rounded-br-md"
+                                : "bg-[#f3f4f6] text-[#374151] rounded-bl-md"
+                            }`} style={bFont}>
+                              {msg.text}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="border-t border-[#e5e7eb] p-3 flex-shrink-0">
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            const input = e.currentTarget.querySelector("input") as HTMLInputElement;
+                            sendChatMessage(input.value);
+                            input.value = "";
+                          }}
+                          className="flex gap-2"
+                        >
+                          <input type="text" placeholder="Ask a follow-up..." className="flex-1 bg-[#f8fafc] border-2 border-[#e5e7eb] rounded-xl px-4 py-2.5 text-[14px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-purple-400" />
+                          <button type="submit" className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center text-white hover:bg-[#6d28d9] transition-colors cursor-pointer flex-shrink-0">
+                            <Send size={16} />
+                          </button>
+                        </form>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
 
             {/* Completion Reward — pinned at bottom */}
             <div className="flex-shrink-0 p-4 border-t border-[#e5e7eb]">
@@ -513,6 +539,72 @@ export default function StudyHubPage() {
             </div>
           </div>
         </div>
+
+        {/* Gamified Help Unlock Modal */}
+        {showHelpModal && (
+          <>
+            <div className="fixed inset-0 bg-black/40 z-50" />
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden" style={{ animation: "shFadeUp 0.4s ease-out" }}>
+                {modalStage === "offer" && (
+                  <div className="p-8 text-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center mx-auto mb-5">
+                      <span className="text-[40px]">🤝</span>
+                    </div>
+                    <h2 className="text-[22px] text-[#0f172a] mb-2" style={dFont}>Need a hand?</h2>
+                    <p className="text-[15px] text-[#64748b] mb-6 leading-relaxed" style={bFont}>
+                      No worries! Everyone needs help sometimes. Your AI buddy can guide you step by step.
+                    </p>
+                    <div className="bg-purple-50 rounded-2xl p-4 mb-6">
+                      <div className="flex items-center justify-center gap-6">
+                        <div className="text-center">
+                          <p className="text-[24px]" style={dFont}>5</p>
+                          <p className="text-[11px] text-[#94a3b8]" style={bFont}>Help levels</p>
+                        </div>
+                        <div className="w-px h-8 bg-purple-200" />
+                        <div className="text-center">
+                          <p className="text-[24px]">💡→✅</p>
+                          <p className="text-[11px] text-[#94a3b8]" style={bFont}>Hints to answers</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <button onClick={() => setShowHelpModal(false)} className="flex-1 py-3 rounded-xl border-2 border-[#e5e7eb] text-[14px] text-[#6b7280] hover:bg-gray-50 transition-colors cursor-pointer" style={dFont}>
+                        I&apos;ll try again
+                      </button>
+                      <button onClick={handleAcceptHelp} className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#2563eb] to-[#7c3aed] text-white text-[14px] hover:opacity-90 transition-all cursor-pointer" style={dFont}>
+                        Yes, help me! 🙌
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {modalStage === "unlocking" && (
+                  <div className="p-8 text-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-100 to-yellow-100 flex items-center justify-center mx-auto mb-5">
+                      <span className="text-[40px] animate-bounce">🔓</span>
+                    </div>
+                    <h2 className="text-[22px] text-[#0f172a] mb-2" style={dFont}>Unlocking AI Help...</h2>
+                    <p className="text-[14px] text-[#94a3b8]" style={bFont}>Preparing your study buddy</p>
+                    <div className="mt-5 w-full h-3 bg-[#e5e7eb] rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-full transition-all duration-1000" style={{ width: "100%" }} />
+                    </div>
+                  </div>
+                )}
+
+                {modalStage === "ready" && (
+                  <div className="p-8 text-center">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center mx-auto mb-5">
+                      <span className="text-[40px]">🎉</span>
+                    </div>
+                    <h2 className="text-[22px] text-[#0f172a] mb-2" style={dFont}>AI Help is Ready!</h2>
+                    <p className="text-[14px] text-[#94a3b8]" style={bFont}>Starting with Level 1: Think First</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   }
