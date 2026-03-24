@@ -284,26 +284,22 @@ export default function StudyHubPage() {
       <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={bFont}>
         {/* Sticky header */}
         <div className="sticky top-0 z-30 bg-white border-b-2 border-[#eef0f4] sh-fade">
-          <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button onClick={() => setStep("topics")} className="inline-flex items-center gap-2 text-[15px] text-[#6b7280] hover:text-[#374151] transition-colors cursor-pointer" style={dFont}>
-                <ArrowLeft size={18} /> Back
-              </button>
-              <div className="w-px h-8 bg-[#e5e7eb]" />
-              <div>
-                <h1 className="text-[18px] text-[#0f172a] leading-tight" style={dFont}>{selectedAssignment.title}</h1>
-                <div className="flex items-center gap-2.5 mt-1">
-                  <span className={`inline-flex items-center gap-1 text-[12px] px-2.5 py-0.5 rounded-full ${selectedSubject.bgMedium} ${selectedSubject.textColor}`} style={dFont}>
-                    <Atom size={12} /> {selectedSubject.name}
-                  </span>
-                  <span className="text-[12px] text-[#94a3b8]" style={bFont}>Class 8</span>
-                  <span className="text-[12px] text-amber-600" style={bFont}>Due: Today 5:00 PM</span>
-                </div>
-              </div>
+          <div className="px-6 py-3 flex items-center gap-6">
+            <button onClick={() => setStep("topics")} className="inline-flex items-center gap-2 text-[14px] text-[#6b7280] hover:text-[#374151] transition-colors cursor-pointer flex-shrink-0" style={dFont}>
+              <ArrowLeft size={16} /> Back
+            </button>
+            <div className="w-px h-6 bg-[#e5e7eb] flex-shrink-0" />
+            <div className="flex-1 flex items-center gap-3 min-w-0">
+              <h1 className="text-[16px] text-[#0f172a] truncate" style={dFont}>{selectedAssignment.title}</h1>
+              <span className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full ${selectedSubject.bgMedium} ${selectedSubject.textColor} flex-shrink-0`} style={dFont}>
+                <Atom size={10} /> {selectedSubject.name}
+              </span>
+              <span className="text-[11px] text-[#94a3b8] flex-shrink-0" style={bFont}>Class 8</span>
+              <span className="text-[11px] text-amber-600 flex-shrink-0" style={bFont}>Due: Today 5:00 PM</span>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-[13px] text-[#94a3b8]" style={bFont}>Attempts: {attempts}</span>
-              <span className="text-[13px] text-[#94a3b8]" style={bFont}>{wordCount} words</span>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <span className="text-[12px] text-[#94a3b8]" style={bFont}>Attempts: {attempts}</span>
+              <span className="text-[12px] text-[#94a3b8]" style={bFont}>{wordCount} words</span>
             </div>
           </div>
         </div>
@@ -369,22 +365,6 @@ export default function StudyHubPage() {
               </button>
             </div>
 
-            {/* Completion Reward */}
-            <div className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-2xl p-6 flex items-center justify-between sh-fade sh-d3">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
-                  <Trophy size={24} className="text-white" />
-                </div>
-                <div>
-                  <p className="text-white text-[16px]" style={dFont}>Completion Reward</p>
-                  <p className="text-white/70 text-[13px] mt-0.5" style={bFont}>Complete with minimal AI help for bonus!</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-white text-[28px]" style={dFont}>+75 XP</p>
-                <p className="text-green-300 text-[13px]" style={dFont}>+25 bonus</p>
-              </div>
-            </div>
           </div>
 
           {/* RIGHT SIDEBAR — AI Help + Chat */}
@@ -427,6 +407,22 @@ export default function StudyHubPage() {
                     </button>
                   );
                 })}
+              </div>
+            </div>
+
+            {/* Completion Reward */}
+            <div className="px-5 py-4 border-b border-[#e5e7eb]">
+              <div className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-xl p-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <Trophy size={20} className="text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white text-[13px]" style={dFont}>Completion Reward</p>
+                  <p className="text-white/60 text-[11px]" style={bFont}>Minimal AI help = bonus</p>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-white text-[18px]" style={dFont}>+75 XP</p>
+                </div>
               </div>
             </div>
 
