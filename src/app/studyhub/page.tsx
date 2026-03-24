@@ -364,7 +364,7 @@ export default function StudyHubPage() {
               </button>
             </div>
 
-            {/* Need Help? — friendly buttons right below the answer */}
+            {/* AI Help — levels on left, chat on right */}
             <div className="sh-fade sh-d3">
               <div className="flex items-center gap-3 mb-4">
                 <Bot size={20} className="text-purple-500" />
@@ -374,47 +374,117 @@ export default function StudyHubPage() {
               </div>
 
               {attempts > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                  {helpLevels.map((hl) => {
-                    const isUnlocked = attempts >= hl.attemptsNeeded;
-                    const isActive = chatOpen && chatLevel === hl.level;
-                    const colors = [
-                      "border-green-300 bg-green-50 hover:bg-green-100 text-green-600",
-                      "border-blue-300 bg-blue-50 hover:bg-blue-100 text-blue-600",
-                      "border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-600",
-                      "border-purple-300 bg-purple-50 hover:bg-purple-100 text-purple-600",
-                      "border-red-300 bg-red-50 hover:bg-red-100 text-red-600",
-                    ];
-                    const activeColors = [
-                      "border-green-500 bg-green-500 text-white shadow-lg shadow-green-200",
-                      "border-blue-500 bg-blue-500 text-white shadow-lg shadow-blue-200",
-                      "border-amber-500 bg-amber-500 text-white shadow-lg shadow-amber-200",
-                      "border-purple-500 bg-purple-500 text-white shadow-lg shadow-purple-200",
-                      "border-red-500 bg-red-500 text-white shadow-lg shadow-red-200",
-                    ];
-                    return (
-                      <button
-                        key={hl.level}
-                        onClick={() => isUnlocked && openHelp(hl.level)}
-                        disabled={!isUnlocked}
-                        className={`flex flex-col items-center text-center py-4 px-3 rounded-2xl border-2 transition-all duration-200 ${
-                          isActive
-                            ? activeColors[hl.level - 1]
-                            : isUnlocked
-                            ? `${colors[hl.level - 1]} cursor-pointer hover:-translate-y-1`
-                            : "border-gray-200 bg-gray-50 text-gray-400 opacity-50 cursor-not-allowed"
-                        }`}
-                      >
-                        <span className="text-[22px] mb-1">
-                          {["💡", "📐", "🧩", "👣", "✅"][hl.level - 1]}
-                        </span>
-                        <span className="text-[13px] mb-0.5" style={dFont}>{hl.name}</span>
-                        <span className={`text-[11px] ${isActive ? "text-white/80" : ""}`} style={bFont}>
-                          {isUnlocked ? hl.desc : `${hl.attemptsNeeded - attempts} more tries`}
-                        </span>
-                      </button>
-                    );
-                  })}
+                <div className="flex flex-col lg:flex-row gap-4">
+                  {/* Help level buttons — left */}
+                  <div className="flex flex-row lg:flex-col gap-2 lg:w-[180px] flex-shrink-0">
+                    {helpLevels.map((hl) => {
+                      const isUnlocked = attempts >= hl.attemptsNeeded;
+                      const isActive = chatOpen && chatLevel === hl.level;
+                      const colors = [
+                        "border-green-300 bg-green-50 hover:bg-green-100",
+                        "border-blue-300 bg-blue-50 hover:bg-blue-100",
+                        "border-amber-300 bg-amber-50 hover:bg-amber-100",
+                        "border-purple-300 bg-purple-50 hover:bg-purple-100",
+                        "border-red-300 bg-red-50 hover:bg-red-100",
+                      ];
+                      const activeColors = [
+                        "border-green-500 bg-green-500 text-white shadow-lg shadow-green-200",
+                        "border-blue-500 bg-blue-500 text-white shadow-lg shadow-blue-200",
+                        "border-amber-500 bg-amber-500 text-white shadow-lg shadow-amber-200",
+                        "border-purple-500 bg-purple-500 text-white shadow-lg shadow-purple-200",
+                        "border-red-500 bg-red-500 text-white shadow-lg shadow-red-200",
+                      ];
+                      return (
+                        <button
+                          key={hl.level}
+                          onClick={() => isUnlocked && openHelp(hl.level)}
+                          disabled={!isUnlocked}
+                          className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all duration-200 text-left flex-1 lg:flex-initial ${
+                            isActive
+                              ? activeColors[hl.level - 1]
+                              : isUnlocked
+                              ? `${colors[hl.level - 1]} cursor-pointer hover:-translate-y-0.5`
+                              : "border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed"
+                          }`}
+                        >
+                          <span className="text-[20px] flex-shrink-0">
+                            {["💡", "📐", "🧩", "👣", "✅"][hl.level - 1]}
+                          </span>
+                          <div className="min-w-0">
+                            <span className={`text-[13px] block ${isActive ? "text-white" : "text-[#0f172a]"}`} style={dFont}>{hl.name}</span>
+                            <span className={`text-[11px] block ${isActive ? "text-white/70" : "text-[#94a3b8]"}`} style={bFont}>
+                              {isUnlocked ? hl.desc : `${hl.attemptsNeeded - attempts} more`}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Chat — right side */}
+                  <div className="flex-1 min-w-0">
+                    {!chatOpen ? (
+                      <div className="h-full min-h-[280px] bg-purple-50/30 border-2 border-dashed border-purple-200 rounded-2xl flex flex-col items-center justify-center p-6 text-center">
+                        <div className="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center mb-3">
+                          <MessageCircle size={24} className="text-purple-400" />
+                        </div>
+                        <p className="text-[15px] text-[#374151] mb-1" style={dFont}>Click a level to get help</p>
+                        <p className="text-[13px] text-[#94a3b8]" style={bFont}>Your AI buddy will guide you through the problem</p>
+                      </div>
+                    ) : (
+                      <div className="bg-white border-2 border-purple-200 rounded-2xl overflow-hidden flex flex-col min-h-[350px]">
+                        {/* Chat header */}
+                        <div className="flex items-center justify-between bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-5 py-3">
+                          <div className="flex items-center gap-2.5">
+                            <Sparkles size={16} className="text-white" />
+                            <span className="text-white text-[14px]" style={dFont}>
+                              Level {chatLevel}: {helpLevels.find(h => h.level === chatLevel)?.name}
+                            </span>
+                          </div>
+                          <button onClick={() => setChatOpen(false)} className="text-white/60 hover:text-white transition-colors cursor-pointer">
+                            <X size={18} />
+                          </button>
+                        </div>
+
+                        {/* Messages */}
+                        <div className="flex-1 overflow-y-auto p-5 space-y-4 max-h-[350px]">
+                          {chatMessages.map((msg, i) => (
+                            <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                              <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[14px] leading-relaxed whitespace-pre-line ${
+                                msg.role === "user"
+                                  ? "bg-[#7c3aed] text-white rounded-br-md"
+                                  : "bg-[#f3f4f6] text-[#374151] rounded-bl-md"
+                              }`} style={bFont}>
+                                {msg.text}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Input */}
+                        <div className="border-t border-[#e5e7eb] p-3">
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              const input = e.currentTarget.querySelector("input") as HTMLInputElement;
+                              sendChatMessage(input.value);
+                              input.value = "";
+                            }}
+                            className="flex gap-2"
+                          >
+                            <input
+                              type="text"
+                              placeholder="Ask a follow-up..."
+                              className="flex-1 bg-[#f8fafc] border-2 border-[#e5e7eb] rounded-xl px-4 py-2.5 text-[14px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-purple-400"
+                            />
+                            <button type="submit" className="w-10 h-10 bg-[#7c3aed] rounded-xl flex items-center justify-center text-white hover:bg-[#6d28d9] transition-colors cursor-pointer flex-shrink-0">
+                              <Send size={16} />
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div className="bg-purple-50/50 border-2 border-purple-100 rounded-2xl p-6 text-center">
@@ -424,64 +494,6 @@ export default function StudyHubPage() {
                 </div>
               )}
             </div>
-
-            {/* AI Chat — opens inline below help buttons */}
-            {chatOpen && (
-              <div className="bg-white border-2 border-purple-200 rounded-2xl overflow-hidden sh-fade">
-                {/* Chat header */}
-                <div className="flex items-center justify-between bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
-                      <Sparkles size={18} className="text-white" />
-                    </div>
-                    <div>
-                      <p className="text-white text-[15px]" style={dFont}>AI Study Buddy</p>
-                      <p className="text-white/70 text-[12px]" style={bFont}>Level {chatLevel}: {helpLevels.find(h => h.level === chatLevel)?.name}</p>
-                    </div>
-                  </div>
-                  <button onClick={() => setChatOpen(false)} className="text-white/60 hover:text-white transition-colors cursor-pointer">
-                    <X size={20} />
-                  </button>
-                </div>
-
-                {/* Messages */}
-                <div className="max-h-[400px] overflow-y-auto p-6 space-y-4">
-                  {chatMessages.map((msg, i) => (
-                    <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                      <div className={`max-w-[80%] px-5 py-3.5 rounded-2xl text-[14px] leading-relaxed whitespace-pre-line ${
-                        msg.role === "user"
-                          ? "bg-[#7c3aed] text-white rounded-br-md"
-                          : "bg-[#f3f4f6] text-[#374151] rounded-bl-md"
-                      }`} style={bFont}>
-                        {msg.text}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Input */}
-                <div className="border-t border-[#e5e7eb] p-4">
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      const input = e.currentTarget.querySelector("input") as HTMLInputElement;
-                      sendChatMessage(input.value);
-                      input.value = "";
-                    }}
-                    className="flex gap-3"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Ask a follow-up question..."
-                      className="flex-1 bg-[#f8fafc] border-2 border-[#e5e7eb] rounded-xl px-5 py-3 text-[14px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-purple-400"
-                    />
-                    <button type="submit" className="w-12 h-12 bg-[#7c3aed] rounded-xl flex items-center justify-center text-white hover:bg-[#6d28d9] transition-colors cursor-pointer flex-shrink-0">
-                      <Send size={18} />
-                    </button>
-                  </form>
-                </div>
-              </div>
-            )}
 
             {/* Completion Reward — at the bottom */}
             <div className="bg-gradient-to-r from-[#2563eb] to-[#7c3aed] rounded-2xl p-6 flex items-center justify-between sh-fade sh-d4">
