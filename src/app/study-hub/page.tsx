@@ -21,6 +21,7 @@ import {
   Eye,
 } from "lucide-react";
 import SubjectPicker, { subjectData } from "@/components/SubjectPicker";
+import AppHeader from "@/components/AppHeader";
 
 /* ─── Types ─── */
 type Step = "subjects" | "topics" | "materials" | "viewer";
@@ -217,15 +218,14 @@ export default function StudyHubPage() {
   if (step === "topics" && selectedSubject) {
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Study Hub", onClick: () => setStep("subjects") },
+            { label: selectedSubject.name },
+          ]}
+        />
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <button
-            onClick={() => setStep("subjects")}
-            className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer"
-            style={dFont}
-          >
-            <ArrowLeft size={20} /> Back to subjects
-          </button>
-
           {/* Header */}
           <div className="flex items-center gap-4 mb-3 sh-fade sh-d1">
             <div className={`w-14 h-14 rounded-2xl ${selectedSubject.bgMedium} flex items-center justify-center`}>
@@ -278,16 +278,15 @@ export default function StudyHubPage() {
   if (step === "materials" && selectedSubject && selectedChapter) {
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Study Hub", onClick: () => setStep("subjects") },
+            { label: selectedSubject.name, onClick: () => setStep("topics") },
+            { label: selectedChapter.name },
+          ]}
+        />
         <div className="max-w-5xl mx-auto px-6 py-12">
-          {/* Back button */}
-          <button
-            onClick={() => setStep("topics")}
-            className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer"
-            style={dFont}
-          >
-            <ArrowLeft size={20} /> Back to chapters
-          </button>
-
           {/* Header */}
           <div className="flex items-center gap-4 mb-2 sh-fade sh-d1">
             <div className={`w-12 h-12 rounded-2xl ${selectedSubject.bgMedium} flex items-center justify-center`}>
@@ -624,11 +623,16 @@ export default function StudyHubPage() {
 
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Study Hub", onClick: () => setStep("subjects") },
+            { label: selectedSubject.name, onClick: () => setStep("topics") },
+            { label: selectedChapter.name, onClick: () => setStep("materials") },
+            { label: selectedMaterial.title },
+          ]}
+        />
         <div className="max-w-4xl mx-auto px-6 py-12">
-          <button onClick={() => setStep("materials")} className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer" style={dFont}>
-            <ArrowLeft size={20} /> Back to materials
-          </button>
-
           <div className="sh-fade sh-d1 mb-8">
             <div className="flex items-center gap-3 mb-3">
               <span className={`${cc.bg} ${cc.text} text-[12px] px-3 py-1 rounded-full`} style={dFont}>{selectedMaterial.category}</span>

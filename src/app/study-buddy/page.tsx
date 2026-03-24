@@ -25,6 +25,7 @@ import {
   Bot,
 } from "lucide-react";
 import SubjectPicker, { subjectData } from "@/components/SubjectPicker";
+import AppHeader from "@/components/AppHeader";
 
 /* ─── Types ─── */
 type Step = "subjects" | "topics" | "workspace";
@@ -270,11 +271,14 @@ export default function StudyHubPage() {
 
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Study Buddy", onClick: () => setStep("subjects") },
+            { label: selectedSubject.name },
+          ]}
+        />
         <div className="max-w-4xl mx-auto px-6 py-12">
-          <button onClick={() => setStep("subjects")} className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 sh-fade cursor-pointer" style={dFont}>
-            <ArrowLeft size={20} /> Back to subjects
-          </button>
-
           <div className="flex items-center gap-4 mb-3 sh-fade sh-d1">
             <div className={`w-12 h-12 rounded-xl ${selectedSubject.bgMedium} flex items-center justify-center`}>
               <span className={selectedSubject.textColor}>{<Atom size={24} />}</span>
@@ -317,31 +321,26 @@ export default function StudyHubPage() {
     return (
       <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={bFont}>
         {/* Sticky header */}
-        <div className="sticky top-0 z-30 bg-white border-b-2 border-[#eef0f4] sh-fade">
-          <div className="px-6 py-3 flex items-center gap-6">
-            <button onClick={() => setStep("topics")} className="inline-flex items-center gap-2 text-[14px] text-[#6b7280] hover:text-[#374151] transition-colors cursor-pointer flex-shrink-0" style={dFont}>
-              <ArrowLeft size={16} /> Back
-            </button>
-            <div className="w-px h-6 bg-[#e5e7eb] flex-shrink-0" />
-            <div className="flex-1 flex items-center gap-3 min-w-0">
-              <h1 className="text-[16px] text-[#0f172a] truncate" style={dFont}>{selectedAssignment.title}</h1>
-              <span className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full ${selectedSubject.bgMedium} ${selectedSubject.textColor} flex-shrink-0`} style={dFont}>
-                <Atom size={10} /> {selectedSubject.name}
-              </span>
-              <span className="text-[11px] text-[#94a3b8] flex-shrink-0" style={bFont}>Class 8</span>
-              <span className="text-[11px] text-amber-600 flex-shrink-0" style={bFont}>Due: Today 5:00 PM</span>
-            </div>
-            <div className="flex items-center gap-3 flex-shrink-0">
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Study Buddy", onClick: () => setStep("subjects") },
+            { label: selectedSubject.name, onClick: () => setStep("topics") },
+            { label: selectedAssignment.title },
+          ]}
+          contextInfo={
+            <div className="flex items-center gap-3">
               <span className="text-[12px] text-[#94a3b8]" style={bFont}>Attempts: {attempts}</span>
-              <div className="w-px h-5 bg-[#e5e7eb]" />
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentXP >= 50 ? "bg-purple-100 text-purple-700" : currentXP >= 20 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600"}`}>
-                <Trophy size={14} />
-                <span className="text-[13px]" style={dFont}>+{currentXP} XP</span>
-                {currentXP < maxXP && <span className="text-[10px] line-through opacity-50" style={bFont}>{maxXP}</span>}
-              </div>
             </div>
-          </div>
-        </div>
+          }
+          rightContent={
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${currentXP >= 50 ? "bg-purple-100 text-purple-700" : currentXP >= 20 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600"}`}>
+              <Trophy size={14} />
+              <span className="text-[13px]" style={dFont}>+{currentXP} XP</span>
+              {currentXP < maxXP && <span className="text-[10px] line-through opacity-50" style={bFont}>{maxXP}</span>}
+            </div>
+          }
+        />
 
         {/* 60/40 layout */}
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">

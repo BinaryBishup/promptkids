@@ -7,26 +7,24 @@ import {
   Brain,
   TrendingDown,
   Trophy,
-  Bell,
   Clock,
   Calendar,
   Star,
   Lightbulb,
   Video,
   Sparkles as SparklesIcon,
-  User,
-  CalendarDays,
-  Award,
-  Library,
-  Settings,
-  LogOut,
   Flame,
   Target,
   AlarmClock,
   ChevronRight,
   Sparkles,
   ClipboardList,
+  CalendarDays,
+  Award,
+  Library,
+  Settings,
 } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 
 export default function DashboardPage() {
   const [streakDays] = useState(7);
@@ -36,8 +34,6 @@ export default function DashboardPage() {
   const [level] = useState(7);
   const [challengeProgress] = useState(2);
   const [challengeTotal] = useState(3);
-  const [profileOpen, setProfileOpen] = useState(false);
-
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>
       {/* Entrance animation keyframes */}
@@ -74,89 +70,7 @@ export default function DashboardPage() {
       `}</style>
 
       {/* TOP NAV BAR */}
-      <nav className="sticky top-0 z-50 bg-white border-b-[2.5px] border-[#eef0f4] h-[78px] flex items-center justify-between px-6 anim-slide-down">
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-sm font-bold text-[#2563eb] bg-[#2563eb]/10 px-2 py-1 rounded hover:bg-[#2563eb]/20 transition-colors cursor-pointer">{`>_`}</span>
-          <div className="flex flex-col">
-            <span className="font-extrabold text-[#0f172a] text-lg leading-tight" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Prompt<span className="text-[#f97316]">Kids</span></span>
-            <span className="text-[#9ca3af] text-xs leading-tight font-medium" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>AI Learning Platform</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button className="relative p-2.5 rounded-xl hover:bg-gray-50 transition-all duration-200 hover:scale-105">
-            <Bell className="w-[22px] h-[22px] text-[#6b7280]" />
-            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-[#f97316] rounded-full border-2 border-white" />
-          </button>
-
-          {/* User Avatar + Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setProfileOpen(!profileOpen)}
-              className="w-10 h-10 rounded-full bg-gray-100 border-2 border-[#e5e7eb] flex items-center justify-center hover:border-[#7c3aed]/40 transition-all duration-200 cursor-pointer"
-            >
-              <User className="w-5 h-5 text-[#6b7280]" />
-            </button>
-
-            {profileOpen && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />
-                <div className="absolute right-0 top-14 w-[280px] bg-white rounded-2xl shadow-2xl border-2 border-[#e5e7eb] z-50 overflow-hidden">
-                  {/* Profile header */}
-                  <div className="px-6 pt-6 pb-4 flex flex-col items-center">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#2563eb] to-[#7c3aed] flex items-center justify-center mb-3">
-                      <User className="w-7 h-7 text-white" />
-                    </div>
-                    <p className="text-[16px] text-[#0f172a]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Arjun Sharma</p>
-                    <p className="text-[13px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Class 10 - Section A</p>
-                  </div>
-
-                  {/* Level + Badges */}
-                  <div className="px-6 pb-4 flex gap-3">
-                    <div className="flex-1 bg-[#2563eb]/8 rounded-xl px-3 py-2.5">
-                      <p className="text-[16px] text-[#2563eb]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>Level 7</p>
-                      <p className="text-[12px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>340 XP</p>
-                    </div>
-                    <div className="flex-1 bg-[#f59e0b]/8 rounded-xl px-3 py-2.5">
-                      <p className="text-[16px] text-[#f59e0b]" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>8</p>
-                      <p className="text-[12px] text-[#94a3b8]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>Badges</p>
-                    </div>
-                  </div>
-
-                  {/* Menu items */}
-                  <div className="border-t border-[#e5e7eb]">
-                    {[
-                      { icon: User, label: "My Profile", href: "/profile" },
-                      { icon: CalendarDays, label: "My Schedule", href: "/schedule" },
-                      { icon: Award, label: "Achievements", href: "/achievements" },
-                      { icon: Library, label: "My Library", href: "/study-hub" },
-                      { icon: Settings, label: "Settings", href: "/settings" },
-                    ].map((item) => (
-                      <Link key={item.label} href={item.href} className="w-full flex items-center justify-between px-6 py-3.5 hover:bg-gray-50 transition-colors cursor-pointer no-underline">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
-                            <item.icon className="w-[18px] h-[18px] text-[#6b7280]" />
-                          </div>
-                          <span className="text-[14px] text-[#374151]" style={{ fontFamily: 'var(--font-body)', fontWeight: 500 }}>{item.label}</span>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-[#d1d5db]" />
-                      </Link>
-                    ))}
-                  </div>
-
-                  {/* Logout */}
-                  <div className="border-t border-[#e5e7eb] p-4">
-                    <button className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-red-200 text-red-500 hover:bg-red-50 transition-colors cursor-pointer" style={{ fontFamily: 'var(--font-display)', fontWeight: 900 }}>
-                      <LogOut className="w-4 h-4" />
-                      <span className="text-[14px]">Log Out</span>
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+      <AppHeader />
 
       {/* MAIN CONTENT */}
       <div className="flex flex-1 flex-col lg:flex-row">

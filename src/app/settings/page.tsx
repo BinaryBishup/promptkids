@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
   User,
   Mail,
   Phone,
@@ -23,6 +22,7 @@ import {
   Sparkles,
   LogOut,
 } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 
 const dFont = { fontFamily: "var(--font-display)", fontWeight: 900 } as const;
 const bFont = { fontFamily: "var(--font-body)", fontWeight: 500 } as const;
@@ -68,32 +68,21 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
-      {/* ── Gradient Header ─────────────────────────────────────── */}
-      <div className="bg-gradient-to-r from-[#7c3aed] via-[#a855f7] to-[#ec4899] px-6 pt-10 pb-12">
-        <div className="max-w-3xl mx-auto">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-1.5 text-white/80 hover:text-white text-[14px] transition-colors duration-200 mb-6 group"
-            style={bFont}
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-200" />
-            Back to Dashboard
-          </Link>
+      {/* ── App Header ─────────────────────────────────────── */}
+      <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Settings" }]} />
 
-          <h1
-            className="text-[32px] text-white leading-tight"
-            style={dFont}
-          >
-            Settings
-          </h1>
-          <p className="text-white/80 text-[15px] mt-1" style={bFont}>
-            Manage your account and preferences
-          </p>
-        </div>
+      {/* ── Page Title ───────────────────────────────────────── */}
+      <div className="max-w-3xl mx-auto px-8 pt-8 pb-2">
+        <h1 className="text-[28px] text-[#0f172a] leading-tight" style={dFont}>
+          Settings
+        </h1>
+        <p className="text-[#64748b] text-[15px] mt-1" style={bFont}>
+          Manage your account and preferences
+        </p>
       </div>
 
       {/* ── Content ─────────────────────────────────────────────── */}
-      <div className="max-w-3xl mx-auto p-8 space-y-6 -mt-4">
+      <div className="max-w-3xl mx-auto p-8 space-y-6">
         {/* ── Account Information ─────────────────────────────── */}
         <section className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
           <div className="flex items-center gap-3 px-6 pt-6 pb-4">

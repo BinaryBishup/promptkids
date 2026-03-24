@@ -30,6 +30,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import SubjectPicker, { subjectData } from "@/components/SubjectPicker";
+import AppHeader from "@/components/AppHeader";
 
 /* ─── Types ─── */
 type Step = "subjects" | "learn";
@@ -161,19 +162,20 @@ export default function ConceptMasterPage() {
   /* ─── STEP 2: Learn Interface ─── */
   if (step === "learn" && selectedSubject) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] flex flex-col lg:flex-row" style={bFont}>
+      <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={bFont}>
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Concept Master", onClick: () => setStep("subjects") },
+            { label: selectedSubject.name },
+          ]}
+        />
+
+        <div className="flex-1 flex flex-col lg:flex-row">
         {/* ─── Left Column ─── */}
-        <div className="flex-1 flex flex-col min-h-screen">
+        <div className="flex-1 flex flex-col">
           {/* Header area */}
           <div className="bg-white border-b border-[#e5e7eb] px-8 lg:px-12 py-6 cm-fade">
-            <button
-              onClick={() => setStep("subjects")}
-              className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-5 cursor-pointer"
-              style={dFont}
-            >
-              <ArrowLeft size={20} /> Back to subjects
-            </button>
-
             <h1
               className="text-[24px] text-[#0f172a] mb-3"
               style={dFont}
@@ -554,6 +556,7 @@ export default function ConceptMasterPage() {
               )}
             </div>
           </div>
+        </div>
         </div>
       </div>
     );

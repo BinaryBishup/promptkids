@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
   Mail,
   Phone,
   Zap,
@@ -22,6 +21,7 @@ import {
   FileText,
   MessageSquare,
 } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 
 const dFont = { fontFamily: "var(--font-display)", fontWeight: 900 } as const;
 const bFont = { fontFamily: "var(--font-body)", fontWeight: 500 } as const;
@@ -141,62 +141,36 @@ export default function ProfilePage() {
         }
       `}</style>
 
-      {/* ========== BLUE GRADIENT HEADER ========== */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#2563eb] to-[#3b82f6]">
-        {/* decorative blobs */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
+      {/* ========== APP HEADER ========== */}
+      <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "My Profile" }]} />
 
-        <div className="relative max-w-4xl mx-auto px-8 pt-8 pb-12">
-          {/* back link */}
-          <Link
-            href="/dashboard"
-            className="pf-fade-up inline-flex items-center gap-2 text-white/80 hover:text-white text-[14px] transition-colors mb-8"
-            style={{ ...bFont, animationDelay: "0.05s" }}
-          >
-            <ArrowLeft size={16} />
-            Back to Dashboard
-          </Link>
-
-          {/* profile header row */}
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-            {/* avatar */}
-            <div
-              className="pf-avatar shrink-0 w-[80px] h-[80px] rounded-full p-[3px] bg-gradient-to-br from-white/80 to-white/30"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-[#60a5fa] to-[#2563eb] flex items-center justify-center">
-                <span className="text-white text-[32px]" style={dFont}>
-                  A
-                </span>
-              </div>
+      {/* ========== PROFILE CARD ========== */}
+      <div className="max-w-4xl mx-auto px-8 pt-8">
+        <div className="pf-card bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6" style={{ animationDelay: "0.05s" }}>
+          {/* avatar */}
+          <div className="pf-avatar shrink-0 w-[72px] h-[72px] rounded-full p-[3px] bg-gradient-to-br from-[#60a5fa] to-[#2563eb]" style={{ animationDelay: "0.1s" }}>
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-[#60a5fa] to-[#2563eb] flex items-center justify-center">
+              <span className="text-white text-[28px]" style={dFont}>A</span>
             </div>
+          </div>
 
-            {/* name + info */}
-            <div className="text-center sm:text-left flex-1">
-              <h1
-                className="pf-fade-up text-white text-[28px] leading-tight"
-                style={{ ...dFont, animationDelay: "0.15s" }}
-              >
-                Arjun Sharma
-              </h1>
-              <p
-                className="pf-fade-up text-white/80 text-[15px] mt-1"
-                style={{ ...bFont, animationDelay: "0.2s" }}
-              >
-                Class 10 - Section A
-              </p>
-
-              <div className="pf-fade-up flex flex-wrap justify-center sm:justify-start gap-4 mt-4" style={{ animationDelay: "0.25s" }}>
-                <span className="inline-flex items-center gap-1.5 text-white/90 text-[13px]" style={bFont}>
-                  <Mail size={14} className="text-white/60" />
-                  arjun.sharma@student.com
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-white/90 text-[13px]" style={bFont}>
-                  <Phone size={14} className="text-white/60" />
-                  +91 98765 43210
-                </span>
-              </div>
+          {/* name + info */}
+          <div className="text-center sm:text-left flex-1">
+            <h1 className="pf-fade-up text-[24px] text-[#0f172a] leading-tight" style={{ ...dFont, animationDelay: "0.15s" }}>
+              Arjun Sharma
+            </h1>
+            <p className="pf-fade-up text-[15px] text-[#64748b] mt-1" style={{ ...bFont, animationDelay: "0.2s" }}>
+              Class 10 - Section A
+            </p>
+            <div className="pf-fade-up flex flex-wrap justify-center sm:justify-start gap-4 mt-3" style={{ animationDelay: "0.25s" }}>
+              <span className="inline-flex items-center gap-1.5 text-[#64748b] text-[13px]" style={bFont}>
+                <Mail size={14} className="text-[#94a3b8]" />
+                arjun.sharma@student.com
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-[#64748b] text-[13px]" style={bFont}>
+                <Phone size={14} className="text-[#94a3b8]" />
+                +91 98765 43210
+              </span>
             </div>
           </div>
         </div>

@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Bell,
@@ -18,6 +17,7 @@ import {
   Clock,
   AlertTriangle,
 } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 
 /* ── font helpers ─────────────────────────────────────────── */
 const dFont = { fontFamily: "var(--font-display)", fontWeight: 900 } as const;
@@ -258,69 +258,44 @@ export default function SchedulePage() {
       `}</style>
 
       {/* ─── HEADER ───────────────────────────────────────── */}
-      <header className="bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-6 md:px-12 py-10">
-        <div className="max-w-7xl mx-auto">
-          {/* back link */}
-          <Link
-            href="/platform"
-            className={`inline-flex items-center gap-2 text-white/70 hover:text-white text-[14px] transition-colors mb-6 ${anim(0)}`}
-            style={bFont}
-          >
-            <ArrowLeft size={16} />
-            Back to Dashboard
-          </Link>
+      <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "My Schedule" }]} />
 
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <div>
-              <h1
-                className={`text-[32px] text-white leading-tight mb-2 ${anim(1)}`}
-                style={dFont}
-              >
-                My Schedule
-              </h1>
-              <p
-                className={`text-[16px] text-white/80 max-w-md ${anim(2)}`}
-                style={bFont}
-              >
-                Stay organized with your classes, homework &amp; exams
-              </p>
+      {/* ─── PAGE TITLE + STATS ───────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 pb-4">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <h1 className={`text-[28px] text-[#0f172a] leading-tight mb-1 ${anim(1)}`} style={dFont}>
+              My Schedule
+            </h1>
+            <p className={`text-[15px] text-[#64748b] max-w-md ${anim(2)}`} style={bFont}>
+              Stay organized with your classes, homework &amp; exams
+            </p>
+          </div>
+
+          {/* stat cards */}
+          <div className={`flex gap-4 ${anim(3)}`}>
+            <div className="bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 min-w-[150px]">
+              <div className="flex items-center gap-2 mb-1">
+                <CalendarDays size={16} className="text-blue-500" />
+                <span className="text-[13px] text-[#64748b]" style={bFont}>This Week</span>
+              </div>
+              <span className="text-[22px] text-[#0f172a] leading-none" style={dFont}>
+                12 <span className="text-[13px] font-normal text-[#94a3b8]">Events</span>
+              </span>
             </div>
 
-            {/* stat cards */}
-            <div className={`flex gap-4 ${anim(3)}`}>
-              <div className="bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl px-5 py-3 text-white min-w-[160px]">
-                <div className="flex items-center gap-2 mb-1">
-                  <CalendarDays size={16} className="text-white/70" />
-                  <span className="text-[13px] text-white/70" style={bFont}>
-                    This Week
-                  </span>
-                </div>
-                <span className="text-[24px] leading-none" style={dFont}>
-                  12{" "}
-                  <span className="text-[14px] font-normal text-white/70">
-                    Events
-                  </span>
-                </span>
+            <div className="bg-red-50 border border-red-200 rounded-xl px-5 py-3 min-w-[150px]">
+              <div className="flex items-center gap-2 mb-1">
+                <AlertTriangle size={16} className="text-red-500" />
+                <span className="text-[13px] text-[#64748b]" style={bFont}>Upcoming</span>
               </div>
-
-              <div className="bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl px-5 py-3 text-white min-w-[160px]">
-                <div className="flex items-center gap-2 mb-1">
-                  <AlertTriangle size={16} className="text-white/70" />
-                  <span className="text-[13px] text-white/70" style={bFont}>
-                    Upcoming
-                  </span>
-                </div>
-                <span className="text-[24px] leading-none" style={dFont}>
-                  2{" "}
-                  <span className="text-[14px] font-normal text-white/70">
-                    Exams
-                  </span>
-                </span>
-              </div>
+              <span className="text-[22px] text-[#0f172a] leading-none" style={dFont}>
+                2 <span className="text-[13px] font-normal text-[#94a3b8]">Exams</span>
+              </span>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* ─── CONTENT ──────────────────────────────────────── */}
       <main className="max-w-7xl mx-auto px-6 md:px-12 py-10">

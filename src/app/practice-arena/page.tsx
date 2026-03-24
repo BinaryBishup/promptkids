@@ -17,6 +17,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import SubjectPicker, { subjectData } from "@/components/SubjectPicker";
+import AppHeader from "@/components/AppHeader";
 
 /* ─── Types ─── */
 type Step = "subjects" | "topics" | "quiz";
@@ -207,15 +208,14 @@ export default function PracticeArenaPage() {
   if (step === "topics" && selectedSubject) {
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Practice Arena", onClick: () => setStep("subjects") },
+            { label: selectedSubject.name },
+          ]}
+        />
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <button
-            onClick={() => setStep("subjects")}
-            className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 pa-fade cursor-pointer"
-            style={dFont}
-          >
-            <ArrowLeft size={20} /> Back to subjects
-          </button>
-
           {/* Header */}
           <div className="flex items-center gap-4 mb-3 pa-fade pa-d1">
             <div className={`w-14 h-14 rounded-2xl ${selectedSubject.bgMedium} flex items-center justify-center`}>
@@ -454,37 +454,20 @@ export default function PracticeArenaPage() {
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col" style={bFont}>
       {/* Sticky header */}
-      <div className="sticky top-0 z-30 bg-white border-b-2 border-[#eef0f4] pa-fade">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <button
-              onClick={() => setStep("topics")}
-              className="inline-flex items-center gap-2 text-[15px] text-[#6b7280] hover:text-[#374151] transition-colors cursor-pointer"
-              style={dFont}
-            >
-              <ArrowLeft size={18} /> Back
-            </button>
-            <div className="w-px h-8 bg-[#e5e7eb]" />
-            <div className="flex items-center gap-3">
-              {selectedSubject && (
-                <div className={`w-10 h-10 rounded-xl ${selectedSubject.bgMedium} flex items-center justify-center flex-shrink-0`}>
-                  <Atom className={`w-5 h-5 ${selectedSubject.textColor}`} />
-                </div>
-              )}
-              <div>
-                <h1 className="text-[18px] text-[#0f172a] leading-tight" style={dFont}>
-                  {selectedTopicName || "Practice Quiz"}
-                </h1>
-                <div className="flex items-center gap-3 mt-0.5">
-                  {selectedSubject && (
-                    <span className="text-[12px] text-[#6b7280]" style={bFont}>{selectedSubject.name}</span>
-                  )}
-                  <span className="text-[12px] text-[#6b7280]" style={bFont}>{quizQuestions.length} Questions</span>
-                  <span className="text-[12px] text-[#6b7280]" style={bFont}>~10 min</span>
-                </div>
-              </div>
-            </div>
+      <AppHeader
+        breadcrumbs={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "Practice Arena", onClick: () => setStep("subjects") },
+          { label: selectedSubject?.name || "Quiz", onClick: () => setStep("topics") },
+          { label: selectedTopicName || "Practice Quiz" },
+        ]}
+        contextInfo={
+          <div className="flex items-center gap-3 text-[12px] text-[#6b7280]" style={bFont}>
+            <span>{quizQuestions.length} Questions</span>
+            <span>~10 min</span>
           </div>
+        }
+        rightContent={
           <button
             onClick={() => setStep("topics")}
             className="bg-[#2563eb] text-white text-[14px] px-5 py-2.5 rounded-xl hover:bg-[#1d4ed8] active:scale-[0.97] transition-all cursor-pointer"
@@ -492,8 +475,8 @@ export default function PracticeArenaPage() {
           >
             Submit Quiz
           </button>
-        </div>
-      </div>
+        }
+      />
 
       <div className="max-w-6xl mx-auto px-6 py-8 w-full flex-1 flex flex-col">
         {/* Progress bar */}

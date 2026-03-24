@@ -18,6 +18,7 @@ import {
   Magnet,
   ChevronRight,
 } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 
 /* ─── Font helpers ─── */
 const dFont = { fontFamily: "var(--font-display)", fontWeight: 900 } as const;
@@ -184,11 +185,8 @@ export default function LiveClassesPage() {
   if (step === "subjects") {
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Live Classes" }]} />
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <Link href="/dashboard" className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 lc-fade" style={dFont}>
-            <ArrowLeft size={20} /> Back to home
-          </Link>
-
           <h1 className="text-[36px] text-[#0f172a] mb-3 lc-fade lc-d1" style={dFont}>
             Live Classes
           </h1>
@@ -239,18 +237,15 @@ export default function LiveClassesPage() {
 
     return (
       <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
+        <AppHeader
+          breadcrumbs={[
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Live Classes", onClick: () => { setStep("subjects"); setView("list"); } },
+            { label: selectedSubjectName, onClick: () => { setView("list"); setSelectedRecording(null); } },
+            { label: selectedRecording.title },
+          ]}
+        />
         <div className="max-w-4xl mx-auto px-6 py-12">
-          {/* Back button */}
-          <button
-            onClick={() => {
-              setView("list");
-              setSelectedRecording(null);
-            }}
-            className="inline-flex items-center gap-2 text-[16px] text-gray-500 hover:text-gray-800 transition-colors mb-10 lc-fade cursor-pointer"
-            style={dFont}
-          >
-            <ArrowLeft size={20} /> Back to recordings
-          </button>
 
           {/* Video player placeholder */}
           <div className="bg-black rounded-2xl overflow-hidden aspect-video relative mb-8 lc-fade lc-d1">
@@ -397,58 +392,41 @@ export default function LiveClassesPage() {
   /* ═══════════════════ MAIN LIST VIEW ═══════════════════ */
   return (
     <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
-      {/* ─── Blue gradient header (sticky) ─── */}
-      <div
-        className="sticky top-0 z-50"
-        style={{
-          background: "linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)",
-        }}
-      >
-        <div className="max-w-6xl mx-auto px-8 py-6">
-          <button
-            onClick={() => { setStep("subjects"); setView("list"); }}
-            className="inline-flex items-center gap-1.5 text-[14px] text-white/80 hover:text-white transition-colors mb-4 cursor-pointer"
-            style={bFont}
-          >
-            <ArrowLeft size={16} /> Back to Subjects
-          </button>
+      {/* ─── App Header ─── */}
+      <AppHeader
+        breadcrumbs={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "Live Classes", onClick: () => { setStep("subjects"); setView("list"); } },
+          { label: selectedSubjectName },
+        ]}
+      />
 
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <div className="lc-fade">
-              <h1
-                className="text-[32px] text-white mb-1"
-                style={dFont}
-              >
-                {selectedSubjectName} Classes
-              </h1>
-              <p className="text-[16px] text-white/80" style={bFont}>
-                Live sessions &amp; recorded classes for {selectedSubjectName}
-              </p>
-            </div>
+      {/* ─── Page Title + Stats ─── */}
+      <div className="max-w-6xl mx-auto px-8 pt-8 pb-4">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div className="lc-fade">
+            <h1 className="text-[28px] text-[#0f172a] mb-1" style={dFont}>
+              {selectedSubjectName} Classes
+            </h1>
+            <p className="text-[15px] text-[#64748b]" style={bFont}>
+              Live sessions &amp; recorded classes for {selectedSubjectName}
+            </p>
+          </div>
 
-            {/* Stat cards */}
-            <div className="flex items-center gap-3 lc-fade lc-d1">
-              <div className="bg-white/10 rounded-xl py-3 px-5 flex items-center gap-3">
-                <Wifi size={20} className="text-white/70" />
-                <div>
-                  <p className="text-[28px] text-white leading-none" style={dFont}>
-                    1
-                  </p>
-                  <p className="text-[12px] text-white/70" style={bFont}>
-                    Live Now
-                  </p>
-                </div>
+          {/* Stat cards */}
+          <div className="flex items-center gap-3 lc-fade lc-d1">
+            <div className="bg-green-50 border border-green-200 rounded-xl py-3 px-5 flex items-center gap-3">
+              <Wifi size={20} className="text-green-600" />
+              <div>
+                <p className="text-[24px] text-[#0f172a] leading-none" style={dFont}>1</p>
+                <p className="text-[12px] text-[#64748b]" style={bFont}>Live Now</p>
               </div>
-              <div className="bg-white/10 rounded-xl py-3 px-5 flex items-center gap-3">
-                <Clock size={20} className="text-white/70" />
-                <div>
-                  <p className="text-[28px] text-white leading-none" style={dFont}>
-                    {pastClasses.length}
-                  </p>
-                  <p className="text-[12px] text-white/70" style={bFont}>
-                    Past Sessions
-                  </p>
-                </div>
+            </div>
+            <div className="bg-blue-50 border border-blue-200 rounded-xl py-3 px-5 flex items-center gap-3">
+              <Clock size={20} className="text-blue-600" />
+              <div>
+                <p className="text-[24px] text-[#0f172a] leading-none" style={dFont}>{pastClasses.length}</p>
+                <p className="text-[12px] text-[#64748b]" style={bFont}>Past Sessions</p>
               </div>
             </div>
           </div>

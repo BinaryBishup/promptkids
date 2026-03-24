@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
   Trophy,
   Star,
   Lock,
@@ -14,6 +13,7 @@ import {
   TrendingUp,
   ChevronRight,
 } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
 
 const dFont = { fontFamily: "var(--font-display)", fontWeight: 900 } as const;
 const bFont = { fontFamily: "var(--font-body)", fontWeight: 500 } as const;
@@ -118,72 +118,45 @@ export default function AchievementsPage() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc]" style={bFont}>
-      {/* ── Orange gradient header ──────────────────────────────── */}
-      <header className="relative overflow-hidden bg-gradient-to-r from-[#f97316] to-[#ea580c]">
-        {/* decorative circles */}
-        <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full bg-white/10" />
-        <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-white/10" />
+      {/* ── App Header ──────────────────────────────── */}
+      <AppHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Achievements" }]} />
 
-        <div className="relative mx-auto max-w-5xl px-6 py-10 sm:px-8">
-          {/* back link */}
-          <Link
-            href="/platform"
-            className="group mb-6 inline-flex items-center gap-2 text-[14px] text-white/80 transition-colors hover:text-white"
-            style={bFont}
-          >
-            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-            Back to Dashboard
-          </Link>
+      {/* ── Page title + stats ──────────────────────────────── */}
+      <div className="mx-auto max-w-5xl px-6 pt-8 pb-4 sm:px-8">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h1 className="text-[28px] leading-tight text-[#0f172a]" style={dFont}>
+              Achievements &amp; Rewards
+            </h1>
+            <p className="mt-1 text-[15px] text-[#64748b]" style={bFont}>
+              Celebrate your learning milestones!
+            </p>
+          </div>
 
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            {/* left text */}
-            <div>
-              <h1
-                className="text-[32px] leading-tight text-white"
-                style={dFont}
-              >
-                Achievements &amp; Rewards
-              </h1>
-              <p className="mt-2 text-[16px] text-white/80" style={bFont}>
-                Celebrate your learning milestones!
-              </p>
+          {/* stat cards */}
+          <div className="flex gap-4">
+            <div className="flex items-center gap-3 rounded-2xl bg-orange-50 border border-orange-200 px-5 py-3 transition-transform hover:scale-105">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100">
+                <Award size={20} className="text-orange-600" />
+              </div>
+              <div>
+                <p className="text-[20px] leading-none text-[#0f172a]" style={dFont}>8/12</p>
+                <p className="text-[13px] text-[#64748b]" style={bFont}>Badges Earned</p>
+              </div>
             </div>
 
-            {/* right stat cards */}
-            <div className="flex gap-4">
-              {/* badges stat */}
-              <div className="flex items-center gap-3 rounded-2xl bg-white/20 px-5 py-3 backdrop-blur-sm transition-transform hover:scale-105">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/30">
-                  <Award size={20} className="text-white" />
-                </div>
-                <div>
-                  <p className="text-[20px] leading-none text-white" style={dFont}>
-                    8/12
-                  </p>
-                  <p className="text-[13px] text-white/80" style={bFont}>
-                    Badges Earned
-                  </p>
-                </div>
+            <div className="flex items-center gap-3 rounded-2xl bg-purple-50 border border-purple-200 px-5 py-3 transition-transform hover:scale-105">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100">
+                <Zap size={20} className="text-purple-600" />
               </div>
-
-              {/* xp stat */}
-              <div className="flex items-center gap-3 rounded-2xl bg-white/20 px-5 py-3 backdrop-blur-sm transition-transform hover:scale-105">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/30">
-                  <Zap size={20} className="text-white" />
-                </div>
-                <div>
-                  <p className="text-[20px] leading-none text-white" style={dFont}>
-                    2,340
-                  </p>
-                  <p className="text-[13px] text-white/80" style={bFont}>
-                    Total XP
-                  </p>
-                </div>
+              <div>
+                <p className="text-[20px] leading-none text-[#0f172a]" style={dFont}>2,340</p>
+                <p className="text-[13px] text-[#64748b]" style={bFont}>Total XP</p>
               </div>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* ── Content ─────────────────────────────────────────────── */}
       <main className="mx-auto max-w-5xl space-y-8 px-6 py-8 sm:px-8">
